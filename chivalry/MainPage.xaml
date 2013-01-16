@@ -6,8 +6,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
-    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock>Foo</TextBlock>
-    </Grid>
+
+    <StackPanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Style="{StaticResource LayoutRootStyle}">
+        <TextBlock Grid.Column="1" Text="{StaticResource AppName}" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
+        <!--<TextBlock Margin="0,-10,0,0" Text="Active Games" Style="{StaticResource SubheaderTextStyle}"/>-->
+        <TextBlock Margin="0,-10,0,0" Text="Logged in as: " Style="{StaticResource SubheaderTextStyle}"/>
+        <TextBlock Margin="0,-10,0,0" x:Name="userName" Style="{StaticResource SubheaderTextStyle}"/>
+        <Button x:Name="signInButton" Click="signInButton_Click_1">Sign In</Button>
+    </StackPanel>
 </Page>
