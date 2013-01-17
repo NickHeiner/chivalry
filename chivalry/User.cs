@@ -50,7 +50,7 @@ namespace chivalry
             {
                 if (value != profilePicSource)
                 {
-                    value = profilePicSource;
+                    profilePicSource = value;
                     NotifyPropertyChanged();
                 }
             }

@@ -12,6 +12,6 @@
     <StackPanel Orientation="Horizontal">
         <TextBlock Style="{StaticResource BasicTextStyle}">Auth Box</TextBlock>
         <Image Source="{Binding ProfilePicSource}" />
-        <TextBlock x:Name="textBlock" Text="{Binding Name}" Style="{StaticResource BasicTextStyle}"/>
+        <TextBlock Text="{Binding Name}" Style="{StaticResource BasicTextStyle}"/>
     </StackPanel>
 </UserControl>

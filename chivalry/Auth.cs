@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Live;
+using Windows.UI.Xaml.Media;
 
 namespace chivalry
 {
@@ -17,11 +18,19 @@ namespace chivalry
             LiveConnectClient connection = await ensureConnection();
             LiveOperationResult meResult = await connection.GetAsync("me");
             dynamic userData = meResult.Result;
+            User user = new User();
             if (userData != null)
             {
-                return new User { Name = userData.name };
+                user.Name = userData.name;
             }
-            throw new InvalidOperationException("couldn't get name");
+
+            LiveOperationResult picResult = await connection.GetAsync("me/picture");
+            dynamic picData = picResult.Result;
+            if (picData != null)
+            {
+                user.ProfilePicSource = picData.location;
+            }
+            return user;
         }
 
         private async Task<LiveConnectClient> ensureConnection()
