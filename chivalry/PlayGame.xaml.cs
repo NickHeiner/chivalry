@@ -25,6 +25,39 @@ namespace chivalry
         public PlayGame()
         {
             this.InitializeComponent();
+            Loaded += PlayGame_Loaded;
+        }
+
+        // adapted from http://code.msdn.microsoft.com/windowsapps/Reversi-XAMLC-sample-board-816140fa/sourcecode?fileId=69011&pathId=706708707
+        void PlayGame_Loaded(object sender, RoutedEventArgs e)
+        {
+            var rows = Enumerable.Range(0, 10);
+            var cols = Enumerable.Range(0, 10);
+
+            foreach (var row in rows)
+            {
+                boardGrid.RowDefinitions.Add(new RowDefinition());
+            }
+            foreach (var col in rows)
+            {
+                boardGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+
+            foreach (var row in rows)
+            {
+                foreach (var col in cols)
+                {
+                    var boardSpace = new BoardSpace();
+                    boardSpace.SetBinding(BoardSpace.SpaceStateProperty,
+                        new Binding { Path = new PropertyPath(String.Format("[{0},{1}]", row, col)) });
+                    boardSpace.SetBinding(BoardSpace.CommandProperty,
+                        new Binding { Path = new PropertyPath("MoveCommand") });
+                    boardSpace.CommandParameter = new Space(row, col);
+                    Grid.SetRow(boardSpace, row);
+                    Grid.SetColumn(boardSpace, col);
+                    boardGrid.Children.Add(boardSpace); 
+                }
+            }
         }
 
         /// <summary>

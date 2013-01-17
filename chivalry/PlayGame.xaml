@@ -31,6 +31,8 @@
             <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{Binding AgainstUserName}" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
 
+        <Grid x:Name="boardGrid"/>
+
         <VisualStateManager.VisualStateGroups>
 
             <!-- Visual states reflect the application's view state -->

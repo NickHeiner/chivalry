@@ -10,7 +10,9 @@
 
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:chivalry"
+    >
 
     <!-- Non-brush values that vary across themes -->
 
@@ -27,6 +29,197 @@
     </ResourceDictionary.ThemeDictionaries>
 
     <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
+
+    <!-- copied from http://code.msdn.microsoft.com/windowsapps/Reversi-XAMLC-sample-board-816140fa/sourcecode?fileId=69011&pathId=319449023 -->
+    <Style TargetType="local:BoardSpace">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:BoardSpace">
+                    <Viewbox>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="PieceStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition From="PlayerOne" To="PlayerTwo" GeneratedDuration="0:0:0.4">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <CircleEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0:0:0.4" To="180" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="pieceEllipse"/>
+                                            <ColorAnimation BeginTime="0:0:0.2" Duration="0" To="#0A58C1" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="PlayerTwo" To="PlayerOne" GeneratedDuration="0:0:0.4">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <CircleEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0:0:0.4" To="180" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="pieceEllipse"/>
+                                            <ColorAnimation BeginTime="0:0:0.2" Duration="0" To="#AF1A3F" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="PlayerOneHint" To="PlayerOne" GeneratedDuration="0:0:0.4">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <BackEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                    </VisualTransition>
+                                    <VisualTransition From="PlayerOne" To="PlayerOneHint" GeneratedDuration="0:0:0.4">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <BackEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                    </VisualTransition>
+                                    <VisualTransition From="PlayerTwoHint" To="PlayerTwo" GeneratedDuration="0:0:0.4">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <BackEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                    </VisualTransition>
+                                    <VisualTransition From="PlayerTwo" To="PlayerTwoHint" GeneratedDuration="0:0:0.4">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <BackEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                    </VisualTransition>
+                                    <VisualTransition To="None" GeneratedDuration="0:0:0.4">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <BackEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                    </VisualTransition>
+                                    <VisualTransition From="None" GeneratedDuration="0:0:0.4">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <BackEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                    </VisualTransition>
+                                    <VisualTransition From="PlayerOneHint" To="PlayerTwoHint" GeneratedDuration="0:0:0.4"/>
+                                    <VisualTransition From="PlayerTwoHint" To="PlayerOneHint" GeneratedDuration="0:0:0.4"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="None"/>
+                                <VisualState x:Name="PlayerOne">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="#AF1A3F" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="pieceEllipse"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="PlayerTwo">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="#0A58C1" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="pieceEllipse"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="PlayerOneHint">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="#AF1A3F" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="0.7" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="0.4" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="0.4" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="pieceEllipse"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="PlayerTwoHint">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="#0A58C1" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="0.7" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="0.4" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="0.4" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="pieceEllipse"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="LastMoveStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition To="NewPiece" GeneratedDuration="0:0:0.4">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <CircleEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                    </VisualTransition>
+                                    <VisualTransition From="NewPiece" GeneratedDuration="0:0:0.4">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <CircleEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                    </VisualTransition>
+                                    <VisualTransition To="NewCapture" GeneratedDuration="0:0:0.4">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <CircleEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                    </VisualTransition>
+                                    <VisualTransition From="NewCapture" GeneratedDuration="0:0:0.4">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <CircleEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="NoNewIndicator"/>
+                                <VisualState x:Name="NewCapture">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="newCaptureEllipse"/>
+                                        <DoubleAnimation Duration="0" To="0.2" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="newCaptureEllipse"/>
+                                        <DoubleAnimation Duration="0" To="0.2" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="newCaptureEllipse"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="NewPiece">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="newPieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="0.2" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="newPieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="0.2" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="newPieceEllipse"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="0.7" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="0.2" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="backgroundSquare"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="backgroundSquare"/>
+                                        <DoubleAnimation Duration="0" To="0.7" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled"/>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisual"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused"/>
+                                <VisualState x:Name="PointerFocused"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid Height="80" Width="80">
+                            <Border x:Name="backgroundSquare" Background="Black" Margin="4" Opacity="0.5"/>
+                            <Ellipse x:Name="pieceEllipse" RenderTransformOrigin="0.5,0.5" Margin="16,16,15,15" Opacity="0" Fill="Transparent">
+                                <Ellipse.Projection>
+                                    <PlaneProjection/>
+                                </Ellipse.Projection>
+                                <Ellipse.RenderTransform>
+                                    <CompositeTransform ScaleX="0" ScaleY="0"/>
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                            <Ellipse x:Name="newPieceEllipse" RenderTransformOrigin="0.5,0.5" Margin="16,16,15,15" Opacity="0" Fill="Yellow">
+                                <Ellipse.RenderTransform>
+                                    <CompositeTransform ScaleX="0" ScaleY="0"/>
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                            <Ellipse x:Name="newCaptureEllipse" RenderTransformOrigin="0.5,0.5" Margin="16,16,15,15" Opacity="0" StrokeThickness="10" Stroke="Yellow">
+                                <Ellipse.RenderTransform>
+                                    <CompositeTransform ScaleX="0" ScaleY="0"/>
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                            <Rectangle x:Name="FocusVisual" IsHitTestVisible="False" Opacity="0" StrokeThickness="2" Stroke="{StaticResource FocusVisualWhiteStrokeThemeBrush}"/>
+                        </Grid>
+                    </Viewbox>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <!-- RichTextBlock styles -->
 
