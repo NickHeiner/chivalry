@@ -43,5 +43,10 @@ namespace chivalry
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
         }
+
+        private void GridView_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            Frame.Navigate(typeof(PlayGame), e.AddedItems[0]);
+        }
     }
 }

@@ -20,11 +20,16 @@
         </Grid>
         <StackPanel>
             <TextBlock Text="{StaticResource GameListLabel}" Style="{StaticResource SubheaderTextStyle}" />
-            <GridView ItemsSource="{Binding Games}">
+            
+            <!-- It seems like we want the ItemClick event here, but it never fired -->
+            <GridView ItemsSource="{Binding Games}"
+                      SelectionChanged="GridView_SelectionChanged_1">
 
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding AgainstUserName}" Style="{StaticResource TitleTextStyle}"/>
+                        <Grid>
+                            <TextBlock Text="{Binding AgainstUserName}" Style="{StaticResource TitleTextStyle}"/>
+                        </Grid>
                     </DataTemplate>
                 </GridView.ItemTemplate>
                 
