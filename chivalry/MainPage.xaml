@@ -8,11 +8,18 @@
     mc:Ignorable="d">
 
     <StackPanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Style="{StaticResource LayoutRootStyle}">
-        <TextBlock Grid.Column="1" Text="{StaticResource AppName}" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
-        <!--<TextBlock Margin="0,-10,0,0" Text="Active Games" Style="{StaticResource SubheaderTextStyle}"/>-->
-        <TextBlock Margin="0,-10,0,0" Text="Logged in as: " Style="{StaticResource SubheaderTextStyle}"/>
-        <TextBlock Margin="0,-10,0,0" x:Name="userName" Style="{StaticResource SubheaderTextStyle}"/>
-        <!--<Button x:Name="signInButton" Click="signInButton_Click_1">Sign In</Button>-->
-        <local:AuthBox x:Name="authBox" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Text="{StaticResource AppName}" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
+            <local:AuthBox Grid.Column="1" />
+            
+        </Grid>
+        <StackPanel>
+            <TextBlock Text="{StaticResource GameListLabel}" Style="{StaticResource SubheaderTextStyle}" />
+        </StackPanel>
     </StackPanel>
 </Page>

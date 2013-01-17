@@ -37,10 +37,5 @@ namespace chivalry
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
         }
-
-        //private async void signInButton_Click_1(object sender, RoutedEventArgs e)
-        //{
-        //    //userName.Text = await new Auth().getUserName();
-        //}
     }
 }

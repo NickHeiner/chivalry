@@ -16,6 +16,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <x:String x:Key="AppName">Chivalry</x:String>
+            <x:String x:Key="GameListLabel">Games</x:String>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
