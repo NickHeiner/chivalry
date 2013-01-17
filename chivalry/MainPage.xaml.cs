@@ -38,9 +38,9 @@ namespace chivalry
         {
         }
 
-        private async void signInButton_Click_1(object sender, RoutedEventArgs e)
-        {
-            userName.Text = await new Auth().getUserName();
-        }
+        //private async void signInButton_Click_1(object sender, RoutedEventArgs e)
+        //{
+        //    //userName.Text = await new Auth().getUserName();
+        //}
     }
 }

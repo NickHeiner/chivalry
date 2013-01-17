@@ -12,14 +12,14 @@ namespace chivalry
         private LiveConnectClient connection;
 
         // Is there a way to make props async?
-        public async Task<string> getUserName()
+        public async Task<User> createUser()
         {
             LiveConnectClient connection = await ensureConnection();
             LiveOperationResult meResult = await connection.GetAsync("me");
             dynamic userData = meResult.Result;
             if (userData != null)
             {
-                return userData.name;
+                return new User { Name = userData.name };
             }
             throw new InvalidOperationException("couldn't get name");
         }

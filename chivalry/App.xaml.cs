@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -23,6 +24,8 @@ namespace chivalry
     /// </summary>
     sealed partial class App : Application
     {
+        private User user;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -85,6 +88,15 @@ namespace chivalry
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        public async Task<User> getUser()
+        {
+            if (user != null)
+            {
+                return user;
+            }
+            return user = await (new Auth()).createUser();
         }
     }
 }

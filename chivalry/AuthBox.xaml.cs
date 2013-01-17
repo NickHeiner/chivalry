@@ -18,12 +18,15 @@ namespace chivalry
 {
     public sealed partial class AuthBox : UserControl
     {
-        public string UserName { get; set; }
-        public string ProfilePicSource { get; set; }
-
         public AuthBox()
         {
             this.InitializeComponent();
+            loadDataContext();
+        }
+
+        private async void loadDataContext()
+        {
+            DataContext = await ((App)Application.Current).getUser();
         }
     }
 }
