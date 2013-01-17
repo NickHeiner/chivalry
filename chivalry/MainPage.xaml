@@ -20,6 +20,15 @@
         </Grid>
         <StackPanel>
             <TextBlock Text="{StaticResource GameListLabel}" Style="{StaticResource SubheaderTextStyle}" />
+            <GridView ItemsSource="{Binding Games}">
+
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding AgainstUserName}" Style="{StaticResource TitleTextStyle}"/>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+                
+            </GridView>
         </StackPanel>
     </StackPanel>
 </Page>

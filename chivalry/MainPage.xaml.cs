@@ -27,6 +27,12 @@ namespace chivalry
         public MainPage()
         {
             this.InitializeComponent();
+            loadDataContext();
+        }
+
+        private async void loadDataContext()
+        {
+            DataContext = await ((App)Application.Current).getUser();
         }
 
         /// <summary>

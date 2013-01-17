@@ -96,7 +96,9 @@ namespace chivalry
             {
                 return user;
             }
-            return user = await (new Auth()).createUser();
+            user = await (new Auth()).createUser();
+            user = await (new DataManager()).withServerData(user);
+            return user;
         }
     }
 }
