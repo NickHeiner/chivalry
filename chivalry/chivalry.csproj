@@ -108,7 +108,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Auth.cs" />
+    <Compile Include="Controllers\Auth.cs" />
     <Compile Include="AuthBox.xaml.cs">
       <DependentUpon>AuthBox.xaml</DependentUpon>
     </Compile>
