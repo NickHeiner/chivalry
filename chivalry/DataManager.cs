@@ -11,7 +11,10 @@ namespace chivalry
     {
         public Task<User> withServerData(User user)
         {
-            user.Games.Add(new Game() { AgainstUserName = "Scott"});
+            Game againstScott = new Game() { AgainstUserName = "Scott" };
+            againstScott.SetPieceLocation(5, 5, BoardSpaceState.FriendlyPieceShort);
+            
+            user.Games.Add(againstScott);
             user.Games.Add(new Game() { AgainstUserName = "Dad" });
 
             // return synchronously for now

@@ -11,6 +11,7 @@ namespace chivalry.Models
     public class Game : INotifyPropertyChanged
     {
         private string againstUserName;
+        private IDictionary<Tuple<int, int>, BoardSpaceState> pieceLocations = new Dictionary<Tuple<int, int>, BoardSpaceState>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -35,6 +36,25 @@ namespace chivalry.Models
                     againstUserName = value;
                     NotifyPropertyChanged();
                 }
+            }
+        }
+
+        public event PropertyChangedEventHandler PieceLocationsChanged;
+
+        public void SetPieceLocation(int row, int col, BoardSpaceState boardState)
+        {
+            pieceLocations[new Tuple<int, int>(row, col)] = boardState;
+            if (PieceLocationsChanged != null)
+            {
+                PieceLocationsChanged(this, new PropertyChangedEventArgs("PieceLocations"));
+            }
+        }
+
+        public IEnumerable<KeyValuePair<Tuple<int, int>, BoardSpaceState>> PieceLocations
+        {
+            get
+            {
+                return pieceLocations.AsEnumerable();
             }
         }
     }

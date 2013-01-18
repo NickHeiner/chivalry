@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using chivalry.Models;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace chivalry
@@ -10,15 +11,6 @@ namespace chivalry
     /// </summary> 
     public class BoardSpace : Button
     {
-        public enum BoardSpaceState
-        {
-            FriendlyPieceShort,
-            FriendlyPieceTall,
-            OpponentPieceShort,
-            OpponentPieceTall,
-            None
-        }
-
         /// <summary> 
         /// Initializes a new instance of the BoardSpace class. 
         /// </summary> 
@@ -70,21 +62,7 @@ namespace chivalry
         /// <param name="useTransitions"></param> 
         private void UpdateSpaceState(bool useTransitions)
         {
-            string pieceState;
-            string lastMoveState;
-            var state = SpaceState;
-            if (state.ToString().Contains("New"))
-            {
-                pieceState = state.ToString().Substring(0, 9);
-                lastMoveState = state.ToString().Substring(9);
-            }
-            else
-            {
-                pieceState = state.ToString();
-                lastMoveState = "NoNewIndicator";
-            }
-            VisualStateManager.GoToState(this, pieceState, useTransitions);
-            VisualStateManager.GoToState(this, lastMoveState, useTransitions);
+            VisualStateManager.GoToState(this, SpaceState.ToString(), true);
         }
     }
 }

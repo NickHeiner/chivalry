@@ -123,6 +123,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\BoardSpaceState.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="PlayGame.xaml.cs">
       <DependentUpon>PlayGame.xaml</DependentUpon>

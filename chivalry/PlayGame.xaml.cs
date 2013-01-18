@@ -24,6 +24,14 @@ namespace chivalry
     public sealed partial class PlayGame : chivalry.Common.LayoutAwarePage
     {
         private const int BOARD_GRID_SIDE_LENGTH = 45;
+        private IDictionary<Tuple<int, int>, BoardSpace> boardSpaces = new Dictionary<Tuple<int, int>, BoardSpace>();
+        private Game game
+        {
+            get
+            {
+                return (Game)DataContext;
+            }
+        }
 
         public PlayGame()
         {
@@ -65,8 +73,11 @@ namespace chivalry
                     Grid.SetRow(boardSpace, rowInfo.Index);
                     Grid.SetColumn(boardSpace, colIndex);
                     boardGrid.Children.Add(boardSpace);
+                    boardSpaces[new Tuple<int, int>(rowInfo.Index, colIndex)] = boardSpace;
                 }
             }
+
+            updateBoardFromGame();
         }
 
         /// <summary>
@@ -81,6 +92,20 @@ namespace chivalry
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
             DataContext = navigationParameter;
+            game.PieceLocationsChanged += PlayGame_PieceLocationsChanged;
+        }
+
+        void updateBoardFromGame()
+        {
+            foreach (var pieceLoc in game.PieceLocations)
+            {
+                boardSpaces[pieceLoc.Key].SpaceState = pieceLoc.Value;
+            }
+        }
+
+        void PlayGame_PieceLocationsChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            updateBoardFromGame();
         }
 
         /// <summary>

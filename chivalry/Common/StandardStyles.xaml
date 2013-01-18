@@ -91,36 +91,12 @@
                                     <VisualTransition From="PlayerTwoHint" To="PlayerOneHint" GeneratedDuration="0:0:0.4"/>
                                 </VisualStateGroup.Transitions>
                                 <VisualState x:Name="None"/>
-                                <VisualState x:Name="PlayerOne">
+                                <VisualState x:Name="FriendlyPieceShort">
                                     <Storyboard>
                                         <ColorAnimation Duration="0" To="#AF1A3F" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
                                         <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
                                         <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="pieceEllipse"/>
                                         <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="pieceEllipse"/>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="PlayerTwo">
-                                    <Storyboard>
-                                        <ColorAnimation Duration="0" To="#0A58C1" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="pieceEllipse"/>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="pieceEllipse"/>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="PlayerOneHint">
-                                    <Storyboard>
-                                        <ColorAnimation Duration="0" To="#AF1A3F" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
-                                        <DoubleAnimation Duration="0" To="0.7" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
-                                        <DoubleAnimation Duration="0" To="0.4" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="pieceEllipse"/>
-                                        <DoubleAnimation Duration="0" To="0.4" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="pieceEllipse"/>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="PlayerTwoHint">
-                                    <Storyboard>
-                                        <ColorAnimation Duration="0" To="#0A58C1" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
-                                        <DoubleAnimation Duration="0" To="0.7" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
-                                        <DoubleAnimation Duration="0" To="0.4" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="pieceEllipse"/>
-                                        <DoubleAnimation Duration="0" To="0.4" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="pieceEllipse"/>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
