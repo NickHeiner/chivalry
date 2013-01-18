@@ -17,6 +17,9 @@
 
             <x:String x:Key="AppName">Chivalry</x:String>
             <x:String x:Key="GameListLabel">Games</x:String>
+
+            <SolidColorBrush x:Key="PrimaryTileColor" Color="Wheat"/>
+            <SolidColorBrush x:Key="SecondaryTileColor" Color="Plum" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

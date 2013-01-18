@@ -31,7 +31,40 @@
             <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{Binding AgainstUserName}" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
 
-        <Grid x:Name="boardGrid"/>
+        <Grid x:Name="boardGrid" Grid.Row="1">
+            <!--<Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition Height="80" />
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
+
+            <local:BoardSpace Background="{StaticResource SecondaryTileColor}" />
+            <local:BoardSpace Background="{StaticResource PrimaryTileColor}" Grid.Row="1" />
+            <local:BoardSpace Background="{StaticResource PrimaryTileColor}" Grid.Column="1" />
+            <local:BoardSpace Background="{StaticResource SecondaryTileColor}" Grid.Row="1" Grid.Column="1" />-->
+        </Grid>
+
+        <!--<GridView x:Name="gridView">
+
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Rectangle Width="100" Height="100">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="Aqua" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <TextBlock Text="{Binding AgainstUserName}" Style="{StaticResource TitleTextStyle}"/>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+
+        </GridView>-->
+
 
         <VisualStateManager.VisualStateGroups>
 
