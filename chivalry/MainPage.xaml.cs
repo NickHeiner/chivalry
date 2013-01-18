@@ -28,6 +28,14 @@ namespace chivalry
         {
             this.InitializeComponent();
             loadDataContext();
+
+            Auth.LoginFailed += Auth_LoginFailed;
+        }
+
+        void Auth_LoginFailed(object sender, EventArgs e)
+        {
+            gamesView.Visibility = Visibility.Collapsed;
+            loginFailedMessage.Visibility = Visibility.Visible;
         }
 
         private async void loadDataContext()

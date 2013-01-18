@@ -10,12 +10,18 @@ namespace chivalry
 {
     class Auth
     {
+        public static event EventHandler LoginFailed;
+
         private LiveConnectClient connection;
 
         // Is there a way to make props async?
         public async Task<User> createUser()
         {
             LiveConnectClient connection = await ensureConnection();
+            if (connection == null)
+            {
+                return null;
+            }
             LiveOperationResult meResult = await connection.GetAsync("me");
             dynamic userData = meResult.Result;
             User user = new User();
@@ -58,7 +64,11 @@ namespace chivalry
                 connection = new LiveConnectClient(LCAuth.Session);
                 return connection;
             }
-            throw new InvalidOperationException("Couldn't connect to Live");
+            if (LoginFailed != null)
+            {
+                LoginFailed(this, null);
+            }
+            return null;
         }
     }
 }

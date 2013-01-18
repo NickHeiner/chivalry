@@ -19,21 +19,26 @@
             
         </Grid>
         <StackPanel>
-            <TextBlock Text="{StaticResource GameListLabel}" Style="{StaticResource SubheaderTextStyle}" />
-            
-            <!-- It seems like we want the ItemClick event here, but it never fired -->
-            <GridView ItemsSource="{Binding Games}"
-                      SelectionChanged="GridView_SelectionChanged_1">
 
-                <GridView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <TextBlock Text="{Binding AgainstUserName}" Style="{StaticResource TitleTextStyle}"/>
-                        </Grid>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
+            <TextBlock x:Name="loginFailedMessage" Text="{StaticResource LoginFailedMessage}" Style="{StaticResource SubheaderTextStyle}" Visibility="Collapsed" />
+
+            <StackPanel x:Name="gamesView">
+                <TextBlock Text="{StaticResource GameListLabel}" Style="{StaticResource SubheaderTextStyle}" />
+                <!-- It seems like we want the ItemClick event here, but it never fired -->
+                <GridView ItemsSource="{Binding Games}"
+                          
+                          SelectionChanged="GridView_SelectionChanged_1">
+
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding AgainstUserName}" Style="{StaticResource TitleTextStyle}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
                 
-            </GridView>
+                </GridView>
+            </StackPanel>
         </StackPanel>
     </StackPanel>
 </Page>

@@ -93,7 +93,31 @@
                                 <VisualState x:Name="None"/>
                                 <VisualState x:Name="FriendlyPieceShort">
                                     <Storyboard>
-                                        <ColorAnimation Duration="0" To="#AF1A3F" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
+                                        <ColorAnimation Duration="0" To="Aqua" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="pieceEllipse"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="FriendlyPieceTall">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="CadetBlue" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="pieceEllipse"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="OpponentPieceShort">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="Maroon" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="pieceEllipse"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="pieceEllipse"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="OpponentPieceTall">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="Tomato" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
                                         <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
                                         <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="pieceEllipse"/>
                                         <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="pieceEllipse"/>
@@ -171,7 +195,7 @@
                         </VisualStateManager.VisualStateGroups>
                         <Grid Height="40" Width="40">
                             <Border x:Name="backgroundSquare" Background="{TemplateBinding Background}" Margin="4" Opacity="0.5"/>
-                            <Ellipse x:Name="pieceEllipse" RenderTransformOrigin="0.5,0.5" Margin="16,16,15,15" Opacity="0" Fill="Transparent">
+                            <Ellipse x:Name="pieceEllipse" RenderTransformOrigin="0.5,0.5" Margin="10" Opacity="0" Fill="Transparent">
                                 <Ellipse.Projection>
                                     <PlaneProjection/>
                                 </Ellipse.Projection>
