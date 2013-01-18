@@ -62,7 +62,19 @@ namespace chivalry
         /// <param name="useTransitions"></param> 
         private void UpdateSpaceState(bool useTransitions)
         {
-            VisualStateManager.GoToState(this, SpaceState.ToString(), true);
+            // TODO this entire function could be way more declarative
+            if (SpaceState == BoardSpaceState.None)
+            {
+                return;
+            }
+
+            var isFriendlyPiece = SpaceState == BoardSpaceState.FriendlyPieceShort || SpaceState == BoardSpaceState.FriendlyPieceTall;
+            VisualStateManager.GoToState(this, isFriendlyPiece ? "Friendly" : "Opponent", true);
+
+            if (SpaceState == BoardSpaceState.OpponentPieceTall || SpaceState == BoardSpaceState.FriendlyPieceTall)
+            {
+                VisualStateManager.GoToState(this, "Tall", true);
+            }
         }
     }
 }
