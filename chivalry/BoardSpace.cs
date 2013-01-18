@@ -16,6 +16,8 @@ namespace chivalry
         private int row;
         private int col;
 
+        private bool selected;
+
         /// <summary> 
         /// Initializes a new instance of the BoardSpace class. 
         /// </summary> 
@@ -31,21 +33,40 @@ namespace chivalry
             AnySpaceClicked += BoardSpace_AnySpaceClicked;
         }
 
+        void unselect()
+        {
+            selected = false;
+            VisualStateManager.GoToState(this, "Unselected", true);
+        }
+
+        void select()
+        {
+            selected = true;
+            VisualStateManager.GoToState(this, "Selected", true);
+        }
+
         void BoardSpace_AnySpaceClicked(object sender, RoutedEventArgs e)
         {
             var clickedSpace = (BoardSpace)sender;
             if (!(clickedSpace.row == row && clickedSpace.col == col))
             {
-                VisualStateManager.GoToState(this, "Unselected", true);
+                unselect();
             }
         }
 
         void BoardSpace_Click(object sender, RoutedEventArgs e)
         {
-            VisualStateManager.GoToState(this, "Selected", true);
-            if (AnySpaceClicked != null)
+            if (selected)
             {
-                AnySpaceClicked(this, null);
+                unselect();
+            }
+            else
+            {
+                select();
+                if (AnySpaceClicked != null)
+                {
+                    AnySpaceClicked(this, null);
+                }
             }
         }
 

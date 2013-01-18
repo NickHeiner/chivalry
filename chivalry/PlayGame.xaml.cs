@@ -65,11 +65,6 @@ namespace chivalry
 
                     var backgroundColorKey = rowInfo.Index % 2 == 0 ^ colIndex % 2 == 0 ? "PrimaryTileColor" : "SecondaryTileColor";
                     var boardSpace = new BoardSpace(rowInfo.Index, colIndex) { Background = (Brush)App.Current.Resources[backgroundColorKey] };
-                    //boardSpace.SetBinding(BoardSpace.SpaceStateProperty,
-                    //    new Binding { Path = new PropertyPath(String.Format("[{0},{1}]", row, col)) });
-                    //boardSpace.SetBinding(BoardSpace.CommandProperty,
-                    //    new Binding { Path = new PropertyPath("MoveCommand") });
-                    //boardSpace.CommandParameter = new Space(row, col);
                     Grid.SetRow(boardSpace, rowInfo.Index);
                     Grid.SetColumn(boardSpace, colIndex);
                     boardGrid.Children.Add(boardSpace);
