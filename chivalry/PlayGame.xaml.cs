@@ -64,7 +64,7 @@ namespace chivalry
                     var colIndex = col + colOffset;
 
                     var backgroundColorKey = rowInfo.Index % 2 == 0 ^ colIndex % 2 == 0 ? "PrimaryTileColor" : "SecondaryTileColor";
-                    var boardSpace = new BoardSpace() { Background = (Brush)App.Current.Resources[backgroundColorKey] };
+                    var boardSpace = new BoardSpace(rowInfo.Index, colIndex) { Background = (Brush)App.Current.Resources[backgroundColorKey] };
                     //boardSpace.SetBinding(BoardSpace.SpaceStateProperty,
                     //    new Binding { Path = new PropertyPath(String.Format("[{0},{1}]", row, col)) });
                     //boardSpace.SetBinding(BoardSpace.CommandProperty,

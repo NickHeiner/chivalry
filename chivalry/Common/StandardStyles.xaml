@@ -59,9 +59,23 @@
                                     </Storyboard>
                                 </VisualState>                                
                             </VisualStateGroup>
+                            <VisualStateGroup>
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="selectedHighlight"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unselected">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="selectedHighlight"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Grid Height="40" Width="40">
-                            <Border x:Name="backgroundSquare" Background="{TemplateBinding Background}" Margin="4" Opacity="0.5"/>
+                            <!--<Border x:Name="backgroundSquare" Background="{TemplateBinding Background}" Margin="4" Opacity="0.5"/>-->
+                            <Rectangle x:Name="backgroundSquare" Fill="{TemplateBinding Background}" Margin="4" Opacity="0.8" />
+                            <Rectangle x:Name="selectedHighlight" Fill="Green" Margin="4" Opacity="0" />
                             <Ellipse x:Name="pieceEllipse" RenderTransformOrigin="0.5,0.5" Margin="10" Opacity="0" Fill="Transparent" Stroke="Gold" StrokeThickness="0">
                                 <Ellipse.Projection>
                                     <PlaneProjection/>

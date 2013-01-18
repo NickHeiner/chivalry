@@ -11,12 +11,42 @@ namespace chivalry
     /// </summary> 
     public class BoardSpace : Button
     {
+        private static event RoutedEventHandler AnySpaceClicked;
+
+        private int row;
+        private int col;
+
         /// <summary> 
         /// Initializes a new instance of the BoardSpace class. 
         /// </summary> 
-        public BoardSpace()
+        public BoardSpace(int row, int col)
         {
+            this.row = row;
+            this.col = col;
+
             DefaultStyleKey = typeof(BoardSpace);
+
+            //Click += AnySpaceClicked;
+            Click += BoardSpace_Click;
+            AnySpaceClicked += BoardSpace_AnySpaceClicked;
+        }
+
+        void BoardSpace_AnySpaceClicked(object sender, RoutedEventArgs e)
+        {
+            var clickedSpace = (BoardSpace)sender;
+            if (!(clickedSpace.row == row && clickedSpace.col == col))
+            {
+                VisualStateManager.GoToState(this, "Unselected", true);
+            }
+        }
+
+        void BoardSpace_Click(object sender, RoutedEventArgs e)
+        {
+            VisualStateManager.GoToState(this, "Selected", true);
+            if (AnySpaceClicked != null)
+            {
+                AnySpaceClicked(this, null);
+            }
         }
 
         /// <summary> 
