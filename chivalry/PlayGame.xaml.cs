@@ -23,6 +23,8 @@ namespace chivalry
     /// </summary>
     public sealed partial class PlayGame : chivalry.Common.LayoutAwarePage
     {
+        private const int BOARD_GRID_SIDE_LENGTH = 45;
+
         public PlayGame()
         {
             this.InitializeComponent();
@@ -38,18 +40,22 @@ namespace chivalry
 
             foreach (var row in allRows)
             {
-                boardGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(80) });
+                boardGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(BOARD_GRID_SIDE_LENGTH) });
             }
-            foreach (var col in Enumerable.Range(0, allRows.Max()))
+            var maxColIndex = allRows.Max();
+            foreach (var col in Enumerable.Range(0, maxColIndex))
             {
-                boardGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(80) });
+                boardGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(BOARD_GRID_SIDE_LENGTH) });
             }
 
             foreach (var rowInfo in allRows.Select((colCount, index) => new { ColCount = colCount, Index = index }))
             {
                 foreach (var col in Enumerable.Range(0, rowInfo.ColCount))
                 {
-                    var backgroundColorKey = rowInfo.Index % 2 == 0 ^ col % 2 == 0 ? "PrimaryTileColor" : "SecondaryTileColor";
+                    var colOffset = (maxColIndex - rowInfo.ColCount) / 2;
+                    var colIndex = col + colOffset;
+
+                    var backgroundColorKey = rowInfo.Index % 2 == 0 ^ colIndex % 2 == 0 ? "PrimaryTileColor" : "SecondaryTileColor";
                     var boardSpace = new BoardSpace() { Background = (Brush)App.Current.Resources[backgroundColorKey] };
                     //boardSpace.SetBinding(BoardSpace.SpaceStateProperty,
                     //    new Binding { Path = new PropertyPath(String.Format("[{0},{1}]", row, col)) });
@@ -57,7 +63,7 @@ namespace chivalry
                     //    new Binding { Path = new PropertyPath("MoveCommand") });
                     //boardSpace.CommandParameter = new Space(row, col);
                     Grid.SetRow(boardSpace, rowInfo.Index);
-                    Grid.SetColumn(boardSpace, col);
+                    Grid.SetColumn(boardSpace, colIndex);
                     boardGrid.Children.Add(boardSpace);
                 }
             }
