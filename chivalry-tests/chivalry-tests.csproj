@@ -4,19 +4,19 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D53BE20A-465A-4A3F-84B0-53EC3E980DC7}</ProjectGuid>
-    <OutputType>AppContainerExe</OutputType>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0C7697FA-0108-486E-B574-29B8B66E7C22}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>chivalry</RootNamespace>
-    <AssemblyName>chivalry</AssemblyName>
+    <RootNamespace>chivalry_tests</RootNamespace>
+    <AssemblyName>chivalry-tests</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>chivalry_StoreKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>B3724C41F623642F355C6B62655264E2E3086C89</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>chivalry-tests_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -26,7 +26,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -100,81 +99,44 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <AppXPackage>True</AppXPackage>
+    <AppxPackageIncludePrivateSymbols>true</AppxPackageIncludePrivateSymbols>
+  </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <WCFMetadata Include="Service References\" />
+    <!--A reference to the entire .Net Framework and Windows SDK are automatically included-->
+    <SDKReference Include="MSTestFramework, Version=11.0" />
+    <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\Auth.cs" />
-    <Compile Include="AuthBox.xaml.cs">
-      <DependentUpon>AuthBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="BoardSpace.cs" />
-    <Compile Include="Common\BindableBase.cs" />
-    <Compile Include="Common\BooleanNegationConverter.cs" />
-    <Compile Include="Common\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Common\LayoutAwarePage.cs" />
-    <Compile Include="Common\RichTextColumns.cs" />
-    <Compile Include="Common\SuspensionManager.cs" />
-    <Compile Include="Controllers\GameController.cs" />
-    <Compile Include="Controllers\GameValidator.cs" />
-    <Compile Include="DataManager.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\BoardSpaceState.cs" />
-    <Compile Include="Models\Game.cs" />
-    <Compile Include="PlayGame.xaml.cs">
-      <DependentUpon>PlayGame.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="TestGameValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\User.cs" />
-    <Compile Include="Space.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="chivalry_StoreKey.pfx" />
-    <None Include="chivalry_TemporaryKey.pfx" />
+    <None Include="chivalry-tests_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Logo.png" />
-    <Content Include="Assets\SmallLogo.png" />
-    <Content Include="Assets\SplashScreen.png" />
-    <Content Include="Assets\StoreLogo.png" />
-    <Content Include="Common\ReadMe.txt" />
-    <None Include="Package.StoreAssociation.xml" />
+    <Content Include="Images\UnitTestLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\UnitTestSmallLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\UnitTestSplashScreen.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\UnitTestStoreLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Page Include="AuthBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Common\StandardStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PlayGame.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <SDKReference Include="LiveSDKXAML, Version=5.0">
-      <Name>Live SDK</Name>
-    </SDKReference>
+    <ProjectReference Include="..\chivalry\chivalry.csproj">
+      <Project>{d53be20a-465a-4a3f-84b0-53ec3e980dc7}</Project>
+      <Name>chivalry</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
@@ -183,7 +145,7 @@
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>
+  </Target>  
   <Target Name="AfterBuild">
   </Target>
   -->

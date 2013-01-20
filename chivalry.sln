@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "chivalry-tests", "chivalry-tests\chivalry-tests.csproj", "{0C7697FA-0108-486E-B574-29B8B66E7C22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,6 +98,30 @@ Global
 		{D974644A-8A40-4748-94EE-A8C82B1DB052}.Release|x86.ActiveCfg = Release|x86
 		{D974644A-8A40-4748-94EE-A8C82B1DB052}.Release|x86.Build.0 = Release|x86
 		{D974644A-8A40-4748-94EE-A8C82B1DB052}.Release|x86.Deploy.0 = Release|x86
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Debug|ARM.ActiveCfg = Debug|ARM
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Debug|ARM.Build.0 = Debug|ARM
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Debug|ARM.Deploy.0 = Debug|ARM
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Debug|x64.ActiveCfg = Debug|x64
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Debug|x64.Build.0 = Debug|x64
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Debug|x64.Deploy.0 = Debug|x64
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Debug|x86.ActiveCfg = Debug|x86
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Debug|x86.Build.0 = Debug|x86
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Debug|x86.Deploy.0 = Debug|x86
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Release|ARM.ActiveCfg = Release|ARM
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Release|ARM.Build.0 = Release|ARM
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Release|ARM.Deploy.0 = Release|ARM
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Release|x64.ActiveCfg = Release|x64
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Release|x64.Build.0 = Release|x64
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Release|x64.Deploy.0 = Release|x64
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Release|x86.ActiveCfg = Release|x86
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Release|x86.Build.0 = Release|x86
+		{0C7697FA-0108-486E-B574-29B8B66E7C22}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

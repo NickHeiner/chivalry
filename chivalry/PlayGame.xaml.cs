@@ -1,7 +1,9 @@
-﻿using chivalry.Models;
+﻿using chivalry.Controllers;
+using chivalry.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Windows.Foundation;
@@ -69,6 +71,8 @@ namespace chivalry
                     Grid.SetColumn(boardSpace, colIndex);
                     boardGrid.Children.Add(boardSpace);
                     boardSpaces[new Tuple<int, int>(rowInfo.Index, colIndex)] = boardSpace;
+
+                    boardSpace.Click += (_, __) => GameController.onBoardSpaceClick(game, rowInfo.Index, colIndex);
                 }
             }
 
@@ -88,6 +92,25 @@ namespace chivalry
         {
             DataContext = navigationParameter;
             game.PieceLocationsChanged += PlayGame_PieceLocationsChanged;
+            game.PropertyChanged += game_PropertyChanged;
+        }
+
+        void game_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName.Equals("ActiveMoves"))
+            {
+                foreach (var boardSpaceLocation in boardSpaces)
+                {
+                    if (game.ActiveMoves.Contains(boardSpaceLocation.Key))
+                    {
+                        boardSpaceLocation.Value.Select();
+                    }
+                    else
+                    {
+                        boardSpaceLocation.Value.Unselect();
+                    }
+                }
+            }
         }
 
         void updateBoardFromGame()

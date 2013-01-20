@@ -1,4 +1,5 @@
-﻿using chivalry.Models;
+﻿using chivalry.Controllers;
+using chivalry.Models;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -11,6 +12,7 @@ namespace chivalry
     /// </summary> 
     public class BoardSpace : Button
     {
+        // This will break if we ever have more than one board
         private static event RoutedEventHandler AnySpaceClicked;
 
         private int row;
@@ -29,46 +31,46 @@ namespace chivalry
             DefaultStyleKey = typeof(BoardSpace);
 
             //Click += AnySpaceClicked;
-            Click += BoardSpace_Click;
-            AnySpaceClicked += BoardSpace_AnySpaceClicked;
+            //Click += BoardSpace_Click;
+            //AnySpaceClicked += BoardSpace_AnySpaceClicked;
         }
 
-        void unselect()
+        internal void Unselect()
         {
             selected = false;
             VisualStateManager.GoToState(this, "Unselected", true);
         }
 
-        void select()
+        internal void Select()
         {
             selected = true;
             VisualStateManager.GoToState(this, "Selected", true);
         }
 
-        void BoardSpace_AnySpaceClicked(object sender, RoutedEventArgs e)
-        {
-            var clickedSpace = (BoardSpace)sender;
-            if (!(clickedSpace.row == row && clickedSpace.col == col))
-            {
-                unselect();
-            }
-        }
+        //void BoardSpace_AnySpaceClicked(object sender, RoutedEventArgs e)
+        //{
+        //    var clickedSpace = (BoardSpace)sender;
+        //    if (!(clickedSpace.row == row && clickedSpace.col == col))
+        //    {
+        //        Unselect();
+        //    }
+        //}
 
-        void BoardSpace_Click(object sender, RoutedEventArgs e)
-        {
-            if (selected)
-            {
-                unselect();
-            }
-            else
-            {
-                select();
-                if (AnySpaceClicked != null)
-                {
-                    AnySpaceClicked(this, null);
-                }
-            }
-        }
+        //void BoardSpace_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (selected)
+        //    {
+        //        Unselect();
+        //    }
+        //    else
+        //    {
+        //        Select();
+        //        if (AnySpaceClicked != null)
+        //        {
+        //            AnySpaceClicked(this, null);
+        //        }
+        //    }
+        //}
 
         /// <summary> 
         /// Updates the visual state of the space based on the initial binding values. 
