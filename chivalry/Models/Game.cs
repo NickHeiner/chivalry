@@ -64,16 +64,21 @@ namespace chivalry.Models
         public BoardSpaceState getPieceAt(int rowIndex, int colIndex)
         {
             BoardSpaceState boardSpaceState;
-            return pieceLocations.TryGetValue(new Tuple<int, int>(rowIndex, colIndex), out boardSpaceState) ? BoardSpaceState.None : boardSpaceState;
+            return pieceLocations.TryGetValue(new Tuple<int, int>(rowIndex, colIndex), out boardSpaceState) ? boardSpaceState : BoardSpaceState.None ;
         }
 
-        internal void ClearActiveMoves()
+        public void ClearActiveMoves()
         {
             activeMoveChain.Clear();
             NotifyPropertyChanged("ActiveMoves");
         }
 
-        internal void AddActiveMove(Tuple<int, int> tuple)
+        public void AddActiveMove(int row, int col)
+        {
+            AddActiveMove(new Tuple<int, int>(row, col));
+        }
+
+        public void AddActiveMove(Tuple<int, int> tuple)
         {
             activeMoveChain.Add(tuple);
             NotifyPropertyChanged("ActiveMoves");
@@ -95,6 +100,12 @@ namespace chivalry.Models
             {
                 return activeMoveChain.AsEnumerable();
             }
+        }
+
+        internal BoardSpaceState getPieceAt(Tuple<int, int> tuple)
+        {
+            // TODO consider cleaning up how coords are handled
+            return getPieceAt(tuple.Item1, tuple.Item2);
         }
     }
 }
