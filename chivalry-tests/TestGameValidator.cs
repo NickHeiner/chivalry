@@ -194,6 +194,37 @@ namespace chivalry_tests
         }
 
         [TestMethod]
+        public void MoveIntoFriendlyOccupiedSpace()
+        {
+            Game game = new Game();
+            game.SetPieceLocation(1, 1, BoardSpaceState.FriendlyPieceTall);
+            game.AddActiveMove(0, 0);
+
+            Assert.IsFalse(GameValidator.isValidMove(game, 1, 1));
+        }
+
+        [TestMethod]
+        public void OnlyMoveOneSpaceWithoutJumping()
+        {
+            Game game = new Game();
+            game.AddActiveMove(0, 0);
+            game.AddActiveMove(1, 0);
+
+            Assert.IsFalse(GameValidator.isValidMove(game, 2, 0));
+        }
+
+        [TestMethod]
+        public void JumpingAfterMovingNormally()
+        {
+            Game game = new Game();
+            game.AddActiveMove(0, 0);
+            game.AddActiveMove(1, 0);
+            game.SetPieceLocation(2, 0, BoardSpaceState.FriendlyPieceTall);
+
+            Assert.IsFalse(GameValidator.isValidMove(game, 3, 0));
+        }
+
+        [TestMethod]
         public void SpaceBetween()
         {
             Assert.AreEqual(new Tuple<int, int>(1, 1), 

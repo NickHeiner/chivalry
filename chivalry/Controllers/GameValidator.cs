@@ -11,10 +11,10 @@ namespace chivalry.Controllers
     public class GameValidator
     {
         // TODO check that move is within bounds
-        public static bool isValidMove(Game game, int rowIndex, int colIndex)
+        public static bool isValidMove(Game game, int destRowIndex, int destColIndex)
         {
-            var pieceAtMove = game.getPieceAt(rowIndex, colIndex);
-            if (pieceAtMove == BoardSpaceState.OpponentPieceShort || pieceAtMove == BoardSpaceState.OpponentPieceTall)
+            var pieceAtMove = game.getPieceAt(destRowIndex, destColIndex);
+            if (! game.NoActiveMovesExist() && pieceAtMove != BoardSpaceState.None)
             {
                 return false;
             }
@@ -22,23 +22,26 @@ namespace chivalry.Controllers
             {
                 return pieceAtMove == BoardSpaceState.FriendlyPieceShort || pieceAtMove == BoardSpaceState.FriendlyPieceTall;
             }
-            if (areNeighbors(game.GetMostRecentMove(), rowIndex, colIndex))
+            if (areNeighbors(game.GetMostRecentMove(), destRowIndex, destColIndex))
             {
-                return true;
+                return game.ActiveMoves.Count() == 1;
             }
             Tuple<int, int> locationToJump;
-            var isJumpable = spaceBetween(rowIndex, colIndex, game.GetMostRecentMove(), out locationToJump);
+            var isJumpable = spaceBetween(destRowIndex, destColIndex, game.GetMostRecentMove(), out locationToJump);
             if (isJumpable)
             {
-                var pairs =
+                if (game.ActiveMoves.Count() > 1 
+                    && game.ActiveMoves.Pairwise().All(moves => areNeighbors(moves.Item1, moves.Item2)))
+                {
+                    return false;
+                }
+
+                var piecesJumped = 
                     Enumerable
-                        .Concat(game.ActiveMoves, Enumerable.Repeat(new Tuple<int, int>(rowIndex, colIndex), 1))
-                        .Pairwise();
-
-                var spacesBetween = 
-                        pairs.Select((moves, dest) => spaceBetween(moves.Item1, moves.Item2));
-
-                var piecesJumped = spacesBetween.Select(game.getPieceAt);
+                        .Concat(game.ActiveMoves, Enumerable.Repeat(new Tuple<int, int>(destRowIndex, destColIndex), 1))
+                        .Pairwise()
+                        .Select((moves, dest) => spaceBetween(moves.Item1, moves.Item2))
+                        .Select(game.getPieceAt);
 
                 return piecesJumped.All(isFriendly) 
                     || piecesJumped.All(isOpponent) 
@@ -101,6 +104,11 @@ namespace chivalry.Controllers
 
             result = new Tuple<int, int>(rowResult, colResult);
             return true;
+        }
+
+        private static bool areNeighbors(Tuple<int, int> src, Tuple<int, int> dest)
+        {
+            return areNeighbors(src, dest.Item1, dest.Item2);
         }
 
         private static bool areNeighbors(Tuple<int, int> location, int row, int col)
