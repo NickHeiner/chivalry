@@ -14,11 +14,11 @@ namespace chivalry.Controllers
         public static bool isValidMove(Game game, int destRowIndex, int destColIndex)
         {
             var pieceAtMove = game.getPieceAt(destRowIndex, destColIndex);
-            if (! game.NoActiveMovesExist() && pieceAtMove != BoardSpaceState.None)
+            if (! game.NoActiveMovesExist && pieceAtMove != BoardSpaceState.None)
             {
                 return false;
             }
-            if (game.NoActiveMovesExist())
+            if (game.NoActiveMovesExist)
             {
                 return pieceAtMove == BoardSpaceState.FriendlyPieceShort || pieceAtMove == BoardSpaceState.FriendlyPieceTall;
             }

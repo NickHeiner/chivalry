@@ -71,6 +71,8 @@ namespace chivalry.Models
         {
             activeMoveChain.Clear();
             NotifyPropertyChanged("ActiveMoves");
+            NotifyPropertyChanged("ActiveMovesExist");
+            NotifyPropertyChanged("NoActiveMovesExist");
         }
 
         public void AddActiveMove(int row, int col)
@@ -82,11 +84,24 @@ namespace chivalry.Models
         {
             activeMoveChain.Add(tuple);
             NotifyPropertyChanged("ActiveMoves");
+            NotifyPropertyChanged("ActiveMovesExist");
+            NotifyPropertyChanged("NoActiveMovesExist");
         }
 
-        internal bool NoActiveMovesExist()
+        public bool ActiveMovesExist
         {
-            return activeMoveChain.Count == 0;
+            get
+            {
+                return !NoActiveMovesExist;
+            }
+        }
+
+        public bool NoActiveMovesExist
+        {
+            get 
+            {
+                return activeMoveChain.Count == 0;
+            }
         }
 
         internal Tuple<int, int> GetMostRecentMove()

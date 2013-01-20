@@ -39,6 +39,11 @@
 
         <Grid x:Name="boardGrid" Grid.Row="1" Grid.Column="1" />
 
+        <StackPanel Grid.Row="1" Grid.Column="2" Visibility="{Binding ActiveMovesExist, Converter={StaticResource boolToVisibility}}">
+            <Button Click="Button_Click_1">Reset Move</Button>
+            <Button>Make Move</Button>
+        </StackPanel>
+
         <VisualStateManager.VisualStateGroups>
 
             <!-- Visual states reflect the application's view state -->

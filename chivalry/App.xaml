@@ -2,7 +2,8 @@
     x:Class="chivalry.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:chivalry">
+    xmlns:local="using:chivalry"
+    xmlns:common="using:chivalry.Common">
 
    <Application.Resources>
         <ResourceDictionary>
@@ -22,6 +23,8 @@
             
             <SolidColorBrush x:Key="PrimaryTileColor" Color="Wheat"/>
             <SolidColorBrush x:Key="SecondaryTileColor" Color="Plum" /> 
+            
+            <common:BooleanToVisibilityConverter x:Key="boolToVisibility" />
         </ResourceDictionary> 
     </Application.Resources>
 </Application>

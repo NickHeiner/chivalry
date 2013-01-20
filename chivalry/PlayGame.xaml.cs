@@ -135,5 +135,10 @@ namespace chivalry
         protected override void SaveState(Dictionary<String, Object> pageState)
         {
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            game.ClearActiveMoves();
+        }
     }
 }

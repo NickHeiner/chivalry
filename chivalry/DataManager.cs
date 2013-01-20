@@ -16,7 +16,7 @@ namespace chivalry
             Game againstScott = new Game() { AgainstUserName = "Scott" };
             againstScott.SetPieceLocation(5, 5, BoardSpaceState.FriendlyPieceShort);
             againstScott.SetPieceLocation(5, 6, BoardSpaceState.FriendlyPieceTall);
-            againstScott.SetPieceLocation(5, 7, BoardSpaceState.OpponentPieceShort);
+            againstScott.SetPieceLocation(4, 4, BoardSpaceState.OpponentPieceShort);
             againstScott.SetPieceLocation(5, 8, BoardSpaceState.OpponentPieceTall);
             
             user.Games.Add(againstScott);
