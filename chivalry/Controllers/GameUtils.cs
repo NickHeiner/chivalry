@@ -78,5 +78,14 @@ namespace chivalry.Controllers
             return piece == BoardSpaceState.OpponentPieceShort || piece == BoardSpaceState.OpponentPieceTall;
         }
 
+        public static bool AreNeighbors(Tuple<int, int> src, Tuple<int, int> dest)
+        {
+            return AreNeighbors(src, dest.Item1, dest.Item2);
+        }
+
+        public static bool AreNeighbors(Tuple<int, int> location, int row, int col)
+        {
+            return Math.Abs(location.Item1 - row) <= 1 && Math.Abs(location.Item2 - col) <= 1;
+        }
     }
 }

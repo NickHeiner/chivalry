@@ -8,9 +8,9 @@ using chivalry.Utils;
 
 namespace chivalry.Controllers
 {
-    class GameController
+    public static class GameController
     {
-        internal static void onBoardSpaceClick(Game game, int rowIndex, int colIndex)
+        public static void OnBoardSpaceClick(Game game, int rowIndex, int colIndex)
         {
             if (GameValidator.isValidMove(game, rowIndex, colIndex))
             {
@@ -18,17 +18,20 @@ namespace chivalry.Controllers
             }
         }
 
-        internal static void ExecuteMoves(Game game)
+        public static void ExecuteMoves(Game game)
         {
-            var opponents =
-                game.ActiveMoves
-                    .Pairwise()
-                    .Select((moves, dest) => GameUtils.SpaceBetween(moves.Item1, moves.Item2))
-                    .Where(loc => GameUtils.IsOpponent(game.getPieceAt(loc)));
-
-            foreach (var opponent in opponents)
+            if (!(game.ActiveMoves.Count() == 2 && GameUtils.AreNeighbors(game.ActiveMoves.First(), game.ActiveMoves.Last())))
             {
-                game.SetPieceLocation(opponent.Item1, opponent.Item2, BoardSpaceState.None);
+                var opponents =
+                    game.ActiveMoves
+                        .Pairwise()
+                        .Select((moves, dest) => GameUtils.SpaceBetween(moves.Item1, moves.Item2))
+                        .Where(loc => GameUtils.IsOpponent(game.getPieceAt(loc)));
+
+                foreach (var opponent in opponents)
+                {
+                    game.SetPieceLocation(opponent.Item1, opponent.Item2, BoardSpaceState.None);
+                }
             }
 
             GameUtils.MovePiece(game, game.ActiveMoves.First(), game.ActiveMoves.Last());

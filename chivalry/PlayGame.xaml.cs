@@ -72,7 +72,7 @@ namespace chivalry
                     boardGrid.Children.Add(boardSpace);
                     boardSpaces[new Tuple<int, int>(rowInfo.Index, colIndex)] = boardSpace;
 
-                    boardSpace.Click += (_, __) => GameController.onBoardSpaceClick(game, rowInfo.Index, colIndex);
+                    boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(game, rowInfo.Index, colIndex);
                 }
             }
 

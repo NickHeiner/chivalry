@@ -230,5 +230,65 @@ namespace chivalry_tests
             Assert.AreEqual(new Tuple<int, int>(1, 1), 
                 GameUtils.SpaceBetween(new Tuple<int, int>(0, 0), new Tuple<int,int>(2, 2)));
         }
+
+        // TODO the order of `expected` and `actual` are messed up on several of these
+
+        [TestMethod]
+        public void ExecuteMoves_Capture_MovesPieceAwayFromStart()
+        {
+            Game game = new Game();
+            game.SetPieceLocation(0, 0, BoardSpaceState.FriendlyPieceShort);
+            game.SetPieceLocation(0, 1, BoardSpaceState.OpponentPieceShort);
+            game.AddActiveMove(0, 0);
+            game.AddActiveMove(0, 2);
+
+            GameController.ExecuteMoves(game);
+
+            Assert.AreEqual(game.getPieceAt(0, 0), BoardSpaceState.None);
+        }
+
+        [TestMethod]
+        public void ExecuteMoves_Capture_RemovesCapturedPiece()
+        {
+            Game game = new Game();
+            game.SetPieceLocation(0, 0, BoardSpaceState.FriendlyPieceShort);
+            game.SetPieceLocation(0, 1, BoardSpaceState.OpponentPieceShort);
+            game.AddActiveMove(0, 0);
+            game.AddActiveMove(0, 2);
+
+            GameController.ExecuteMoves(game);
+
+            Assert.AreEqual(BoardSpaceState.None, game.getPieceAt(0, 1));
+        }
+
+        [TestMethod]
+        public void ExecuteMoves_Capture_MovesPieceToDest()
+        {
+            Game game = new Game();
+            game.SetPieceLocation(0, 0, BoardSpaceState.FriendlyPieceShort);
+            game.SetPieceLocation(0, 1, BoardSpaceState.OpponentPieceShort);
+            game.AddActiveMove(0, 0);
+            game.AddActiveMove(0, 2);
+
+            GameController.ExecuteMoves(game);
+
+            Assert.AreEqual(game.getPieceAt(0, 2), BoardSpaceState.FriendlyPieceShort);
+        }
+
+        [TestMethod]
+        public void ExecuteMoves_HandleSingleMove()
+        {
+            Game game = new Game();
+            game.SetPieceLocation(0, 10, BoardSpaceState.FriendlyPieceShort);
+            game.AddActiveMove(0, 10);
+            game.AddActiveMove(0, 11);
+
+            GameController.ExecuteMoves(game);
+
+            Assert.AreEqual(BoardSpaceState.None, game.getPieceAt(0, 10));
+            Assert.AreEqual(BoardSpaceState.FriendlyPieceShort, game.getPieceAt(0, 11));
+        }
+
+
     }
 }

@@ -22,7 +22,7 @@ namespace chivalry.Controllers
             {
                 return pieceAtMove == BoardSpaceState.FriendlyPieceShort || pieceAtMove == BoardSpaceState.FriendlyPieceTall;
             }
-            if (areNeighbors(game.GetMostRecentMove(), destRowIndex, destColIndex))
+            if (GameUtils.AreNeighbors(game.GetMostRecentMove(), destRowIndex, destColIndex))
             {
                 return game.ActiveMoves.Count() == 1;
             }
@@ -30,8 +30,8 @@ namespace chivalry.Controllers
             var isJumpable = GameUtils.SpaceBetween(destRowIndex, destColIndex, game.GetMostRecentMove(), out locationToJump);
             if (isJumpable)
             {
-                if (game.ActiveMoves.Count() > 1 
-                    && game.ActiveMoves.Pairwise().All(moves => areNeighbors(moves.Item1, moves.Item2)))
+                if (game.ActiveMoves.Count() > 1
+                    && game.ActiveMoves.Pairwise().All(moves => GameUtils.AreNeighbors(moves.Item1, moves.Item2)))
                 {
                     return false;
                 }
@@ -46,16 +46,6 @@ namespace chivalry.Controllers
                         && game.getPieceAt(locationToJump) != BoardSpaceState.None);
             }
             return false;
-        }
-
-        private static bool areNeighbors(Tuple<int, int> src, Tuple<int, int> dest)
-        {
-            return areNeighbors(src, dest.Item1, dest.Item2);
-        }
-
-        private static bool areNeighbors(Tuple<int, int> location, int row, int col)
-        {
-            return Math.Abs(location.Item1 - row) <= 1 && Math.Abs(location.Item2 - col) <= 1;
         }
     }
 }
