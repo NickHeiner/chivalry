@@ -29,7 +29,7 @@ namespace chivalry
             this.InitializeComponent();
             loadDataContext();
 
-            Auth.LoginFailed += Auth_LoginFailed;
+            //Auth.LoginFailed += Auth_LoginFailed;
         }
 
         void Auth_LoginFailed(object sender, EventArgs e)
@@ -48,8 +48,9 @@ namespace chivalry
         /// </summary>
         /// <param name="e">Event data that describes how this page was reached.  The Parameter
         /// property is typically used to configure the page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            await (new Auth().Authenticate());
         }
 
         private void GridView_SelectionChanged_1(object sender, SelectionChangedEventArgs e)

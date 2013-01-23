@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.MobileServices;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,6 +25,9 @@ namespace chivalry
     /// </summary>
     sealed partial class App : Application
     {
+        public static MobileServiceClient MobileService = 
+            new MobileServiceClient("https://chivalry.azure-mobile.net/", "QpzUUCwKqDGWvCSSggLommMKMzkaca83");
+
         private User user;
 
         /// <summary>
