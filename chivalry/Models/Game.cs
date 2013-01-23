@@ -122,5 +122,10 @@ namespace chivalry.Models
             // TODO consider cleaning up how coords are handled
             return getPieceAt(tuple.Item1, tuple.Item2);
         }
+
+        internal void SetPieceLocation(Tuple<int, int> tuple, BoardSpaceState boardSpaceState)
+        {
+            SetPieceLocation(tuple.Item1, tuple.Item2, boardSpaceState);
+        }
     }
 }

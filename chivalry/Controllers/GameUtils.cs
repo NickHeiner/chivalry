@@ -28,6 +28,12 @@ namespace chivalry.Controllers
             return result;
         }
 
+        public static void MovePiece(Game game, Tuple<int, int> src, Tuple<int, int> dest)
+        {
+            game.SetPieceLocation(dest, game.getPieceAt(src));
+            game.SetPieceLocation(src, BoardSpaceState.None);
+        }
+
         public static bool SpaceBetween(int rowIndex, int colIndex, Tuple<int, int> tuple, out Tuple<int, int> result)
         {
             int rowDist = Math.Abs(rowIndex - tuple.Item1);

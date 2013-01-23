@@ -31,6 +31,8 @@ namespace chivalry.Controllers
                 game.SetPieceLocation(opponent.Item1, opponent.Item2, BoardSpaceState.None);
             }
 
+            GameUtils.MovePiece(game, game.ActiveMoves.First(), game.ActiveMoves.Last());
+
             game.ClearActiveMoves();
         }
     }
