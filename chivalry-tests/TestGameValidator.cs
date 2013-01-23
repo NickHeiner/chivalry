@@ -228,7 +228,7 @@ namespace chivalry_tests
         public void SpaceBetween()
         {
             Assert.AreEqual(new Tuple<int, int>(1, 1), 
-                GameValidator.spaceBetween(new Tuple<int, int>(0, 0), new Tuple<int,int>(2, 2)));
+                GameUtils.SpaceBetween(new Tuple<int, int>(0, 0), new Tuple<int,int>(2, 2)));
         }
     }
 }

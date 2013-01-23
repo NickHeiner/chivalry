@@ -12,13 +12,8 @@ namespace chivalry
     /// </summary> 
     public class BoardSpace : Button
     {
-        // This will break if we ever have more than one board
-        private static event RoutedEventHandler AnySpaceClicked;
-
         private int row;
         private int col;
-
-        private bool selected;
 
         /// <summary> 
         /// Initializes a new instance of the BoardSpace class. 
@@ -29,48 +24,17 @@ namespace chivalry
             this.col = col;
 
             DefaultStyleKey = typeof(BoardSpace);
-
-            //Click += AnySpaceClicked;
-            //Click += BoardSpace_Click;
-            //AnySpaceClicked += BoardSpace_AnySpaceClicked;
         }
 
         internal void Unselect()
         {
-            selected = false;
             VisualStateManager.GoToState(this, "Unselected", true);
         }
 
         internal void Select()
         {
-            selected = true;
             VisualStateManager.GoToState(this, "Selected", true);
         }
-
-        //void BoardSpace_AnySpaceClicked(object sender, RoutedEventArgs e)
-        //{
-        //    var clickedSpace = (BoardSpace)sender;
-        //    if (!(clickedSpace.row == row && clickedSpace.col == col))
-        //    {
-        //        Unselect();
-        //    }
-        //}
-
-        //void BoardSpace_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (selected)
-        //    {
-        //        Unselect();
-        //    }
-        //    else
-        //    {
-        //        Select();
-        //        if (AnySpaceClicked != null)
-        //        {
-        //            AnySpaceClicked(this, null);
-        //        }
-        //    }
-        //}
 
         /// <summary> 
         /// Updates the visual state of the space based on the initial binding values. 
@@ -118,6 +82,7 @@ namespace chivalry
             // TODO this entire function could be way more declarative
             if (SpaceState == BoardSpaceState.None)
             {
+                VisualStateManager.GoToState(this, "None", true);
                 return;
             }
 

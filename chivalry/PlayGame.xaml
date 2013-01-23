@@ -41,7 +41,7 @@
 
         <StackPanel Grid.Row="1" Grid.Column="2" Visibility="{Binding ActiveMovesExist, Converter={StaticResource boolToVisibility}}">
             <Button Click="Button_Click_1">Reset Move</Button>
-            <Button>Make Move</Button>
+            <Button Click="Button_Click_2">Make Move</Button>
         </StackPanel>
 
         <VisualStateManager.VisualStateGroups>

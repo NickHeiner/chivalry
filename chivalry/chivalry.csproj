@@ -120,6 +120,7 @@
     <Compile Include="Common\RichTextColumns.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="Controllers\GameUtils.cs" />
     <Compile Include="Controllers\GameValidator.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="MainPage.xaml.cs">

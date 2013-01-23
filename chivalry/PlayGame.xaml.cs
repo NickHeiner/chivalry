@@ -115,6 +115,11 @@ namespace chivalry
 
         void updateBoardFromGame()
         {
+
+            foreach (var boardSpace in boardSpaces)
+            {
+                boardSpace.Value.SpaceState = BoardSpaceState.None;
+            }
             foreach (var pieceLoc in game.PieceLocations)
             {
                 boardSpaces[pieceLoc.Key].SpaceState = pieceLoc.Value;
@@ -139,6 +144,11 @@ namespace chivalry
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             game.ClearActiveMoves();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            GameController.ExecuteMoves(game);
         }
     }
 }
