@@ -1,21 +1,80 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.MobileServices;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Data.Json;
 
 namespace chivalry.Models
 {
     public class Game : INotifyPropertyChanged
     {
+        public class IDictionaryJsonConverter : IDataMemberJsonConverter 
+        {
+            public object ConvertFromJson(IJsonValue val)
+            {
+                //var stringified = val.Stringify();
+                //var deserialized = JsonConvert.DeserializeObject(stringified);
+                //return deserialized;
+
+                //var dict = new Dictionary<Tuple<int, int>, BoardSpaceState>();
+
+                //foreach (var loc in val.GetObject())
+                //{
+                //    dict[(Tuple<int, int>)JsonConvert.DeserializeObject(loc.Key)] = (BoardSpaceState)JsonConvert.DeserializeObject(loc.Value.GetString());
+                //}
+
+                //return val.GetObject();
+
+                return JsonConvert.DeserializeObject(val.GetString());
+            }
+
+            public IJsonValue ConvertToJson(object instance)
+            {
+                return JsonValue.CreateStringValue(JsonConvert.SerializeObject(instance));
+
+                //var dict = (IDictionary<Tuple<int, int>, BoardSpaceState>)instance;
+
+                //var serialized = JsonConvert.SerializeObject(dict);
+                //var jval = new JsonObject(serialized);
+                //return jval;
+
+                //var converted = new JsonObject();
+                //foreach (var loc in dict)
+                //{
+                //    converted[JsonConvert.SerializeObject(loc.Key)] = JsonValue.CreateStringValue(JsonConvert.SerializeObject(loc.Value));
+                //}
+                //return converted;
+
+                //JsonValue.
+            }
+        }
+
+        // required by Azure
+        public int Id { get; set; }
+
         private string againstUserName;
-        private IDictionary<Tuple<int, int>, BoardSpaceState> pieceLocations = new Dictionary<Tuple<int, int>, BoardSpaceState>();
+
+        //public string PlayerId { get; set; }
+
+        // public with get; set; for Azure
+        //[DataMember(Name = "BoardPieceLocations")]
+        //[DataMemberJsonConverterAttribute(ConverterType = typeof(IDictionaryJsonConverter))]
+        private IDictionary<Tuple<int, int>, BoardSpaceState> pieceLocations { get; set; }
 
         private List<Tuple<int, int>> activeMoveChain = new List<Tuple<int, int>>();
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public Game()
+        {
+            pieceLocations = new Dictionary<Tuple<int, int>, BoardSpaceState>();
+        }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
@@ -25,6 +84,7 @@ namespace chivalry.Models
             }
         }
 
+        [DataMember(Name = "AgainstUserName")]
         public string AgainstUserName
         {
             get
@@ -49,11 +109,12 @@ namespace chivalry.Models
             pieceLocations[new Tuple<int, int>(row, col)] = boardState;
             if (PieceLocationsChanged != null)
             {
-                PieceLocationsChanged(this, new PropertyChangedEventArgs("PieceLocations"));
+                PieceLocationsChanged(this, new PropertyChangedEventArgs("QueryPieceLocations"));
             }
         }
 
-        public IEnumerable<KeyValuePair<Tuple<int, int>, BoardSpaceState>> PieceLocations
+        [IgnoreDataMember]
+        public IEnumerable<KeyValuePair<Tuple<int, int>, BoardSpaceState>> QueryPieceLocations
         {
             get
             {

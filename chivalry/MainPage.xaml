@@ -36,8 +36,9 @@
                             </Grid>
                         </DataTemplate>
                     </GridView.ItemTemplate>
-                
                 </GridView>
+                
+                <Button Click="Button_Click_1">+ New Game</Button>
             </StackPanel>
         </StackPanel>
     </StackPanel>

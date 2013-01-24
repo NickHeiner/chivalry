@@ -1,4 +1,5 @@
 ﻿using chivalry.Models;
+using Microsoft.WindowsAzure.MobileServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace chivalry
 {
-    class DataManager
+    public class DataManager
     {
+        private IMobileServiceTable<Game> gameTable = App.MobileService.GetTable<Game>();
+
         public Task<User> withServerData(User user)
         {
             user = user ?? new User();
@@ -16,7 +19,7 @@ namespace chivalry
             Game againstScott = new Game() { AgainstUserName = "Scott" };
             againstScott.SetPieceLocation(5, 5, BoardSpaceState.FriendlyPieceShort);
             againstScott.SetPieceLocation(5, 6, BoardSpaceState.FriendlyPieceTall);
-            againstScott.SetPieceLocation(4, 4, BoardSpaceState.OpponentPieceShort);
+            againstScott.SetPieceLocation(4, 4, BoardSpaceState.OpponentPieceShort);    
             againstScott.SetPieceLocation(5, 8, BoardSpaceState.OpponentPieceTall);
             
             user.Games.Add(againstScott);
@@ -26,6 +29,11 @@ namespace chivalry
             var taskSource = new TaskCompletionSource<User>();
             taskSource.SetResult(user);
             return taskSource.Task;
+        }
+
+        public async void AddNewGame(string againstUserName)
+        {
+            await gameTable.InsertAsync(new Game() { AgainstUserName = againstUserName });
         }
     }
 }

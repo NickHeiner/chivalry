@@ -120,7 +120,7 @@ namespace chivalry
             {
                 boardSpace.Value.SpaceState = BoardSpaceState.None;
             }
-            foreach (var pieceLoc in game.PieceLocations)
+            foreach (var pieceLoc in game.QueryPieceLocations)
             {
                 boardSpaces[pieceLoc.Key].SpaceState = pieceLoc.Value;
             }

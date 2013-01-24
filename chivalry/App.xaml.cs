@@ -28,6 +28,9 @@ namespace chivalry
         public static MobileServiceClient MobileService = 
             new MobileServiceClient("https://chivalry.azure-mobile.net/", "QpzUUCwKqDGWvCSSggLommMKMzkaca83");
 
+        // Dependency injection cries softly to me
+        public DataManager DataManager = new DataManager();
+
         private User user;
 
         /// <summary>
@@ -101,7 +104,7 @@ namespace chivalry
                 return user;
             }
             // user = await (new Auth()).createUser();
-            user = await (new DataManager()).withServerData(user);
+            user = await DataManager.withServerData(user);
             return user;
         }
     }
