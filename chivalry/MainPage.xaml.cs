@@ -81,6 +81,8 @@ namespace chivalry
             }
 
             ((App)Application.Current).DataManager.AddNewGame(user.Name, user.Email, contact.Name, contact.Emails.First().Value);
+
+            await ((App)Application.Current).DataManager.withServerData(user);
         }
     }
 }
