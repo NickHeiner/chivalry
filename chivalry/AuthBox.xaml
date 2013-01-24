@@ -12,6 +12,5 @@
     <StackPanel Orientation="Horizontal">
         <Image Source="{Binding ProfilePicSource}" />
         <TextBlock Text="{Binding Name}" Style="{StaticResource SubheaderTextStyle}"/>
-        <TextBlock Visibility="Collapsed" x:Name="notLoggedInMessage">Not logged in</TextBlock>
     </StackPanel>
 </UserControl>

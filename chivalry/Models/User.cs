@@ -67,5 +67,7 @@ namespace chivalry
                 return games;
             }
         }
+
+        public string Email { get; set; }
     }
 }

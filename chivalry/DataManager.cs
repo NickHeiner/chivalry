@@ -16,14 +16,14 @@ namespace chivalry
         {
             user = user ?? new User();
 
-            Game againstScott = new Game() { AgainstUserName = "Scott" };
+            Game againstScott = new Game() { RecepientPlayerName = "Scott" };
             againstScott.SetPieceLocation(5, 5, BoardSpaceState.FriendlyPieceShort);
             againstScott.SetPieceLocation(5, 6, BoardSpaceState.FriendlyPieceTall);
             againstScott.SetPieceLocation(4, 4, BoardSpaceState.OpponentPieceShort);    
             againstScott.SetPieceLocation(5, 8, BoardSpaceState.OpponentPieceTall);
             
             user.Games.Add(againstScott);
-            user.Games.Add(new Game() { AgainstUserName = "Dad" });
+            user.Games.Add(new Game() { RecepientPlayerName = "Dad" });
 
             // return synchronously for now
             var taskSource = new TaskCompletionSource<User>();
@@ -31,9 +31,15 @@ namespace chivalry
             return taskSource.Task;
         }
 
-        public async void AddNewGame(string againstUserName)
+        internal async void AddNewGame(string initiatingPlayerName, string initiatingPlayerEmail, string againstUserName, string againstUserEmail)
         {
-            await gameTable.InsertAsync(new Game() { AgainstUserName = againstUserName });
+            await gameTable.InsertAsync(new Game() 
+            { 
+                InitiatingPlayerName = initiatingPlayerName,
+                InitiatingPlayerEmail = initiatingPlayerEmail,
+                RecepientPlayerName = againstUserName, 
+                RecepientPlayerEmail = againstUserEmail
+            });
         }
     }
 }

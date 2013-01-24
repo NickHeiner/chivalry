@@ -26,12 +26,18 @@ namespace chivalry
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private User user
+        {
+            get
+            {
+                return (User) DataContext;
+            }
+        }
+
         public MainPage()
         {
             this.InitializeComponent();
             loadDataContext();
-
-            //Auth.LoginFailed += Auth_LoginFailed;
         }
 
         void Auth_LoginFailed(object sender, EventArgs e)
@@ -43,6 +49,10 @@ namespace chivalry
         private async void loadDataContext()
         {
             DataContext = await ((App)Application.Current).getUser();
+            if (DataContext != null)
+            {
+                newGameButton.Visibility = Visibility.Visible;
+            }
         }
 
         /// <summary>
@@ -50,9 +60,8 @@ namespace chivalry
         /// </summary>
         /// <param name="e">Event data that describes how this page was reached.  The Parameter
         /// property is typically used to configure the page.</param>
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //await (new Auth().Authenticate());
         }
 
         private void GridView_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
@@ -62,11 +71,15 @@ namespace chivalry
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            await ((App)Application.Current).Auth.Authenticate();
+            var contact = await (new ContactPicker().PickSingleContactAsync());
 
-            //var contact = await (new ContactPicker().PickSingleContactAsync());
+            if (contact.Emails.Count() == 0)
+            {
+                new MessageDialog("Please select a player who has an email address listed in your contacts", "Email Address Required");
+                return;
+            }
 
-            //((App)Application.Current).DataManager.AddNewGame(contact.Name);
+            ((App)Application.Current).DataManager.AddNewGame(user.Name, user.Email, contact.Name, contact.Emails.First().Value);
         }
     }
 }

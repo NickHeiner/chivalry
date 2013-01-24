@@ -32,13 +32,13 @@
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <TextBlock Text="{Binding AgainstUserName}" Style="{StaticResource TitleTextStyle}"/>
+                                <TextBlock Text="{Binding RecepientPlayerName}" Style="{StaticResource TitleTextStyle}"/>
                             </Grid>
                         </DataTemplate>
                     </GridView.ItemTemplate>
                 </GridView>
                 
-                <Button Click="Button_Click_1">+ New Game</Button>
+                <Button x:Name="newGameButton" Click="Button_Click_1" Visibility="Collapsed">+ New Game</Button>
             </StackPanel>
         </StackPanel>
     </StackPanel>

@@ -58,9 +58,12 @@ namespace chivalry.Models
         // required by Azure
         public int Id { get; set; }
 
-        private string againstUserName;
+        private string recepientPlayerName;
+        public string RecepientPlayerEmail { get; set; }
 
-        //public string PlayerId { get; set; }
+        public string InitiatingPlayerName { get; set; }
+        public string InitiatingPlayerEmail { get; set; }
+        
 
         // public with get; set; for Azure
         //[DataMember(Name = "BoardPieceLocations")]
@@ -84,18 +87,18 @@ namespace chivalry.Models
             }
         }
 
-        [DataMember(Name = "AgainstUserName")]
-        public string AgainstUserName
+        [DataMember(Name = "RecepientPlayerName")]
+        public string RecepientPlayerName
         {
             get
             {
-                return againstUserName;
+                return recepientPlayerName;
             }
             set
             {
-                if (againstUserName != value)
+                if (recepientPlayerName != value)
                 {
-                    againstUserName = value;
+                    recepientPlayerName = value;
                     NotifyPropertyChanged();
                 }
             }

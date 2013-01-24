@@ -51,6 +51,7 @@ namespace chivalry
             if (userData != null)
             {
                 user.Name = userData.name;
+                user.Email = userData.emails.preferred; // assume this will always be populated
             }
 
             LiveOperationResult picResult = await connection.GetAsync("me/picture");
@@ -83,7 +84,7 @@ namespace chivalry
             //  has not already given consent to this app to access the data described 
             //  by the scope.
             // 
-            LiveLoginResult loginResult = await LCAuth.LoginAsync(new string[] { "wl.basic" });
+            LiveLoginResult loginResult = await LCAuth.LoginAsync(new string[] { "wl.basic", "wl.emails" });
             if (loginResult.Status == LiveConnectSessionStatus.Connected)
             {
                 // Create a client session to get the profile data.
