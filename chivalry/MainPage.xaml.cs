@@ -52,7 +52,7 @@ namespace chivalry
         /// property is typically used to configure the page.</param>
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            await (new Auth().Authenticate());
+            //await (new Auth().Authenticate());
         }
 
         private void GridView_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
@@ -62,9 +62,11 @@ namespace chivalry
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var contact = await (new ContactPicker().PickSingleContactAsync());
+            await ((App)Application.Current).Auth.Authenticate();
 
-            ((App)Application.Current).DataManager.AddNewGame(contact.Name);
+            //var contact = await (new ContactPicker().PickSingleContactAsync());
+
+            //((App)Application.Current).DataManager.AddNewGame(contact.Name);
         }
     }
 }

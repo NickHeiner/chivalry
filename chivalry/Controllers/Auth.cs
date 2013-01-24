@@ -10,35 +10,37 @@ using Windows.UI.Popups;
 
 namespace chivalry
 {
-    class Auth
+    public class Auth
     {
-        private MobileServiceUser user;
+        private MobileServiceUser mobileServiceUser;
         internal async Task Authenticate()
         {
-            await createUser();
-            while (user == null)
+            while (mobileServiceUser == null)
             {
                 try
                 {
-                    user = await App.MobileService
+                    mobileServiceUser = await App.MobileService
                         .LoginAsync(MobileServiceAuthenticationProvider.MicrosoftAccount);
                 }
                 catch (InvalidOperationException) {}
-                if (user == null)
+                if (mobileServiceUser == null)
                 {
                     await (new MessageDialog("login required", "sorry").ShowAsync());
                 }
             }
         }
 
-        public static event EventHandler LoginFailed;
+        public event EventHandler LoginFailed;
 
         private LiveConnectClient connection;
 
         // Is there a way to make props async?
-        public async Task<User> createUser()
+        public async Task<User> CreateUser()
         {
+            await Authenticate();
+
             LiveConnectClient connection = await ensureConnection();
+
             if (connection == null)
             {
                 return null;
@@ -57,6 +59,9 @@ namespace chivalry
             {
                 user.ProfilePicSource = picData.location;
             }
+
+            //await Authenticate();
+
             return user;
         }
 

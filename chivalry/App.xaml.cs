@@ -31,7 +31,9 @@ namespace chivalry
         // Dependency injection cries softly to me
         public DataManager DataManager = new DataManager();
 
-        private User user;
+        public Auth Auth = new Auth();
+
+        private Task<User> loadUserTask;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -97,15 +99,14 @@ namespace chivalry
             deferral.Complete();
         }
 
-        public async Task<User> getUser()
+        public Task<User> getUser()
         {
-            if (user != null)
+            if (loadUserTask == null)
             {
-                return user;
+                loadUserTask = Auth.CreateUser().ContinueWith(userTask => DataManager.withServerData(userTask.Result).Result);
             }
-            // user = await (new Auth()).createUser();
-            user = await DataManager.withServerData(user);
-            return user;
+            
+            return loadUserTask;
         }
     }
 }
