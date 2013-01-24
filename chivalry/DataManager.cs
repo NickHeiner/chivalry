@@ -12,23 +12,31 @@ namespace chivalry
     {
         private IMobileServiceTable<Game> gameTable = App.MobileService.GetTable<Game>();
 
-        public Task<User> withServerData(User user)
+        public async Task<User> withServerData(User user)
         {
             user = user ?? new User();
 
-            Game againstScott = new Game() { RecepientPlayerName = "Scott" };
-            againstScott.SetPieceLocation(5, 5, BoardSpaceState.FriendlyPieceShort);
-            againstScott.SetPieceLocation(5, 6, BoardSpaceState.FriendlyPieceTall);
-            againstScott.SetPieceLocation(4, 4, BoardSpaceState.OpponentPieceShort);    
-            againstScott.SetPieceLocation(5, 8, BoardSpaceState.OpponentPieceTall);
+            //Game againstScott = new Game() { RecepientPlayerName = "Scott" };
+            //againstScott.SetPieceLocation(5, 5, BoardSpaceState.FriendlyPieceShort);
+            //againstScott.SetPieceLocation(5, 6, BoardSpaceState.FriendlyPieceTall);
+            //againstScott.SetPieceLocation(4, 4, BoardSpaceState.OpponentPieceShort);    
+            //againstScott.SetPieceLocation(5, 8, BoardSpaceState.OpponentPieceTall);
             
-            user.Games.Add(againstScott);
-            user.Games.Add(new Game() { RecepientPlayerName = "Dad" });
+            //user.Games.Add(againstScott);
+            //user.Games.Add(new Game() { RecepientPlayerName = "Dad" });
 
-            // return synchronously for now
-            var taskSource = new TaskCompletionSource<User>();
-            taskSource.SetResult(user);
-            return taskSource.Task;
+            //// return synchronously for now
+            //var taskSource = new TaskCompletionSource<User>();
+            //taskSource.SetResult(user);
+            //return taskSource.Task;
+
+            var games = await gameTable.ToListAsync();
+            foreach (var game in games)
+            {
+                user.Games.Add(game);
+            }
+
+            return user;
         }
 
         internal async void AddNewGame(string initiatingPlayerName, string initiatingPlayerEmail, string againstUserName, string againstUserEmail)

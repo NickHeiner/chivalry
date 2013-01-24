@@ -20,6 +20,7 @@
             <x:String x:Key="AppName">Chivalry</x:String>
             <x:String x:Key="GameListLabel">Games</x:String>
             <x:String x:Key="LoginFailedMessage">Login failed. Do you have internet access? Please try again later.</x:String>
+            <x:String x:Key="NoGamesMessage">You have no games.</x:String>
             
             <SolidColorBrush x:Key="PrimaryTileColor" Color="Wheat"/>
             <SolidColorBrush x:Key="SecondaryTileColor" Color="Plum" /> 

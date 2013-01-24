@@ -37,7 +37,7 @@
                         </DataTemplate>
                     </GridView.ItemTemplate>
                 </GridView>
-                
+                <TextBlock x:Name="noGamesText" Text="{StaticResource NoGamesMessage}" Visibility="Collapsed" Style="{StaticResource ItemTextStyle}" />
                 <Button x:Name="newGameButton" Click="Button_Click_1" Visibility="Collapsed">+ New Game</Button>
             </StackPanel>
         </StackPanel>
