@@ -7,9 +7,11 @@ using Microsoft.Live;
 using Windows.UI.Xaml.Media;
 using Microsoft.WindowsAzure.MobileServices;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
 
 namespace chivalry
 {
+    // check this out for auth pain: http://www.windowsazure.com/en-us/develop/mobile/tutorials/single-sign-on-windows-8-dotnet/#register
     public class Auth
     {
         private MobileServiceUser mobileServiceUser;
@@ -22,10 +24,11 @@ namespace chivalry
                     mobileServiceUser = await App.MobileService
                         .LoginAsync(MobileServiceAuthenticationProvider.MicrosoftAccount);
                 }
-                catch (InvalidOperationException) {}
+                catch (InvalidOperationException) {
+                }
                 if (mobileServiceUser == null)
                 {
-                    await (new MessageDialog("login required", "sorry").ShowAsync());
+                    await (new MessageDialog("Logging in is required to use the app", "Sorry").ShowAsync());
                 }
             }
         }
@@ -37,6 +40,11 @@ namespace chivalry
         // Is there a way to make props async?
         public async Task<User> CreateUser()
         {
+            if (((App)Application.Current).OFFLINE_MODE)
+            {
+                return new User() { Email = "nth23@cornell.edu", Name = "Nick Heiner" };
+            }
+
             await Authenticate();
 
             LiveConnectClient connection = await ensureConnection();

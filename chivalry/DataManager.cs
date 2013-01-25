@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace chivalry
 {
@@ -16,19 +17,19 @@ namespace chivalry
         {
             user = user ?? new User();
 
-            //Game againstScott = new Game() { RecepientPlayerName = "Scott" };
-            //againstScott.SetPieceLocation(5, 5, BoardSpaceState.FriendlyPieceShort);
-            //againstScott.SetPieceLocation(5, 6, BoardSpaceState.FriendlyPieceTall);
-            //againstScott.SetPieceLocation(4, 4, BoardSpaceState.OpponentPieceShort);    
-            //againstScott.SetPieceLocation(5, 8, BoardSpaceState.OpponentPieceTall);
-            
-            //user.Games.Add(againstScott);
-            //user.Games.Add(new Game() { RecepientPlayerName = "Dad" });
+            if (((App)Application.Current).OFFLINE_MODE)
+            {
+                Game againstScott = new Game() { RecepientPlayerName = "Scott" };
+                againstScott.SetPieceLocation(5, 5, BoardSpaceState.FriendlyPieceShort);
+                againstScott.SetPieceLocation(5, 6, BoardSpaceState.FriendlyPieceTall);
+                againstScott.SetPieceLocation(4, 4, BoardSpaceState.OpponentPieceShort);
+                againstScott.SetPieceLocation(5, 8, BoardSpaceState.OpponentPieceTall);
 
-            //// return synchronously for now
-            //var taskSource = new TaskCompletionSource<User>();
-            //taskSource.SetResult(user);
-            //return taskSource.Task;
+                user.Games.Add(againstScott);
+                user.Games.Add(new Game() { RecepientPlayerName = "Dad" });
+
+                return user;
+            }
 
             var games = await gameTable.ToListAsync();
             foreach (var game in games)

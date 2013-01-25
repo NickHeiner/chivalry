@@ -33,6 +33,11 @@ namespace chivalry
 
         public Auth Auth = new Auth();
 
+        /// <summary>
+        /// For working on the train
+        /// </summary>
+        public readonly bool OFFLINE_MODE = true;
+
         private Task<User> loadUserTask;
 
         /// <summary>
