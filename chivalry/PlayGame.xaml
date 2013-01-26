@@ -44,6 +44,9 @@
             <Button Click="Button_Click_2">Make Move</Button>
         </StackPanel>
 
+        <!--<TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource PageHeaderTextStyle}">You won!</TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource PageHeaderTextStyle}">You lose!</TextBlock>-->
+
         <VisualStateManager.VisualStateGroups>
 
             <!-- Visual states reflect the application's view state -->

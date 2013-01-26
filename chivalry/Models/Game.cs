@@ -14,10 +14,25 @@ namespace chivalry.Models
 {
     public class Game : INotifyPropertyChanged
     {
+        [IgnoreDataMember]
         public static readonly int ENDZONE_COL_1 = 6;
+        [IgnoreDataMember]
         public static readonly int ENDZONE_COL_2 = 7;
 
-        public class IDictionaryJsonConverter : IDataMemberJsonConverter 
+        public class PlayerJsonConverter : IDataMemberJsonConverter
+        {
+            public object ConvertFromJson(IJsonValue value)
+            {
+                return Enum.Parse(typeof(Player), value.GetString());
+            }
+
+            public IJsonValue ConvertToJson(object instance)
+            {
+                return JsonValue.CreateStringValue(instance.ToString());
+            }
+        }
+
+        public class DictionaryJsonConverter : IDataMemberJsonConverter 
         {
             public object ConvertFromJson(IJsonValue val)
             {
@@ -67,7 +82,24 @@ namespace chivalry.Models
         public string InitiatingPlayerName { get; set; }
         public string InitiatingPlayerEmail { get; set; }
 
-        public Player Winner { get; set; }
+        private Player winner;
+
+        [DataMemberJsonConverter(ConverterType = typeof(PlayerJsonConverter))]
+        public Player Winner 
+        {
+            get
+            {
+                return winner;
+            }
+            set
+            {
+                if (winner != value)
+                {
+                    winner = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         // public with get; set; for Azure
         //[DataMember(Name = "BoardPieceLocations")]

@@ -27,6 +27,11 @@ namespace chivalry
         private async void loadDataContext()
         {
             DataContext = await ((App)Application.Current).getUser();
+            if (DataContext != null)
+            {
+                loadingIndicator.Visibility = Visibility.Collapsed;
+                loadedContent.Visibility = Visibility.Visible;
+            }
         }
     }
 }

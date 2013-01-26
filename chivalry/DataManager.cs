@@ -31,6 +31,7 @@ namespace chivalry
                 return user;
             }
 
+            user.Games.Clear();
             var games = await gameTable.ToListAsync();
             foreach (var game in games)
             {
@@ -42,13 +43,13 @@ namespace chivalry
 
         internal async void AddNewGame(string initiatingPlayerName, string initiatingPlayerEmail, string againstUserName, string againstUserEmail)
         {
-            await gameTable.InsertAsync(new Game() 
+            await gameTable.InsertAsync(withStartingPieces(new Game() 
             { 
                 InitiatingPlayerName = initiatingPlayerName,
                 InitiatingPlayerEmail = initiatingPlayerEmail,
                 RecepientPlayerName = againstUserName, 
                 RecepientPlayerEmail = againstUserEmail,
-            });
+            }));
         }
 
         private Game withStartingPieces(Game game)

@@ -9,8 +9,26 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     
-    <StackPanel Orientation="Horizontal">
-        <Image Source="{Binding ProfilePicSource}" />
-        <TextBlock Text="{Binding Name}" Style="{StaticResource SubheaderTextStyle}"/>
-    </StackPanel>
+    <Grid>
+        <Grid x:Name="loadingIndicator" Visibility="Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <!-- for some reason, it's necessary to put these in a grid instead of a horizontal
+                 StackPanel if I want them to line up. It's also necessary to fuck with the margins. -->
+            <ProgressRing IsActive="True" Grid.Row="1" Grid.Column="0" Margin="0,5,10,0"/>
+            <TextBlock Style="{StaticResource CaptionTextStyle}" Grid.Row="1" Grid.Column="1">Logging in</TextBlock>
+        </Grid>
+        <StackPanel Orientation="Horizontal" x:Name="loadedContent" Visibility="Collapsed">
+            <Image Source="{Binding ProfilePicSource}" />
+            <TextBlock Text="{Binding Name}" Style="{StaticResource SubheaderTextStyle}"/>
+        </StackPanel>
+    </Grid>
 </UserControl>
