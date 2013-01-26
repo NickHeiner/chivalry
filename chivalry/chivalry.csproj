@@ -128,6 +128,7 @@
     </Compile>
     <Compile Include="Models\BoardSpaceState.cs" />
     <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\Player.cs" />
     <Compile Include="PlayGame.xaml.cs">
       <DependentUpon>PlayGame.xaml</DependentUpon>
     </Compile>

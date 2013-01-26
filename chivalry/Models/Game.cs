@@ -14,6 +14,9 @@ namespace chivalry.Models
 {
     public class Game : INotifyPropertyChanged
     {
+        public static readonly int ENDZONE_COL_1 = 6;
+        public static readonly int ENDZONE_COL_2 = 7;
+
         public class IDictionaryJsonConverter : IDataMemberJsonConverter 
         {
             public object ConvertFromJson(IJsonValue val)
@@ -190,6 +193,14 @@ namespace chivalry.Models
         internal void SetPieceLocation(Tuple<int, int> tuple, BoardSpaceState boardSpaceState)
         {
             SetPieceLocation(tuple.Item1, tuple.Item2, boardSpaceState);
+        }
+
+        public int RowMax
+        {
+            get
+            {
+                return pieceLocations.Select(kv => kv.Key.Item1).Max();
+            }
         }
     }
 }

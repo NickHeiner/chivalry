@@ -389,5 +389,38 @@ namespace chivalry_tests
             Assert.IsFalse(GameUtils.IsJumpableFrom(game, new Tuple<int, int>(11, 11), new Tuple<int, int>(10, 10)));
         }
 
+        [TestMethod]
+        // TODO add FLAWLESS VICTORY easter egg
+        public void Victory_Opponent()
+        {
+            Game game = new Game();
+            game.SetPieceLocation(10, 0, BoardSpaceState.FriendlyPieceShort); // for game.RowMax
+            game.SetPieceLocation(0, Game.ENDZONE_COL_1, BoardSpaceState.OpponentPieceShort);
+            game.SetPieceLocation(0, Game.ENDZONE_COL_2, BoardSpaceState.OpponentPieceShort);
+
+            Assert.AreEqual(Player.Opponent, GameValidator.GameWinner(game));
+        }
+
+        [TestMethod]
+        // TODO add FLAWLESS VICTORY easter egg
+        public void Victory_NotTautological()
+        {
+            Game game = new Game();
+            game.SetPieceLocation(16, Game.ENDZONE_COL_1, BoardSpaceState.None);
+
+            Assert.AreEqual(Player.None, GameValidator.GameWinner(game));
+        }
+
+        [TestMethod]
+        // TODO add FLAWLESS VICTORY easter egg
+        public void Victory_Friendly()
+        {
+            Game game = new Game(); // is this the right row?
+            game.SetPieceLocation(16, Game.ENDZONE_COL_1, BoardSpaceState.FriendlyPieceShort);
+            game.SetPieceLocation(16, Game.ENDZONE_COL_2, BoardSpaceState.FriendlyPieceShort);
+
+            Assert.AreEqual(Player.Friendly, GameValidator.GameWinner(game));
+        }
+
     }
 }

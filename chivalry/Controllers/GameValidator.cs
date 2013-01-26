@@ -59,5 +59,16 @@ namespace chivalry.Controllers
                              && ! new HashSet<Tuple<int, int>>(GameUtils.SpacesJumped(game, game.ActiveMoves)).Contains(neighbor))
                          .Count() == 0;
         }
+
+        public static Player GameWinner(Game game)
+        {
+            return 
+                GameUtils.IsOpponent(game.getPieceAt(new Tuple<int, int>(0, Game.ENDZONE_COL_1))) &&
+                GameUtils.IsOpponent(game.getPieceAt(new Tuple<int, int>(0, Game.ENDZONE_COL_2))) 
+                    ? Player.Opponent :
+                GameUtils.IsFriendly(game.getPieceAt(new Tuple<int, int>(game.RowMax, Game.ENDZONE_COL_1))) &&
+                GameUtils.IsFriendly(game.getPieceAt(new Tuple<int, int>(game.RowMax, Game.ENDZONE_COL_2))) 
+                    ? Player.Friendly : Player.None;
+        }
     }
 }
