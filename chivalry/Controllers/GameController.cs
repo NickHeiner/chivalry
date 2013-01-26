@@ -12,7 +12,7 @@ namespace chivalry.Controllers
     {
         public static void OnBoardSpaceClick(Game game, int rowIndex, int colIndex)
         {
-            if (GameValidator.isValidMove(game, rowIndex, colIndex))
+            if (GameValidator.IsValidMove(game, rowIndex, colIndex))
             {
                 game.AddActiveMove(new Tuple<int, int>(rowIndex, colIndex));
             }

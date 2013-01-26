@@ -39,7 +39,7 @@ namespace chivalry_tests
         {
             Game game = new Game();
             game.SetPieceLocation(0, 0, BoardSpaceState.FriendlyPieceShort);
-            Assert.IsTrue(GameValidator.isValidMove(game, 0, 0));
+            Assert.IsTrue(GameValidator.IsValidMove(game, 0, 0));
         }
 
         [TestMethod]
@@ -47,7 +47,7 @@ namespace chivalry_tests
         {
             Game game = new Game();
             game.SetPieceLocation(0, 0, BoardSpaceState.None);
-            Assert.IsFalse(GameValidator.isValidMove(game, 0, 0));
+            Assert.IsFalse(GameValidator.IsValidMove(game, 0, 0));
         }
 
         [TestMethod]
@@ -55,7 +55,7 @@ namespace chivalry_tests
         {
             Game game = new Game();
             game.SetPieceLocation(0, 0, BoardSpaceState.OpponentPieceShort);
-            Assert.IsFalse(GameValidator.isValidMove(game, 0, 0));
+            Assert.IsFalse(GameValidator.IsValidMove(game, 0, 0));
         }
 
         [TestMethod]
@@ -63,7 +63,7 @@ namespace chivalry_tests
         {
             Game game = new Game();
             game.AddActiveMove(0, 0);
-            Assert.IsTrue(GameValidator.isValidMove(game, 0, 1));
+            Assert.IsTrue(GameValidator.IsValidMove(game, 0, 1));
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@ namespace chivalry_tests
 
             game.AddActiveMove(0, 0);
 
-            Assert.IsFalse(GameValidator.isValidMove(game, rowDest, colDest));
+            Assert.IsFalse(GameValidator.IsValidMove(game, rowDest, colDest));
         }
 
         [TestMethod]
@@ -90,7 +90,7 @@ namespace chivalry_tests
             Game game = new Game();
             game.AddActiveMove(0, 0);
 
-            Assert.IsFalse(GameValidator.isValidMove(game, rowDest, colDest));
+            Assert.IsFalse(GameValidator.IsValidMove(game, rowDest, colDest));
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace chivalry_tests
             game.AddActiveMove(0, 0);
             game.SetPieceLocation(1, 1, BoardSpaceState.FriendlyPieceTall);
 
-            Assert.IsFalse(GameValidator.isValidMove(game, rowDest, colDest));
+            Assert.IsFalse(GameValidator.IsValidMove(game, rowDest, colDest));
         }
 
         [TestMethod]
@@ -114,7 +114,7 @@ namespace chivalry_tests
             game.AddActiveMove(0, 0);
             game.SetPieceLocation(1, 1, BoardSpaceState.FriendlyPieceShort);
 
-            Assert.IsTrue(GameValidator.isValidMove(game, 2, 2));
+            Assert.IsTrue(GameValidator.IsValidMove(game, 2, 2));
         }
 
         [TestMethod]
@@ -125,7 +125,7 @@ namespace chivalry_tests
             game.AddActiveMove(0, 0);
             game.SetPieceLocation(1, 1, BoardSpaceState.OpponentPieceShort);
 
-            Assert.IsTrue(GameValidator.isValidMove(game, 2, 2));
+            Assert.IsTrue(GameValidator.IsValidMove(game, 2, 2));
         }
 
         [TestMethod]
@@ -136,7 +136,7 @@ namespace chivalry_tests
             game.AddActiveMove(0, 0);
             game.SetPieceLocation(1, 1, BoardSpaceState.OpponentPieceShort);
 
-            Assert.IsFalse(GameValidator.isValidMove(game, 2, 1));
+            Assert.IsFalse(GameValidator.IsValidMove(game, 2, 1));
         }
 
         [TestMethod]
@@ -149,7 +149,7 @@ namespace chivalry_tests
             game.AddActiveMove(2, 2);
             game.SetPieceLocation(3, 3, BoardSpaceState.FriendlyPieceShort);
 
-            Assert.IsTrue(GameValidator.isValidMove(game, 4, 4));
+            Assert.IsTrue(GameValidator.IsValidMove(game, 4, 4));
         }
 
         [TestMethod]
@@ -162,7 +162,7 @@ namespace chivalry_tests
             game.AddActiveMove(2, 2);
             game.SetPieceLocation(3, 3, BoardSpaceState.OpponentPieceTall);
 
-            Assert.IsTrue(GameValidator.isValidMove(game, 4, 4));
+            Assert.IsTrue(GameValidator.IsValidMove(game, 4, 4));
         }
 
         [TestMethod]
@@ -176,7 +176,7 @@ namespace chivalry_tests
             game.AddActiveMove(2, 2);
             game.SetPieceLocation(3, 3, BoardSpaceState.OpponentPieceTall);
 
-            Assert.IsFalse(GameValidator.isValidMove(game, 4, 4));
+            Assert.IsFalse(GameValidator.IsValidMove(game, 4, 4));
         }
 
         [TestMethod]
@@ -190,7 +190,7 @@ namespace chivalry_tests
             game.AddActiveMove(2, 2);
             game.SetPieceLocation(3, 3, BoardSpaceState.OpponentPieceTall);
 
-            Assert.IsTrue(GameValidator.isValidMove(game, 4, 4));
+            Assert.IsTrue(GameValidator.IsValidMove(game, 4, 4));
         }
 
         [TestMethod]
@@ -200,7 +200,7 @@ namespace chivalry_tests
             game.SetPieceLocation(1, 1, BoardSpaceState.FriendlyPieceTall);
             game.AddActiveMove(0, 0);
 
-            Assert.IsFalse(GameValidator.isValidMove(game, 1, 1));
+            Assert.IsFalse(GameValidator.IsValidMove(game, 1, 1));
         }
 
         [TestMethod]
@@ -210,7 +210,7 @@ namespace chivalry_tests
             game.AddActiveMove(0, 0);
             game.AddActiveMove(1, 0);
 
-            Assert.IsFalse(GameValidator.isValidMove(game, 2, 0));
+            Assert.IsFalse(GameValidator.IsValidMove(game, 2, 0));
         }
 
         [TestMethod]
@@ -221,7 +221,7 @@ namespace chivalry_tests
             game.AddActiveMove(1, 0);
             game.SetPieceLocation(2, 0, BoardSpaceState.FriendlyPieceTall);
 
-            Assert.IsFalse(GameValidator.isValidMove(game, 3, 0));
+            Assert.IsFalse(GameValidator.IsValidMove(game, 3, 0));
         }
 
         [TestMethod]
@@ -289,6 +289,105 @@ namespace chivalry_tests
             Assert.AreEqual(BoardSpaceState.FriendlyPieceShort, game.getPieceAt(0, 11));
         }
 
+        [TestMethod]
+        public void IsCompleteCapture_False()
+        {
+            Game game = new Game();
+            game.AddActiveMove(0    , 2);
+            game.SetPieceLocation(0, 3, BoardSpaceState.OpponentPieceShort);
+            game.AddActiveMove(0, 4);
+            game.SetPieceLocation(0, 5, BoardSpaceState.OpponentPieceShort);
+
+            Assert.IsFalse(GameValidator.IsCompleteMove(game));
+        }
+
+        [TestMethod]
+        public void IsCompleteCapture_True()
+        {
+            Game game = new Game();
+            game.AddActiveMove(0, 2);
+            game.SetPieceLocation(0, 3, BoardSpaceState.OpponentPieceShort);
+            game.AddActiveMove(0, 4);
+            game.SetPieceLocation(0, 5, BoardSpaceState.OpponentPieceShort);
+            game.AddActiveMove(0, 6);
+
+            Assert.IsTrue(GameValidator.IsCompleteMove(game));
+        }
+
+        [TestMethod]
+        public void IsCompleteCapture_SimpleMove()
+        {
+            Game game = new Game();
+            game.AddActiveMove(0, 12);
+            game.AddActiveMove(0, 13);
+
+            Assert.IsTrue(GameValidator.IsCompleteMove(game));
+        }
+
+        [TestMethod]
+        public void NeighborsOf()
+        {
+            var expected = new Tuple<int, int>[] 
+                { 
+                    // I know that the unary + and the extra 0 is unnecessary, but the code is easier to read when it lines up
+                    new Tuple<int, int>(-1, 00),
+                    new Tuple<int, int>(+1, 00),
+                    new Tuple<int, int>(00, -1), 
+                    new Tuple<int, int>(00, +1),
+                    new Tuple<int, int>(-1, -1),
+                    new Tuple<int, int>(+1, +1),
+                    new Tuple<int, int>(-1, +1),
+                    new Tuple<int, int>(+1, -1),
+                }.AsEnumerable();
+
+            var actual = GameUtils.NeighborsOf(new Game(), new Tuple<int, int>(0, 0));
+
+            // ugh is this really necessary?
+            foreach (var loc in expected)
+            {
+                Assert.IsTrue(new HashSet<Tuple<int, int>>(actual).Contains(loc));
+            }
+
+            foreach (var loc in actual)
+            {
+                Assert.IsTrue(new HashSet<Tuple<int, int>>(expected).Contains(loc));
+            }
+        }
+
+        [TestMethod]
+        public void IsJumpable()
+        {
+            Game game = new Game();
+            game.SetPieceLocation(10, 10, BoardSpaceState.OpponentPieceShort);
+            
+            Assert.IsTrue(GameUtils.IsJumpableFrom(game, new Tuple<int, int>(10, 9), new Tuple<int, int>(10, 10)));
+        }
+
+        [TestMethod]
+        public void IsJumpable_NoPieceToJump()
+        {
+            Assert.IsFalse(GameUtils.IsJumpableFrom(new Game(), new Tuple<int, int>(10, 9), new Tuple<int, int>(10, 10)));
+        }
+
+        [TestMethod]
+        public void IsJumpable_LandingSpotBlocked()
+        {
+            Game game = new Game();
+            game.SetPieceLocation(10, 10, BoardSpaceState.OpponentPieceShort);
+            game.SetPieceLocation(10, 11, BoardSpaceState.OpponentPieceShort);
+
+            Assert.IsFalse(GameUtils.IsJumpableFrom(game, new Tuple<int, int>(10, 9), new Tuple<int, int>(10, 10)));
+        }
+
+        [TestMethod]
+        public void IsJumpable_Diagonal_Not()
+        {
+            Game game = new Game();
+            game.SetPieceLocation(10, 10, BoardSpaceState.OpponentPieceShort);
+            game.SetPieceLocation(9, 9, BoardSpaceState.OpponentPieceShort);
+
+            Assert.IsFalse(GameUtils.IsJumpableFrom(game, new Tuple<int, int>(11, 11), new Tuple<int, int>(10, 10)));
+        }
 
     }
 }

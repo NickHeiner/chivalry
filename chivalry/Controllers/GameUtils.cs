@@ -12,10 +12,19 @@ namespace chivalry.Controllers
     {
         public static IEnumerable<BoardSpaceState> PiecesJumped(Game game, IEnumerable<Tuple<int, int>> activeMoves)
         {
+            return SpacesJumped(game, activeMoves).Select(game.getPieceAt);
+        }
+
+        public static IEnumerable<Tuple<int, int>> SpacesJumped(Game game, IEnumerable<Tuple<int, int>> activeMoves)
+        {
+            if (game.ActiveMoves.Count() == 2 && AreNeighbors(game.ActiveMoves.First(), game.ActiveMoves.Last()))
+            {
+                return Enumerable.Empty<Tuple<int, int>>();
+            }
+
             return activeMoves
                 .Pairwise()
-                .Select((moves, dest) => SpaceBetween(moves.Item1, moves.Item2))
-                .Select(game.getPieceAt);
+                .Select((moves, dest) => SpaceBetween(moves.Item1, moves.Item2));
         }
 
         public static Tuple<int, int> SpaceBetween(Tuple<int, int> src, Tuple<int, int> dest)
@@ -23,7 +32,7 @@ namespace chivalry.Controllers
             Tuple<int, int> result;
             if (!SpaceBetween(src.Item1, src.Item2, dest, out result))
             {
-                throw new ArgumentException("src");
+                throw new ArgumentException("src and dest are not within one space of each other");
             }
             return result;
         }
@@ -86,6 +95,31 @@ namespace chivalry.Controllers
         public static bool AreNeighbors(Tuple<int, int> location, int row, int col)
         {
             return Math.Abs(location.Item1 - row) <= 1 && Math.Abs(location.Item2 - col) <= 1;
+        }
+
+        public static IEnumerable<Tuple<int, int>> NeighborsOf(Game game, Tuple<int, int> loc)
+        {
+            // TODO add out of bounds checking
+            return new Tuple<int, int>[] 
+            {
+                new Tuple<int, int>(loc.Item1 + 1, loc.Item2),
+                new Tuple<int, int>(loc.Item1 - 1, loc.Item2),
+                new Tuple<int, int>(loc.Item1, loc.Item2 + 1),
+                new Tuple<int, int>(loc.Item1, loc.Item2 - 1),
+
+                new Tuple<int, int>(loc.Item1 + 1, loc.Item2 + 1),
+                new Tuple<int, int>(loc.Item1 - 1, loc.Item2 + 1),
+                new Tuple<int, int>(loc.Item1 + 1, loc.Item2 - 1),
+                new Tuple<int, int>(loc.Item1 - 1, loc.Item2 - 1),
+            };
+        }
+
+        public static bool IsJumpableFrom(Game game, Tuple<int, int> src, Tuple<int, int> toJump)
+        {
+            Tuple<int, int> diff = new Tuple<int, int>(toJump.Item1 - src.Item1, toJump.Item2 - src.Item2);
+            Tuple<int, int> toLand = new Tuple<int, int>(src.Item1 + diff.Item1 * 2, src.Item2 + diff.Item2 * 2);
+            // TODO add out of bounds checking
+            return game.getPieceAt(toLand) == BoardSpaceState.None && game.getPieceAt(toJump) != BoardSpaceState.None;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace chivalry.Controllers
     public class GameValidator
     {
         // TODO check that move is within bounds
-        public static bool isValidMove(Game game, int destRowIndex, int destColIndex)
+        public static bool IsValidMove(Game game, int destRowIndex, int destColIndex)
         {
             var pieceAtMove = game.getPieceAt(destRowIndex, destColIndex);
             if (! game.NoActiveMovesExist && pieceAtMove != BoardSpaceState.None)
@@ -46,6 +46,18 @@ namespace chivalry.Controllers
                         && game.getPieceAt(locationToJump) != BoardSpaceState.None);
             }
             return false;
+        }
+
+        public static bool IsCompleteMove(Game game)
+        {
+            return 
+                GameUtils.PiecesJumped(game, game.ActiveMoves).Count() == 0 ||
+                GameUtils.NeighborsOf(game, game.ActiveMoves.Last())
+                         .Where(neighbor => 
+                                GameUtils.IsJumpableFrom(game, game.ActiveMoves.Last(), neighbor) 
+                             && GameUtils.IsOpponent(game.getPieceAt(neighbor))
+                             && ! new HashSet<Tuple<int, int>>(GameUtils.SpacesJumped(game, game.ActiveMoves)).Contains(neighbor))
+                         .Count() == 0;
         }
     }
 }
