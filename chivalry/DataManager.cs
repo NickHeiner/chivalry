@@ -53,10 +53,15 @@ namespace chivalry
 
         private Game withStartingPieces(Game game)
         {
-            //  This isn't as declarative as I'd like, but it's tough in a language
-            //  without object literals
-            fillTeam(game, 5, 1, BoardSpaceState.FriendlyPieceShort, BoardSpaceState.FriendlyPieceTall);
-            fillTeam(game, 10, -1, BoardSpaceState.OpponentPieceShort, BoardSpaceState.OpponentPieceTall);
+            /**
+             * This isn't as declarative as I'd like, but it's tough in a language
+             * without object literals
+             * 
+             * I'd love to be able to say "the enemy's gate is down" here, but unfortunately
+             * that's not the spec
+             */
+            fillTeam(game, 5, 1, BoardSpaceState.OpponentPieceShort, BoardSpaceState.OpponentPieceTall);
+            fillTeam(game, 10, -1, BoardSpaceState.FriendlyPieceShort, BoardSpaceState.FriendlyPieceTall);
 
             return game;
         }
