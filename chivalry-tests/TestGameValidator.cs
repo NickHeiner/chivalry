@@ -415,11 +415,48 @@ namespace chivalry_tests
         // TODO add FLAWLESS VICTORY easter egg
         public void Victory_Friendly()
         {
-            Game game = new Game(); // is this the right row?
+            Game game = new Game();
+            // is this the right row?
             game.SetPieceLocation(16, Game.ENDZONE_COL_1, BoardSpaceState.FriendlyPieceShort);
             game.SetPieceLocation(16, Game.ENDZONE_COL_2, BoardSpaceState.FriendlyPieceShort);
 
             Assert.AreEqual(Player.Friendly, GameValidator.GameWinner(game));
+        }
+
+        [TestMethod]
+        public void ExecuteMoves_SetWinner_Friendly()
+        {
+            Game game = new Game();
+            // is this the right row?
+            game.SetPieceLocation(16, Game.ENDZONE_COL_1, BoardSpaceState.FriendlyPieceShort);
+            game.SetPieceLocation(15, Game.ENDZONE_COL_2, BoardSpaceState.FriendlyPieceShort);
+            game.AddActiveMove(new Tuple<int, int>(15, Game.ENDZONE_COL_2));
+            game.AddActiveMove(new Tuple<int, int>(16, Game.ENDZONE_COL_2));
+
+            GameController.ExecuteMoves(game);
+
+            Assert.AreEqual(Player.Friendly, game.Winner);
+        }
+
+        [TestMethod]
+        public void ExecuteMoves_SetWinner_None()
+        {
+            Game game = new Game();
+
+            game.SetPieceLocation(2, 2, BoardSpaceState.FriendlyPieceShort);
+            game.AddActiveMove(new Tuple<int, int>(2, 2));
+            game.AddActiveMove(new Tuple<int, int>(2, 3));
+
+            GameController.ExecuteMoves(game);
+
+            Assert.AreEqual(Player.None, game.Winner);
+        }
+
+        [TestMethod]
+        public void ExecuteMoves_NoMoves()
+        {
+            // don't crash
+            GameController.ExecuteMoves(new Game());
         }
 
     }

@@ -20,6 +20,11 @@ namespace chivalry.Controllers
 
         public static void ExecuteMoves(Game game)
         {
+            if (game.ActiveMoves.Count() == 0)
+            {
+                return;
+            }
+
             if (!(game.ActiveMoves.Count() == 2 && GameUtils.AreNeighbors(game.ActiveMoves.First(), game.ActiveMoves.Last())))
             {
                 var opponents =
@@ -37,6 +42,8 @@ namespace chivalry.Controllers
             GameUtils.MovePiece(game, game.ActiveMoves.First(), game.ActiveMoves.Last());
 
             game.ClearActiveMoves();
+
+            game.Winner = GameValidator.GameWinner(game);
         }
     }
 }

@@ -66,7 +66,8 @@ namespace chivalry.Models
 
         public string InitiatingPlayerName { get; set; }
         public string InitiatingPlayerEmail { get; set; }
-        
+
+        public Player Winner { get; set; }
 
         // public with get; set; for Azure
         //[DataMember(Name = "BoardPieceLocations")]
