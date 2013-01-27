@@ -105,6 +105,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!--A reference to the entire .Net Framework and Windows SDK are automatically included-->
+    <SDKReference Include="MobileServicesManagedClient, Version=0.2.0.0">
+      <Name>Windows Azure Mobile Services Managed Client</Name>
+    </SDKReference>
     <SDKReference Include="MSTestFramework, Version=11.0" />
     <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>

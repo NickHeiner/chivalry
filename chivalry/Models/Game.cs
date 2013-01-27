@@ -1,5 +1,6 @@
 ﻿using Microsoft.WindowsAzure.MobileServices;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 
@@ -32,44 +34,46 @@ namespace chivalry.Models
             }
         }
 
+        /**
+         * All of this serialization could probably be done better,
+         * but fuck it I've spent enough time trying to make it work already.
+         */
         public class DictionaryJsonConverter : IDataMemberJsonConverter 
         {
+            public static Tuple<int, int> tupleOfString(string str)
+            {
+                var match = Regex.Match(str, @"\((\d+), (\d+)\)");
+                // need to grab indexes 1 and 2 because 0 is the entire match
+                return Tuple.Create(int.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value));
+            }
+
             public object ConvertFromJson(IJsonValue val)
             {
-                //var stringified = val.Stringify();
-                //var deserialized = JsonConvert.DeserializeObject(stringified);
-                //return deserialized;
-
-                //var dict = new Dictionary<Tuple<int, int>, BoardSpaceState>();
-
-                //foreach (var loc in val.GetObject())
-                //{
-                //    dict[(Tuple<int, int>)JsonConvert.DeserializeObject(loc.Key)] = (BoardSpaceState)JsonConvert.DeserializeObject(loc.Value.GetString());
-                //}
-
-                //return val.GetObject();
-
-                return JsonConvert.DeserializeObject(val.GetString());
+                var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(val.GetString());
+                var deserialized = new Dictionary<Tuple<int, int>, BoardSpaceState>();
+                foreach (var pieceLoc in dict)
+                {
+                    deserialized[tupleOfString(pieceLoc.Key)] = (BoardSpaceState) Enum.Parse(typeof(BoardSpaceState), pieceLoc.Value);
+                }
+                return deserialized;
             }
 
             public IJsonValue ConvertToJson(object instance)
             {
-                return JsonValue.CreateStringValue(JsonConvert.SerializeObject(instance));
-
-                //var dict = (IDictionary<Tuple<int, int>, BoardSpaceState>)instance;
-
-                //var serialized = JsonConvert.SerializeObject(dict);
-                //var jval = new JsonObject(serialized);
-                //return jval;
-
-                //var converted = new JsonObject();
-                //foreach (var loc in dict)
-                //{
-                //    converted[JsonConvert.SerializeObject(loc.Key)] = JsonValue.CreateStringValue(JsonConvert.SerializeObject(loc.Value));
-                //}
-                //return converted;
-
-                //JsonValue.
+                var dict = (IDictionary<Tuple<int, int>, BoardSpaceState>)instance;
+                IDictionary<Tuple<int, int>, string> toSerialize = new Dictionary<Tuple<int, int>, string>();
+                foreach (var pieceLoc in dict)
+                {
+                    /** There may be an easier way to convert the enums to strings
+                     * http://stackoverflow.com/questions/2441290/json-serialization-of-c-sharp-enum-as-string
+                     * By default, Json.NET just converts the enum to its numeric value, which is not helpful.
+                     * There could also be a way to do these dictionary conversions in a more functional way.
+                     */
+                    toSerialize[pieceLoc.Key] = pieceLoc.Value.ToString();
+                }
+                
+                var serialized = JsonConvert.SerializeObject(toSerialize);
+                return JsonValue.CreateStringValue(serialized);
             }
         }
 
@@ -103,8 +107,8 @@ namespace chivalry.Models
 
         // public with get; set; for Azure
         //[DataMember(Name = "BoardPieceLocations")]
-        //[DataMemberJsonConverterAttribute(ConverterType = typeof(IDictionaryJsonConverter))]
-        private IDictionary<Tuple<int, int>, BoardSpaceState> pieceLocations { get; set; }
+        [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]
+        public IDictionary<Tuple<int, int>, BoardSpaceState> pieceLocations { get; set; }
 
         private List<Tuple<int, int>> activeMoveChain = new List<Tuple<int, int>>();
 
