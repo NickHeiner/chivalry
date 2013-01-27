@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using chivalry.Models;
 using chivalry.Controllers;
+using chivalry;
 
 namespace chivalry_tests
 {
@@ -478,6 +479,26 @@ namespace chivalry_tests
             Coord coord = Coord.Create(5, 3);
             BoardCoord boardCoord = new BoardCoord(coord, BoardCoord.Transformation.FLIP);
             Assert.AreEqual(Coord.Create(10, 3), Coord.Create(boardCoord.Row, boardCoord.Col));
+        }
+
+        [TestMethod]
+        public void DataManager_WithUserData_Flip()
+        {
+            Game game = new Game() { InitiatingPlayerEmail = "nth23@cornell.edu", RecepientPlayerEmail = "ket29@cornell.edu" };
+            User user = new User() { Email = "ket29@cornell.edu" };
+            new DataManager().updateWithUserData(game, user);
+
+            Assert.AreEqual(BoardCoord.Transformation.FLIP, game.Transformation);
+        }
+
+        [TestMethod]
+        public void DataManager_WithUserData_NoFlip()
+        {
+            Game game = new Game() { InitiatingPlayerEmail = "nth23@cornell.edu", RecepientPlayerEmail = "ket29@cornell.edu" };
+            User user = new User() { Email = "nth23@cornell.edu" };
+            new DataManager().updateWithUserData(game, user);
+
+            Assert.AreEqual(BoardCoord.Transformation.NO_FLIP, game.Transformation);
         }
 
     }

@@ -17,6 +17,11 @@ namespace chivalry.Models
     public class Game : INotifyPropertyChanged
     {
         [IgnoreDataMember]
+        private static readonly int[] ROWS_END = new int[] { 2, 8, 10, 12 };
+        [IgnoreDataMember]
+        public static readonly IEnumerable<int> ALL_ROWS = Enumerable.Concat(Enumerable.Concat(ROWS_END, Enumerable.Repeat(12, 8)), ROWS_END.Reverse());
+
+        [IgnoreDataMember]
         public static readonly int BOARD_ROW_MAX = 15;
         [IgnoreDataMember]
         public static readonly int BOARD_COL_MAX = 15;
@@ -25,6 +30,9 @@ namespace chivalry.Models
         public static readonly int ENDZONE_COL_1 = 6;
         [IgnoreDataMember]
         public static readonly int ENDZONE_COL_2 = 7;
+
+        [IgnoreDataMember]
+        public BoardCoord.Transformation Transformation { get; set; }
 
         public class PlayerJsonConverter : IDataMemberJsonConverter
         {

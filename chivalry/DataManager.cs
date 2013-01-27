@@ -35,10 +35,17 @@ namespace chivalry
             var games = await gameTable.ToListAsync();
             foreach (var game in games)
             {
+                updateWithUserData(game, user);
                 user.Games.Add(game);
             }
 
             return user;
+        }
+
+        // visible for testing
+        public void updateWithUserData(Game game, User user)
+        {
+            game.Transformation = game.RecepientPlayerEmail == user.Email ? BoardCoord.Transformation.FLIP : BoardCoord.Transformation.NO_FLIP;
         }
 
         internal async void AddNewGame(string initiatingPlayerName, string initiatingPlayerEmail, string againstUserName, string againstUserEmail)
