@@ -17,9 +17,22 @@ namespace chivalry.Models
     public class Game : INotifyPropertyChanged
     {
         [IgnoreDataMember]
+        private static readonly int[] ROWS_END = new int[] { 2, 8, 10, 12 };
+        [IgnoreDataMember]
+        public static readonly IEnumerable<int> ALL_ROWS = Enumerable.Concat(Enumerable.Concat(ROWS_END, Enumerable.Repeat(12, 8)), ROWS_END.Reverse());
+
+        [IgnoreDataMember]
+        public static readonly int BOARD_ROW_MAX = 15;
+        [IgnoreDataMember]
+        public static readonly int BOARD_COL_MAX = 15;
+
+        [IgnoreDataMember]
         public static readonly int ENDZONE_COL_1 = 6;
         [IgnoreDataMember]
         public static readonly int ENDZONE_COL_2 = 7;
+
+        [IgnoreDataMember]
+        public BoardCoord.Transformation Transformation { get; set; }
 
         public class PlayerJsonConverter : IDataMemberJsonConverter
         {
@@ -40,28 +53,22 @@ namespace chivalry.Models
          */
         public class DictionaryJsonConverter : IDataMemberJsonConverter 
         {
-            public static Tuple<int, int> tupleOfString(string str)
-            {
-                var match = Regex.Match(str, @"\((\d+), (\d+)\)");
-                // need to grab indexes 1 and 2 because 0 is the entire match
-                return Tuple.Create(int.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value));
-            }
-
             public object ConvertFromJson(IJsonValue val)
             {
-                var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(val.GetString());
-                var deserialized = new Dictionary<Tuple<int, int>, BoardSpaceState>();
-                foreach (var pieceLoc in dict)
-                {
-                    deserialized[tupleOfString(pieceLoc.Key)] = (BoardSpaceState) Enum.Parse(typeof(BoardSpaceState), pieceLoc.Value);
-                }
-                return deserialized;
+                //var dict = JsonConvert.DeserializeObject<Dictionary<Coord, string>>(val.GetString());
+                //var deserialized = new Dictionary<Coord, BoardSpaceState>();
+                //foreach (var pieceLoc in dict)
+                //{
+                //    deserialized[pieceLoc.Key] = (BoardSpaceState) Enum.Parse(typeof(BoardSpaceState), pieceLoc.Value);
+                //}
+                //return deserialized;
+                return new Dictionary<Coord, BoardSpaceState>();
             }
 
             public IJsonValue ConvertToJson(object instance)
             {
-                var dict = (IDictionary<Tuple<int, int>, BoardSpaceState>)instance;
-                IDictionary<Tuple<int, int>, string> toSerialize = new Dictionary<Tuple<int, int>, string>();
+                var dict = (IDictionary<Coord, BoardSpaceState>)instance;
+                IDictionary<Coord, string> toSerialize = new Dictionary<Coord, string>();
                 foreach (var pieceLoc in dict)
                 {
                     /** There may be an easier way to convert the enums to strings
@@ -106,17 +113,18 @@ namespace chivalry.Models
         }
 
         // public with get; set; for Azure
+        [IgnoreDataMember]
         //[DataMember(Name = "BoardPieceLocations")]
         [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]
-        public IDictionary<Tuple<int, int>, BoardSpaceState> pieceLocations { get; set; }
+        public IDictionary<Coord, BoardSpaceState> pieceLocations { get; set; }
 
-        private List<Tuple<int, int>> activeMoveChain = new List<Tuple<int, int>>();
+        private List<Coord> activeMoveChain = new List<Coord>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Game()
         {
-            pieceLocations = new Dictionary<Tuple<int, int>, BoardSpaceState>();
+            pieceLocations = new Dictionary<Coord, BoardSpaceState>();
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
@@ -147,9 +155,9 @@ namespace chivalry.Models
         // TODO why does this need to be a separate event?
         public event PropertyChangedEventHandler PieceLocationsChanged;
 
-        public void SetPieceLocation(int row, int col, BoardSpaceState boardState)
+        public void SetPieceLocation(Coord coord, BoardSpaceState boardState)
         {
-            pieceLocations[new Tuple<int, int>(row, col)] = boardState;
+            pieceLocations[coord] = boardState;
             if (PieceLocationsChanged != null)
             {
                 PieceLocationsChanged(this, new PropertyChangedEventArgs("QueryPieceLocations"));
@@ -157,7 +165,7 @@ namespace chivalry.Models
         }
 
         [IgnoreDataMember]
-        public IEnumerable<KeyValuePair<Tuple<int, int>, BoardSpaceState>> QueryPieceLocations
+        public IEnumerable<KeyValuePair<Coord, BoardSpaceState>> QueryPieceLocations
         {
             get
             {
@@ -165,10 +173,10 @@ namespace chivalry.Models
             }
         }
 
-        public BoardSpaceState getPieceAt(int rowIndex, int colIndex)
+        public BoardSpaceState GetPieceAt(Coord coord)
         {
             BoardSpaceState boardSpaceState;
-            return pieceLocations.TryGetValue(new Tuple<int, int>(rowIndex, colIndex), out boardSpaceState) ? boardSpaceState : BoardSpaceState.None ;
+            return pieceLocations.TryGetValue(coord, out boardSpaceState) ? boardSpaceState : BoardSpaceState.None ;
         }
 
         public void ClearActiveMoves()
@@ -179,14 +187,14 @@ namespace chivalry.Models
             NotifyPropertyChanged("NoActiveMovesExist");
         }
 
-        public void AddActiveMove(int row, int col)
-        {
-            AddActiveMove(new Tuple<int, int>(row, col));
-        }
+        //public void AddActiveMove(int row, int col)
+        //{
+        //    AddActiveMove(new Tuple<int, int>(row, col));
+        //}
 
-        public void AddActiveMove(Tuple<int, int> tuple)
+        public void AddActiveMove(Coord coord)
         {
-            activeMoveChain.Add(tuple);
+            activeMoveChain.Add(coord);
             NotifyPropertyChanged("ActiveMoves");
             NotifyPropertyChanged("ActiveMovesExist");
             NotifyPropertyChanged("NoActiveMovesExist");
@@ -208,12 +216,12 @@ namespace chivalry.Models
             }
         }
 
-        internal Tuple<int, int> GetMostRecentMove()
+        internal Coord GetMostRecentMove()
         {
             return activeMoveChain.Last();
         }
 
-        public IEnumerable<Tuple<int, int>> ActiveMoves
+        public IEnumerable<Coord> ActiveMoves
         {
             get
             {
@@ -221,22 +229,11 @@ namespace chivalry.Models
             }
         }
 
-        internal BoardSpaceState getPieceAt(Tuple<int, int> tuple)
-        {
-            // TODO consider cleaning up how coords are handled
-            return getPieceAt(tuple.Item1, tuple.Item2);
-        }
-
-        internal void SetPieceLocation(Tuple<int, int> tuple, BoardSpaceState boardSpaceState)
-        {
-            SetPieceLocation(tuple.Item1, tuple.Item2, boardSpaceState);
-        }
-
         public int RowMax
         {
             get
             {
-                return pieceLocations.Select(kv => kv.Key.Item1).Max();
+                return pieceLocations.Select(kv => kv.Key.Row).Max();
             }
         }
     }

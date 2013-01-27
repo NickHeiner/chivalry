@@ -10,16 +10,16 @@ namespace chivalry.Controllers
 {
     public static class GameUtils
     {
-        public static IEnumerable<BoardSpaceState> PiecesJumped(Game game, IEnumerable<Tuple<int, int>> activeMoves)
+        public static IEnumerable<BoardSpaceState> PiecesJumped(Game game, IEnumerable<Coord> activeMoves)
         {
-            return SpacesJumped(game, activeMoves).Select(game.getPieceAt);
+            return SpacesJumped(game, activeMoves).Select(game.GetPieceAt);
         }
 
-        public static IEnumerable<Tuple<int, int>> SpacesJumped(Game game, IEnumerable<Tuple<int, int>> activeMoves)
+        public static IEnumerable<Coord> SpacesJumped(Game game, IEnumerable<Coord> activeMoves)
         {
             if (game.ActiveMoves.Count() == 2 && AreNeighbors(game.ActiveMoves.First(), game.ActiveMoves.Last()))
             {
-                return Enumerable.Empty<Tuple<int, int>>();
+                return Enumerable.Empty<Coord>();
             }
 
             return activeMoves
@@ -27,52 +27,52 @@ namespace chivalry.Controllers
                 .Select((moves, dest) => SpaceBetween(moves.Item1, moves.Item2));
         }
 
-        public static Tuple<int, int> SpaceBetween(Tuple<int, int> src, Tuple<int, int> dest)
+        public static Coord SpaceBetween(Coord src, Coord dest)
         {
-            Tuple<int, int> result;
-            if (!SpaceBetween(src.Item1, src.Item2, dest, out result))
+            Coord result;
+            if (!SpaceBetween(src, dest, out result))
             {
                 throw new ArgumentException("src and dest are not within one space of each other");
             }
             return result;
         }
 
-        public static void MovePiece(Game game, Tuple<int, int> src, Tuple<int, int> dest)
+        public static void MovePiece(Game game, Coord src, Coord dest)
         {
-            game.SetPieceLocation(dest, game.getPieceAt(src));
+            game.SetPieceLocation(dest, game.GetPieceAt(src));
             game.SetPieceLocation(src, BoardSpaceState.None);
         }
 
-        public static bool SpaceBetween(int rowIndex, int colIndex, Tuple<int, int> tuple, out Tuple<int, int> result)
+        public static bool SpaceBetween(Coord coord1, Coord coord2, out Coord result)
         {
-            int rowDist = Math.Abs(rowIndex - tuple.Item1);
-            int colDist = Math.Abs(colIndex - tuple.Item2);
+            int rowDist = Math.Abs(coord1.Row - coord2.Row);
+            int colDist = Math.Abs(coord1.Col - coord2.Col);
             if (rowDist > 2 || rowDist == 1 || colDist > 2 || colDist == 1)
             {
                 result = null;
                 return false;
             }
-            int rowResult = rowIndex;
-            if (rowIndex == tuple.Item1 + 2)
+            int rowResult = coord1.Row;
+            if (coord1.Row == coord2.Row + 2)
             {
-                rowResult = tuple.Item1 + 1;
+                rowResult = coord2.Row + 1;
             }
-            else if (rowIndex == tuple.Item1 - 2)
+            else if (coord1.Row == coord2.Row - 2)
             {
-                rowResult = tuple.Item1 - 1;
-            }
-
-            int colResult = colIndex;
-            if (colIndex == tuple.Item2 + 2)
-            {
-                colResult = tuple.Item2 + 1;
-            }
-            else if (colIndex == tuple.Item2 - 2)
-            {
-                colResult = tuple.Item2 - 1;
+                rowResult = coord2.Row - 1;
             }
 
-            result = new Tuple<int, int>(rowResult, colResult);
+            int colResult = coord1.Col;
+            if (coord1.Col == coord2.Col + 2)
+            {
+                colResult = coord2.Col + 1;
+            }
+            else if (coord1.Col == coord2.Col - 2)
+            {
+                colResult = coord2.Col - 1;
+            }
+
+            result = new Coord() { Row = rowResult, Col = colResult };
             return true;
         }
 
@@ -87,39 +87,39 @@ namespace chivalry.Controllers
             return piece == BoardSpaceState.OpponentPieceShort || piece == BoardSpaceState.OpponentPieceTall;
         }
 
-        public static bool AreNeighbors(Tuple<int, int> src, Tuple<int, int> dest)
+        public static bool AreNeighbors(Coord src, Coord dest)
         {
-            return AreNeighbors(src, dest.Item1, dest.Item2);
+            return AreNeighbors(src, dest.Row, dest.Col);
         }
 
-        public static bool AreNeighbors(Tuple<int, int> location, int row, int col)
+        public static bool AreNeighbors(Coord location, int row, int col)
         {
-            return Math.Abs(location.Item1 - row) <= 1 && Math.Abs(location.Item2 - col) <= 1;
+            return Math.Abs(location.Row - row) <= 1 && Math.Abs(location.Col - col) <= 1;
         }
 
-        public static IEnumerable<Tuple<int, int>> NeighborsOf(Game game, Tuple<int, int> loc)
+        public static IEnumerable<Coord> NeighborsOf(Game game, Coord loc)
         {
             // TODO add out of bounds checking
-            return new Tuple<int, int>[] 
+            return new Coord[] 
             {
-                new Tuple<int, int>(loc.Item1 + 1, loc.Item2),
-                new Tuple<int, int>(loc.Item1 - 1, loc.Item2),
-                new Tuple<int, int>(loc.Item1, loc.Item2 + 1),
-                new Tuple<int, int>(loc.Item1, loc.Item2 - 1),
+                new Coord() { Row = loc.Row + 1, Col = loc.Col},
+                new Coord() { Row = loc.Row - 1, Col = loc.Col},
+                new Coord() { Row = loc.Row, Col = loc.Col + 1},
+                new Coord() { Row = loc.Row, Col = loc.Col - 1},
 
-                new Tuple<int, int>(loc.Item1 + 1, loc.Item2 + 1),
-                new Tuple<int, int>(loc.Item1 - 1, loc.Item2 + 1),
-                new Tuple<int, int>(loc.Item1 + 1, loc.Item2 - 1),
-                new Tuple<int, int>(loc.Item1 - 1, loc.Item2 - 1),
+                new Coord() { Row = loc.Row + 1, Col = loc.Col + 1},
+                new Coord() { Row = loc.Row - 1, Col = loc.Col + 1},
+                new Coord() { Row = loc.Row + 1, Col = loc.Col - 1},
+                new Coord() { Row = loc.Row - 1, Col = loc.Col - 1},
             };
         }
 
-        public static bool IsJumpableFrom(Game game, Tuple<int, int> src, Tuple<int, int> toJump)
+        public static bool IsJumpableFrom(Game game, Coord src, Coord toJump)
         {
-            Tuple<int, int> diff = new Tuple<int, int>(toJump.Item1 - src.Item1, toJump.Item2 - src.Item2);
-            Tuple<int, int> toLand = new Tuple<int, int>(src.Item1 + diff.Item1 * 2, src.Item2 + diff.Item2 * 2);
+            Coord diff = new Coord() { Row = toJump.Row - src.Row, Col = toJump.Col - src.Col };
+            Coord toLand = new Coord() { Row = src.Row + diff.Row * 2, Col = src.Col + diff.Col * 2 };
             // TODO add out of bounds checking
-            return game.getPieceAt(toLand) == BoardSpaceState.None && game.getPieceAt(toJump) != BoardSpaceState.None;
+            return game.GetPieceAt(toLand) == BoardSpaceState.None && game.GetPieceAt(toJump) != BoardSpaceState.None;
         }
     }
 }
