@@ -127,6 +127,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\BoardSpaceState.cs" />
+    <Compile Include="Models\Coord.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="PlayGame.xaml.cs">

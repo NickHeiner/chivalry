@@ -26,7 +26,8 @@ namespace chivalry
     public sealed partial class PlayGame : chivalry.Common.LayoutAwarePage
     {
         private const int BOARD_GRID_SIDE_LENGTH = 45;
-        private IDictionary<Tuple<int, int>, BoardSpace> boardSpaces = new Dictionary<Tuple<int, int>, BoardSpace>();
+        // TODO this needs to be BoardCoord, not just Coord
+        private IDictionary<Coord, BoardSpace> boardSpaces = new Dictionary<Coord, BoardSpace>();
         private Game game
         {
             get
@@ -70,9 +71,10 @@ namespace chivalry
                     Grid.SetRow(boardSpace, rowInfo.Index);
                     Grid.SetColumn(boardSpace, colIndex);
                     boardGrid.Children.Add(boardSpace);
-                    boardSpaces[new Tuple<int, int>(rowInfo.Index, colIndex)] = boardSpace;
+                    boardSpaces[new Coord() { Row = rowInfo.Index, Col = colIndex }] = boardSpace;
 
-                    boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(game, rowInfo.Index, colIndex);
+                    // TODO this needs to translate from screen space to board space
+                    boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(game, new Coord() { Row = rowInfo.Index, Col = colIndex });
                 }
             }
 

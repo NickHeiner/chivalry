@@ -11,9 +11,9 @@ namespace chivalry.Controllers
     public class GameValidator
     {
         // TODO check that move is within bounds
-        public static bool IsValidMove(Game game, int destRowIndex, int destColIndex)
+        public static bool IsValidMove(Game game, Coord move)
         {
-            var pieceAtMove = game.getPieceAt(destRowIndex, destColIndex);
+            var pieceAtMove = game.GetPieceAt(move);
             if (! game.NoActiveMovesExist && pieceAtMove != BoardSpaceState.None)
             {
                 return false;
@@ -22,12 +22,12 @@ namespace chivalry.Controllers
             {
                 return pieceAtMove == BoardSpaceState.FriendlyPieceShort || pieceAtMove == BoardSpaceState.FriendlyPieceTall;
             }
-            if (GameUtils.AreNeighbors(game.GetMostRecentMove(), destRowIndex, destColIndex))
+            if (GameUtils.AreNeighbors(game.GetMostRecentMove(), move))
             {
                 return game.ActiveMoves.Count() == 1;
             }
-            Tuple<int, int> locationToJump;
-            var isJumpable = GameUtils.SpaceBetween(destRowIndex, destColIndex, game.GetMostRecentMove(), out locationToJump);
+            Coord locationToJump;
+            var isJumpable = GameUtils.SpaceBetween(move, game.GetMostRecentMove(), out locationToJump);
             if (isJumpable)
             {
                 if (game.ActiveMoves.Count() > 1
@@ -37,13 +37,13 @@ namespace chivalry.Controllers
                 }
 
                 var piecesJumped = GameUtils.PiecesJumped(game,
-                    Enumerable.Concat(game.ActiveMoves, 
-                                      Enumerable.Repeat(new Tuple<int, int>(destRowIndex, destColIndex), 1)));
+                    Enumerable.Concat(game.ActiveMoves,
+                                      Enumerable.Repeat(move, 1)));
 
                 return piecesJumped.All(GameUtils.IsFriendly)
                     || piecesJumped.All(GameUtils.IsOpponent) 
-                    || (game.getPieceAt(game.ActiveMoves.First()) == BoardSpaceState.FriendlyPieceTall
-                        && game.getPieceAt(locationToJump) != BoardSpaceState.None);
+                    || (game.GetPieceAt(game.ActiveMoves.First()) == BoardSpaceState.FriendlyPieceTall
+                        && game.GetPieceAt(locationToJump) != BoardSpaceState.None);
             }
             return false;
         }
@@ -55,19 +55,19 @@ namespace chivalry.Controllers
                 GameUtils.NeighborsOf(game, game.ActiveMoves.Last())
                          .Where(neighbor => 
                                 GameUtils.IsJumpableFrom(game, game.ActiveMoves.Last(), neighbor) 
-                             && GameUtils.IsOpponent(game.getPieceAt(neighbor))
-                             && ! new HashSet<Tuple<int, int>>(GameUtils.SpacesJumped(game, game.ActiveMoves)).Contains(neighbor))
+                             && GameUtils.IsOpponent(game.GetPieceAt(neighbor))
+                             && ! new HashSet<Coord>(GameUtils.SpacesJumped(game, game.ActiveMoves)).Contains(neighbor))
                          .Count() == 0;
         }
 
         public static Player GameWinner(Game game)
         {
-            return 
-                GameUtils.IsOpponent(game.getPieceAt(new Tuple<int, int>(0, Game.ENDZONE_COL_1))) &&
-                GameUtils.IsOpponent(game.getPieceAt(new Tuple<int, int>(0, Game.ENDZONE_COL_2))) 
+            return
+                GameUtils.IsOpponent(game.GetPieceAt(new Coord() { Row = 0, Col = Game.ENDZONE_COL_1 })) &&
+                GameUtils.IsOpponent(game.GetPieceAt(new Coord() { Row = 0, Col = Game.ENDZONE_COL_2 }))
                     ? Player.Opponent :
-                GameUtils.IsFriendly(game.getPieceAt(new Tuple<int, int>(game.RowMax, Game.ENDZONE_COL_1))) &&
-                GameUtils.IsFriendly(game.getPieceAt(new Tuple<int, int>(game.RowMax, Game.ENDZONE_COL_2))) 
+                GameUtils.IsFriendly(game.GetPieceAt(new Coord() { Row = game.RowMax, Col = Game.ENDZONE_COL_1 })) &&
+                GameUtils.IsFriendly(game.GetPieceAt(new Coord() { Row = game.RowMax, Col = Game.ENDZONE_COL_2 }))
                     ? Player.Friendly : Player.None;
         }
     }

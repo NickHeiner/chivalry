@@ -10,11 +10,11 @@ namespace chivalry.Controllers
 {
     public static class GameController
     {
-        public static void OnBoardSpaceClick(Game game, int rowIndex, int colIndex)
+        public static void OnBoardSpaceClick(Game game, Coord coordClicked)
         {
-            if (GameValidator.IsValidMove(game, rowIndex, colIndex))
+            if (GameValidator.IsValidMove(game, coordClicked))
             {
-                game.AddActiveMove(new Tuple<int, int>(rowIndex, colIndex));
+                game.AddActiveMove(coordClicked);
             }
         }
 
@@ -30,12 +30,12 @@ namespace chivalry.Controllers
                 var opponents =
                     game.ActiveMoves
                         .Pairwise()
-                        .Select((moves, dest) => GameUtils.SpaceBetween(moves.Item1, moves.Item2))
-                        .Where(loc => GameUtils.IsOpponent(game.getPieceAt(loc)));
+                        .Select((moves) => GameUtils.SpaceBetween(moves.Item1, moves.Item2))
+                        .Where(loc => GameUtils.IsOpponent(game.GetPieceAt(loc)));
 
                 foreach (var opponent in opponents)
                 {
-                    game.SetPieceLocation(opponent.Item1, opponent.Item2, BoardSpaceState.None);
+                    game.SetPieceLocation(opponent, BoardSpaceState.None);
                 }
             }
 

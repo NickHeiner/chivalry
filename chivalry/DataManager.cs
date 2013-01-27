@@ -20,10 +20,10 @@ namespace chivalry
             if (((App)Application.Current).OFFLINE_MODE)
             {
                 Game againstScott = new Game() { RecepientPlayerName = "Scott" };
-                againstScott.SetPieceLocation(5, 5, BoardSpaceState.FriendlyPieceShort);
-                againstScott.SetPieceLocation(5, 6, BoardSpaceState.FriendlyPieceTall);
-                againstScott.SetPieceLocation(4, 4, BoardSpaceState.OpponentPieceShort);
-                againstScott.SetPieceLocation(5, 8, BoardSpaceState.OpponentPieceTall);
+                againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 5 }, BoardSpaceState.FriendlyPieceShort);
+                againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 6 }, BoardSpaceState.FriendlyPieceTall);
+                againstScott.SetPieceLocation(new Coord() { Row = 4, Col = 4 }, BoardSpaceState.OpponentPieceShort);
+                againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 8 }, BoardSpaceState.OpponentPieceTall);
 
                 user.Games.Add(againstScott);
                 user.Games.Add(withStartingPieces(new Game() { RecepientPlayerName = "Dad" }));
@@ -71,10 +71,10 @@ namespace chivalry
         {
             int nextRow = startRow + nextRowOffset;
 
-            game.SetPieceLocation(startRow, 2, tallPiece);
-            game.SetPieceLocation(nextRow, 3, tallPiece);
-            game.SetPieceLocation(startRow, 9, tallPiece);
-            game.SetPieceLocation(nextRow, 8, tallPiece);
+            game.SetPieceLocation(new Coord() { Row = startRow, Col = 2 }, tallPiece);
+            game.SetPieceLocation(new Coord() { Row = nextRow, Col = 3 }, tallPiece);
+            game.SetPieceLocation(new Coord() { Row = startRow, Col = 9 }, tallPiece);
+            game.SetPieceLocation(new Coord() { Row = nextRow, Col = 8 }, tallPiece);
 
             fillRow(game, shortPiece, startRow, 3, 8);
             fillRow(game, shortPiece, nextRow, 4, 7);
@@ -84,7 +84,7 @@ namespace chivalry
         {
             foreach (int col in Enumerable.Range(lowerColBoundInclusive, upperColBoundInclusive - lowerColBoundInclusive + 1))
             {
-                game.SetPieceLocation(row, col, toFill);
+                game.SetPieceLocation(new Coord() { Row = row, Col = col }, toFill);
             }
         }
     }
