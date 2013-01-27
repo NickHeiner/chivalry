@@ -17,6 +17,11 @@ namespace chivalry.Models
     public class Game : INotifyPropertyChanged
     {
         [IgnoreDataMember]
+        public static readonly int BOARD_ROW_MAX = 15;
+        [IgnoreDataMember]
+        public static readonly int BOARD_COL_MAX = 15;
+
+        [IgnoreDataMember]
         public static readonly int ENDZONE_COL_1 = 6;
         [IgnoreDataMember]
         public static readonly int ENDZONE_COL_2 = 7;

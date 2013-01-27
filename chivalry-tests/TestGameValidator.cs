@@ -465,9 +465,19 @@ namespace chivalry_tests
         }
 
         [TestMethod]
-        public void TupleOfString()
+        public void BoardCoord_NoFlip()
         {
-            Assert.AreEqual(Tuple.Create(2, 3), Game.DictionaryJsonConverter.tupleOfString("(2, 3)"));
+            Coord coord = Coord.Create(6, 3);
+            BoardCoord boardCoord = new BoardCoord(coord, BoardCoord.Transformation.NO_FLIP);
+            Assert.AreEqual(coord, Coord.Create(boardCoord.Row, boardCoord.Col));
+        }
+
+        [TestMethod]
+        public void BoardCoord_Flip()
+        {
+            Coord coord = Coord.Create(5, 3);
+            BoardCoord boardCoord = new BoardCoord(coord, BoardCoord.Transformation.FLIP);
+            Assert.AreEqual(Coord.Create(10, 3), Coord.Create(boardCoord.Row, boardCoord.Col));
         }
 
     }
