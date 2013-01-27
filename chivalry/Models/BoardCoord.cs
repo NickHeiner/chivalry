@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace chivalry.Models
 {
+    // Maybe this whole thing should be one function
     public class BoardCoord
     {
         public enum Transformation
@@ -36,6 +37,14 @@ namespace chivalry.Models
             get
             {
                 return coord.Col;
+            }
+        }
+
+        public Coord Coord
+        {
+            get
+            {
+                return Coord.Create(Row, Col);
             }
         }
 

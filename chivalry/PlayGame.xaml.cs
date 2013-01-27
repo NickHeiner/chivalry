@@ -46,20 +46,17 @@ namespace chivalry
         // This is shit code.
         void PlayGame_Loaded(object sender, RoutedEventArgs e)
         {
-            var rowsEnd = new int[] { 2, 8, 10, 12 };
-            var allRows = Enumerable.Concat(Enumerable.Concat(rowsEnd, Enumerable.Repeat(12, 8)), rowsEnd.Reverse());
-
-            foreach (var row in allRows)
+            foreach (var row in Game.ALL_ROWS)
             {
                 boardGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(BOARD_GRID_SIDE_LENGTH) });
             }
-            var maxColIndex = allRows.Max();
+            var maxColIndex = Game.ALL_ROWS.Max();
             foreach (var col in Enumerable.Range(0, maxColIndex))
             {
                 boardGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(BOARD_GRID_SIDE_LENGTH) });
             }
 
-            foreach (var rowInfo in allRows.Select((colCount, index) => new { ColCount = colCount, Index = index }))
+            foreach (var rowInfo in Game.ALL_ROWS.Select((colCount, index) => new { ColCount = colCount, Index = index }))
             {
                 foreach (var col in Enumerable.Range(0, rowInfo.ColCount))
                 {
@@ -71,10 +68,10 @@ namespace chivalry
                     Grid.SetRow(boardSpace, rowInfo.Index);
                     Grid.SetColumn(boardSpace, colIndex);
                     boardGrid.Children.Add(boardSpace);
-                    boardSpaces[new Coord() { Row = rowInfo.Index, Col = colIndex }] = boardSpace;
+                    boardSpaces[Coord.Create(rowInfo.Index, colIndex)] = boardSpace;
 
                     // TODO this needs to translate from screen space to board space
-                    boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(game, new Coord() { Row = rowInfo.Index, Col = colIndex });
+                    boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(game, Coord.Create(rowInfo.Index, colIndex)) ;
                 }
             }
 
@@ -117,14 +114,13 @@ namespace chivalry
 
         void updateBoardFromGame()
         {
-
             foreach (var boardSpace in boardSpaces)
             {
                 boardSpace.Value.SpaceState = BoardSpaceState.None;
             }
             foreach (var pieceLoc in game.QueryPieceLocations)
             {
-                boardSpaces[pieceLoc.Key].SpaceState = pieceLoc.Value;
+                boardSpaces[new BoardCoord(pieceLoc.Key, game.Transformation).Coord].SpaceState = pieceLoc.Value;
             }
         }
 
@@ -151,6 +147,6 @@ namespace chivalry
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             GameController.ExecuteMoves(game);
-        }
+        }   
     }
 }

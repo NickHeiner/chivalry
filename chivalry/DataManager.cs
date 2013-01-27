@@ -19,14 +19,14 @@ namespace chivalry
 
             if (((App)Application.Current).OFFLINE_MODE)
             {
-                Game againstScott = new Game() { RecepientPlayerName = "Scott" };
+                Game againstScott = new Game() { RecepientPlayerName = "Scott", InitiatingPlayerEmail = "nick_heiner@hotmail.com" };
                 againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 5 }, BoardSpaceState.FriendlyPieceShort);
                 againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 6 }, BoardSpaceState.FriendlyPieceTall);
                 againstScott.SetPieceLocation(new Coord() { Row = 4, Col = 4 }, BoardSpaceState.OpponentPieceShort);
                 againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 8 }, BoardSpaceState.OpponentPieceTall);
 
                 user.Games.Add(againstScott);
-                user.Games.Add(withStartingPieces(new Game() { RecepientPlayerName = "Dad" }));
+                user.Games.Add(withStartingPieces(new Game() { RecepientPlayerName = "Dad", InitiatingPlayerEmail = "nick_heiner@hotmail.com" }));
 
                 return user;
             }
