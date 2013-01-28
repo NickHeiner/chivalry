@@ -43,6 +43,7 @@ namespace chivalry.Models
                 capturedPieces[piece] = 0;
             }
             capturedPieces[piece] += 1;
+            NotifyPropertyChanged("CapturedPieces");
         }
 
         public int GetCapturedCount(BoardSpaceState piece)

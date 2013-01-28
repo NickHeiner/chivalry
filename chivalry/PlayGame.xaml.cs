@@ -65,7 +65,7 @@ namespace chivalry
                     var colIndex = col + colOffset;
 
                     var backgroundColorKey = rowInfo.Index % 2 == 0 ^ colIndex % 2 == 0 ? "PrimaryTileColor" : "SecondaryTileColor";
-                    var boardSpace = new BoardSpace(rowInfo.Index, colIndex) { Background = (Brush)App.Current.Resources[backgroundColorKey] };
+                    var boardSpace = new BoardSpace() { Background = (Brush)App.Current.Resources[backgroundColorKey] };
                     Grid.SetRow(boardSpace, rowInfo.Index);
                     Grid.SetColumn(boardSpace, colIndex);
                     boardGrid.Children.Add(boardSpace);
@@ -109,6 +109,18 @@ namespace chivalry
                     {
                         boardSpaceLocation.Value.Unselect();
                     }
+                }
+            }
+            if (e.PropertyName.Equals("CapturedPieces"))
+            {
+                capturedFriendlyPieces.Children.Clear();
+                capturedOpponentPieces.Children.Clear();
+
+                foreach (var _ in Enumerable.Range(0, game.GetCapturedCount(BoardSpaceState.OpponentPieceShort)))
+                {
+                    var boardSpace = new BoardSpace();
+                    boardSpace.Background.Opacity = 0; // can this suffice instead of the style?
+                    capturedOpponentPieces.Children.Add(boardSpace);
                 }
             }
         }

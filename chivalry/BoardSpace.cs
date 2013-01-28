@@ -12,17 +12,11 @@ namespace chivalry
     /// </summary> 
     public class BoardSpace : Button
     {
-        private int row;
-        private int col;
-
         /// <summary> 
         /// Initializes a new instance of the BoardSpace class. 
         /// </summary> 
-        public BoardSpace(int row, int col)
+        public BoardSpace()
         {
-            this.row = row;
-            this.col = col;
-
             DefaultStyleKey = typeof(BoardSpace);
         }
 
