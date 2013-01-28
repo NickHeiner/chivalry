@@ -28,7 +28,7 @@
         </Grid>
         <StackPanel Orientation="Horizontal" x:Name="loadedContent" Visibility="Collapsed">
             <Image Source="{Binding ProfilePicSource}" />
-            <TextBlock Text="{Binding Name}" Style="{StaticResource SubheaderTextStyle}"/>
+            <TextBlock Text="{Binding Name}" Style="{StaticResource SubheaderTextStyle}" Margin="10,20,0,0"/>
         </StackPanel>
     </Grid>
 </UserControl>

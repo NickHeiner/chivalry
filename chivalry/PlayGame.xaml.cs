@@ -1,4 +1,5 @@
-﻿using chivalry.Controllers;
+﻿using chivalry.Common;
+using chivalry.Controllers;
 using chivalry.Models;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace chivalry
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class PlayGame : chivalry.Common.LayoutAwarePage
+    public sealed partial class PlayGame : LayoutAwarePage
     {
         private const int BOARD_GRID_SIDE_LENGTH = 45;
         // TODO this needs to be BoardCoord, not just Coord
