@@ -71,6 +71,13 @@
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
+                            <VisualStateGroup>
+                                <VisualState x:Name="NoTile">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="backgroundSquare"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Grid Height="40" Width="40">
                             <!--<Border x:Name="backgroundSquare" Background="{TemplateBinding Background}" Margin="4" Opacity="0.5"/>-->

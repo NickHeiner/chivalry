@@ -265,6 +265,18 @@ namespace chivalry_tests
             GameController.ExecuteMoves(game);
 
             Assert.AreEqual(BoardSpaceState.None, game.GetPieceAt(Coord.Create(0, 1)));
+            Assert.AreEqual(1, game.GetCapturedCount(BoardSpaceState.OpponentPieceShort));
+        }
+
+        [TestMethod]
+        public void Game_NothingCapturedToStart()
+        {
+            Game game = new Game();
+
+            Assert.AreEqual(0, game.GetCapturedCount(BoardSpaceState.OpponentPieceShort));
+            Assert.AreEqual(0, game.GetCapturedCount(BoardSpaceState.FriendlyPieceShort));
+            Assert.AreEqual(0, game.GetCapturedCount(BoardSpaceState.OpponentPieceTall));
+            Assert.AreEqual(0, game.GetCapturedCount(BoardSpaceState.FriendlyPieceTall));
         }
 
         [TestMethod]

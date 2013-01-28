@@ -38,6 +38,11 @@ namespace chivalry
         /// </summary>
         public readonly bool OFFLINE_MODE = false;
 
+        /// <summary>
+        /// Fake it
+        /// </summary>
+        public readonly bool DEMO_HACK = true;
+
         private Task<User> loadUserTask;
 
         /// <summary>

@@ -16,6 +16,7 @@ using Microsoft.Live;
 using Windows.UI.Popups;
 using Windows.ApplicationModel.Contacts;
 using chivalry.Models;
+using chivalry.Common;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -67,12 +68,20 @@ namespace chivalry
 
         private void GridView_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-            Frame.Navigate(typeof(PlayGame), e.AddedItems[0]);
+            if (e.AddedItems.Count > 0)
+            {
+                Frame.Navigate(typeof(PlayGame), e.AddedItems[0]);
+            }
         }
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
             var contact = await (new ContactPicker().PickSingleContactAsync());
+
+            if (contact == null)
+            {
+                return;
+            }
 
             if (contact.Emails.Count() == 0)
             {

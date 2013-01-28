@@ -34,6 +34,25 @@ namespace chivalry.Models
         [IgnoreDataMember]
         public BoardCoord.Transformation Transformation { get; set; }
 
+        [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]
+        private Dictionary<BoardSpaceState, int> capturedPieces = new Dictionary<BoardSpaceState, int>();
+
+        public void CapturePiece(BoardSpaceState piece)
+        {
+            if (!capturedPieces.ContainsKey(piece))
+            {
+                capturedPieces[piece] = 0;
+            }
+            capturedPieces[piece] += 1;
+            NotifyPropertyChanged("CapturedPieces");
+        }
+
+        public int GetCapturedCount(BoardSpaceState piece)
+        {
+            // ugh I wish I had a DefaultDict
+            return capturedPieces.ContainsKey(piece) ? capturedPieces[piece] : 0;
+        }
+
         public class PlayerJsonConverter : IDataMemberJsonConverter
         {
             public object ConvertFromJson(IJsonValue value)
@@ -59,7 +78,7 @@ namespace chivalry.Models
                 //var deserialized = new Dictionary<Coord, BoardSpaceState>();
                 //foreach (var pieceLoc in dict)
                 //{
-                //    deserialized[pieceLoc.Key] = (BoardSpaceState) Enum.Parse(typeof(BoardSpaceState), pieceLoc.Value);
+                //    deserialized[pieceLoc.Key] = (BoardSpaceState)Enum.Parse(typeof(BoardSpaceState), pieceLoc.Value);
                 //}
                 //return deserialized;
                 return new Dictionary<Coord, BoardSpaceState>();
@@ -113,10 +132,10 @@ namespace chivalry.Models
         }
 
         // public with get; set; for Azure
-        [IgnoreDataMember]
+        // [IgnoreDataMember]
         //[DataMember(Name = "BoardPieceLocations")]
         [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]
-        public IDictionary<Coord, BoardSpaceState> pieceLocations { get; set; }
+        public Dictionary<Coord, BoardSpaceState> pieceLocations { get; set; }
 
         private List<Coord> activeMoveChain = new List<Coord>();
 

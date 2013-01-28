@@ -35,6 +35,10 @@ namespace chivalry
             var games = await gameTable.ToListAsync();
             foreach (var game in games)
             {
+                if (((App)Application.Current).DEMO_HACK)
+                {
+                    withStartingPieces(game);
+                }
                 updateWithUserData(game, user);
                 user.Games.Add(game);
             }
