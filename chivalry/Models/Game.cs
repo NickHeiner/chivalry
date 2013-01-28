@@ -34,6 +34,23 @@ namespace chivalry.Models
         [IgnoreDataMember]
         public BoardCoord.Transformation Transformation { get; set; }
 
+        private IDictionary<BoardSpaceState, int> capturedPieces = new Dictionary<BoardSpaceState, int>();
+
+        public void CapturePiece(BoardSpaceState piece)
+        {
+            if (!capturedPieces.ContainsKey(piece))
+            {
+                capturedPieces[piece] = 0;
+            }
+            capturedPieces[piece] += 1;
+        }
+
+        public int GetCapturedCount(BoardSpaceState piece)
+        {
+            // ugh I wish I had a DefaultDict
+            return capturedPieces.ContainsKey(piece) ? capturedPieces[piece] : 0;
+        }
+
         public class PlayerJsonConverter : IDataMemberJsonConverter
         {
             public object ConvertFromJson(IJsonValue value)

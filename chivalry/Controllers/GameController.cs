@@ -27,15 +27,16 @@ namespace chivalry.Controllers
 
             if (!(game.ActiveMoves.Count() == 2 && GameUtils.AreNeighbors(game.ActiveMoves.First(), game.ActiveMoves.Last())))
             {
-                var opponents =
+                var opponentsLoc =
                     game.ActiveMoves
                         .Pairwise()
                         .Select((moves) => GameUtils.SpaceBetween(moves.Item1, moves.Item2))
                         .Where(loc => GameUtils.IsOpponent(game.GetPieceAt(loc)));
 
-                foreach (var opponent in opponents)
+                foreach (var opponentLoc in opponentsLoc)
                 {
-                    game.SetPieceLocation(opponent, BoardSpaceState.None);
+                    game.CapturePiece(game.GetPieceAt(opponentLoc));
+                    game.SetPieceLocation(opponentLoc, BoardSpaceState.None);
                 }
             }
 
