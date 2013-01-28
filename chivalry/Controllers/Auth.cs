@@ -36,6 +36,14 @@ namespace chivalry
         public event EventHandler LoginFailed;
 
         private LiveConnectClient connection;
+        private LiveAuthClient liveAuthClient;
+
+        public async void Logout()
+        {
+            LiveConnectClient connection = await ensureConnection();
+            liveAuthClient.Logout();
+            
+        }
 
         // Is there a way to make props async?
         public async Task<User> CreateUser()
@@ -81,8 +89,8 @@ namespace chivalry
                 return connection;
             }
             // Initialize access to the Live Connect SDK.
-            LiveAuthClient LCAuth = new LiveAuthClient();
-            LiveLoginResult LCLoginResult = await LCAuth.InitializeAsync();
+            liveAuthClient = new LiveAuthClient();
+            LiveLoginResult LCLoginResult = await liveAuthClient.InitializeAsync();
             // Sign in to the user's Microsoft account with the required scope.
             //    
             //  This call will display the Microsoft account sign-in screen if the user 
@@ -92,11 +100,11 @@ namespace chivalry
             //  has not already given consent to this app to access the data described 
             //  by the scope.
             // 
-            LiveLoginResult loginResult = await LCAuth.LoginAsync(new string[] { "wl.basic", "wl.emails" });
+            LiveLoginResult loginResult = await liveAuthClient.LoginAsync(new string[] { "wl.basic", "wl.emails" });
             if (loginResult.Status == LiveConnectSessionStatus.Connected)
             {
                 // Create a client session to get the profile data.
-                connection = new LiveConnectClient(LCAuth.Session);
+                connection = new LiveConnectClient(liveAuthClient.Session);
                 return connection;
             }
             if (LoginFailed != null)

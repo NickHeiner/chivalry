@@ -16,6 +16,7 @@ using Microsoft.Live;
 using Windows.UI.Popups;
 using Windows.ApplicationModel.Contacts;
 using chivalry.Models;
+using Windows.UI.ApplicationSettings;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -26,6 +27,9 @@ namespace chivalry
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        // there's gotta be a better way to do this
+        private bool logOutCommandAdded = false;
+
         private User user
         {
             get
@@ -38,6 +42,16 @@ namespace chivalry
         {
             this.InitializeComponent();
             loadDataContext();
+
+            SettingsPane.GetForCurrentView().CommandsRequested += MainPage_CommandsRequested;
+        }
+
+        void MainPage_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            if (!logOutCommandAdded)
+            {
+                args.Request.ApplicationCommands.Add(new SettingsCommand("LogOut", "Log out", x => ((App)Application.Current).Auth.Logout()));
+            }
         }
 
         void Auth_LoginFailed(object sender, EventArgs e)
