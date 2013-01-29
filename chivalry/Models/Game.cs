@@ -34,7 +34,8 @@ namespace chivalry.Models
         [IgnoreDataMember]
         public BoardCoord.Transformation Transformation { get; set; }
 
-        private IDictionary<BoardSpaceState, int> capturedPieces = new Dictionary<BoardSpaceState, int>();
+        [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]
+        private Dictionary<BoardSpaceState, int> capturedPieces = new Dictionary<BoardSpaceState, int>();
 
         public void CapturePiece(BoardSpaceState piece)
         {
@@ -131,10 +132,10 @@ namespace chivalry.Models
         }
 
         // public with get; set; for Azure
-        [IgnoreDataMember]
+        // [IgnoreDataMember]
         //[DataMember(Name = "BoardPieceLocations")]
         [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]
-        public IDictionary<Coord, BoardSpaceState> pieceLocations { get; set; }
+        public Dictionary<Coord, BoardSpaceState> pieceLocations { get; set; }
 
         private List<Coord> activeMoveChain = new List<Coord>();
 

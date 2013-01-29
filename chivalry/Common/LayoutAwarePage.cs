@@ -370,6 +370,7 @@ namespace chivalry.Common
             var frameState = SuspensionManager.SessionStateForFrame(this.Frame);
             var pageState = new Dictionary<String, Object>();
             this.SaveState(pageState);
+            // TODO http://social.msdn.microsoft.com/Forums/en-US/winappswithcsharp/thread/a2611a92-4d2e-4186-9118-cde94346c756/
             frameState[_pageKey] = pageState;
         }
 
