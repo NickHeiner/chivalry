@@ -36,14 +36,30 @@
             <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{Binding AgainstUserName}" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
 
-        <StackPanel Grid.Row="0" Grid.Column="2" x:Name="capturedOpponentPieces" />
+        <Grid Grid.Row="2" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel x:Name="capturedOpponentPieces" Grid.Column="1" />
+        </Grid>
+        
         <Grid x:Name="boardGrid" Grid.Row="1" Grid.Column="1" />
         
         <StackPanel Grid.Row="1" Grid.Column="2" Visibility="{Binding ActiveMovesExist, Converter={StaticResource boolToVisibility}}">
             <Button Click="Button_Click_1">Reset Move</Button>
             <Button Click="Button_Click_2">Make Move</Button>
         </StackPanel>
-        <StackPanel Grid.Row="2" Grid.Column="2" x:Name="capturedFriendlyPieces" />
+
+        <Grid Grid.Row="2" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" x:Name="capturedFriendlyPieces" />
+        </Grid>
         <!--<TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource PageHeaderTextStyle}">You won!</TextBlock>
         <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource PageHeaderTextStyle}">You lose!</TextBlock>-->
 

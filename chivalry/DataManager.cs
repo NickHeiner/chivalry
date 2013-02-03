@@ -38,6 +38,16 @@ namespace chivalry
                 if (((App)Application.Current).DEMO_HACK)
                 {
                     withStartingPieces(game);
+                    foreach (var _ in Enumerable.Range(0, 10))
+                    {
+                        game.CapturePiece(BoardSpaceState.OpponentPieceShort);
+                        game.CapturePiece(BoardSpaceState.FriendlyPieceShort);
+                    }
+                    foreach (var _ in Enumerable.Range(0, 4))
+                    {
+                        game.CapturePiece(BoardSpaceState.OpponentPieceTall);
+                        game.CapturePiece(BoardSpaceState.FriendlyPieceTall);
+                    }
                 }
                 updateWithUserData(game, user);
                 user.Games.Add(game);

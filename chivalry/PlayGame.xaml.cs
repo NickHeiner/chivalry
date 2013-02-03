@@ -77,6 +77,7 @@ namespace chivalry
             }
 
             updateBoardFromGame();
+            updateCapturedPiecesFromGame();
         }
 
         /// <summary>
@@ -113,15 +114,31 @@ namespace chivalry
             }
             if (e.PropertyName.Equals("CapturedPieces"))
             {
-                capturedFriendlyPieces.Children.Clear();
-                capturedOpponentPieces.Children.Clear();
+                updateCapturedPiecesFromGame();
+            }
+        }
 
-                foreach (var _ in Enumerable.Range(0, game.GetCapturedCount(BoardSpaceState.OpponentPieceShort)))
+        private void updateCapturedPiecesFromGame()
+        {
+            capturedFriendlyPieces.Children.Clear();
+            capturedOpponentPieces.Children.Clear();
+
+            updateCapturedPieces(capturedFriendlyPieces, BoardSpaceState.FriendlyPieceShort);
+            updateCapturedPieces(capturedFriendlyPieces, BoardSpaceState.FriendlyPieceTall);
+            updateCapturedPieces(capturedOpponentPieces, BoardSpaceState.OpponentPieceShort);
+            updateCapturedPieces(capturedOpponentPieces, BoardSpaceState.OpponentPieceTall);
+        }
+
+        private void updateCapturedPieces(StackPanel container, BoardSpaceState piece)
+        {
+            foreach (var _ in Enumerable.Range(0, game.GetCapturedCount(piece)))
+            {
+                container.Children.Add(new BoardSpace()
                 {
-                    var boardSpace = new BoardSpace();
-                    boardSpace.Background.Opacity = 0; // can this suffice instead of the style?
-                    capturedOpponentPieces.Children.Add(boardSpace);
-                }
+                    SpaceState = piece,
+                    Width = BOARD_GRID_SIDE_LENGTH,
+                    Height = BOARD_GRID_SIDE_LENGTH
+                });
             }
         }
 
