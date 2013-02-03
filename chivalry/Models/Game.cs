@@ -78,7 +78,7 @@ namespace chivalry.Models
                 //var deserialized = new Dictionary<Coord, BoardSpaceState>();
                 //foreach (var pieceLoc in dict)
                 //{
-                //    deserialized[pieceLoc.Key] = (BoardSpaceState) Enum.Parse(typeof(BoardSpaceState), pieceLoc.Value);
+                //    deserialized[pieceLoc.Key] = (BoardSpaceState)Enum.Parse(typeof(BoardSpaceState), pieceLoc.Value);
                 //}
                 //return deserialized;
                 return new Dictionary<Coord, BoardSpaceState>();
