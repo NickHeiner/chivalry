@@ -83,7 +83,19 @@ namespace chivalry
 
         private void updateGameStatusFromGame()
         {
-            gameStatusMessage.Text = GameValidator.GameWinner(game) == Player.Friendly ? "You win!" : "You lose!";
+            switch (GameValidator.GameWinner(game))
+            {
+                case Player.Friendly:
+                    gameStatusMessage.Text = "You win!";
+                    break;
+                case Player.Opponent:
+                    gameStatusMessage.Text = "You lose!";
+                    break;
+                case Player.None:
+                    gameStatusMessage.Text = "";
+                    break;
+            }
+
         }
 
         /// <summary>

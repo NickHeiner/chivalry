@@ -62,13 +62,16 @@ namespace chivalry.Controllers
 
         public static Player GameWinner(Game game)
         {
-            return
+            var opponentInFriendlyEndzone = 
                 GameUtils.IsOpponent(game.GetPieceAt(new Coord() { Row = 0, Col = Game.ENDZONE_COL_1 })) &&
-                GameUtils.IsOpponent(game.GetPieceAt(new Coord() { Row = 0, Col = Game.ENDZONE_COL_2 }))
-                    ? Player.Opponent :
-                GameUtils.IsFriendly(game.GetPieceAt(new Coord() { Row = game.RowMax, Col = Game.ENDZONE_COL_1 })) &&
-                GameUtils.IsFriendly(game.GetPieceAt(new Coord() { Row = game.RowMax, Col = Game.ENDZONE_COL_2 }))
-                    ? Player.Friendly : Player.None;
+                GameUtils.IsOpponent(game.GetPieceAt(new Coord() { Row = 0, Col = Game.ENDZONE_COL_2 }));
+
+            var friendlyInOpponentEndzone =
+                GameUtils.IsFriendly(game.GetPieceAt(new Coord() { Row = Game.BOARD_ROW_MAX, Col = Game.ENDZONE_COL_1 })) &&
+                GameUtils.IsFriendly(game.GetPieceAt(new Coord() { Row = Game.BOARD_ROW_MAX, Col = Game.ENDZONE_COL_2 }));
+
+            return opponentInFriendlyEndzone ? Player.Opponent :
+                   friendlyInOpponentEndzone ? Player.Friendly : Player.None;
         }
     }
 }

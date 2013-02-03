@@ -36,7 +36,7 @@ namespace chivalry
 
                 var wonGame = withStartingPieces(new Game()
                 {
-                    RecepientPlayerName = "Loser",
+                    RecepientPlayerName = "Losing Guy",
                     InitiatingPlayerEmail = "nick_heiner@hotmail.com",
                     InitiaitingPlayerPicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic",
                     RecepientPlayerPicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic"
@@ -49,7 +49,7 @@ namespace chivalry
 
                 var lostGame = withStartingPieces(new Game()
                 {
-                    RecepientPlayerName = "Winner",
+                    RecepientPlayerName = "Winning Guy",
                     InitiatingPlayerEmail = "nick_heiner@hotmail.com",
                     InitiaitingPlayerPicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic",
                     RecepientPlayerPicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic"
