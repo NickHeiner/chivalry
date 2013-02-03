@@ -26,7 +26,7 @@ namespace chivalry
     /// </summary>
     public sealed partial class PlayGame : LayoutAwarePage
     {
-        private const int BOARD_GRID_SIDE_LENGTH = 45;
+        private const int BOARD_GRID_SIDE_LENGTH = 55;
         // TODO this needs to be BoardCoord, not just Coord
         private IDictionary<Coord, BoardSpace> boardSpaces = new Dictionary<Coord, BoardSpace>();
         private Game game

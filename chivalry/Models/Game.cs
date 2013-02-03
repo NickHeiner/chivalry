@@ -112,6 +112,9 @@ namespace chivalry.Models
         public string InitiatingPlayerName { get; set; }
         public string InitiatingPlayerEmail { get; set; }
 
+        public string InitiaitingPlayerPicSource { get; set; }
+        public string RecepientPlayerPicSource { get; set; }
+
         private Player winner;
 
         [DataMemberJsonConverter(ConverterType = typeof(PlayerJsonConverter))]

@@ -26,7 +26,13 @@ namespace chivalry
                 againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 8 }, BoardSpaceState.OpponentPieceTall);
 
                 user.Games.Add(againstScott);
-                user.Games.Add(withStartingPieces(new Game() { RecepientPlayerName = "Dad", InitiatingPlayerEmail = "nick_heiner@hotmail.com" }));
+                user.Games.Add(withStartingPieces(new Game() 
+                { 
+                    RecepientPlayerName = "Dad", 
+                    InitiatingPlayerEmail = "nick_heiner@hotmail.com", 
+                    InitiaitingPlayerPicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic", 
+                    RecepientPlayerPicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic"
+                }));
 
                 return user;
             }

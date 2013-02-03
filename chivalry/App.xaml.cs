@@ -36,12 +36,12 @@ namespace chivalry
         /// <summary>
         /// For working on the train
         /// </summary>
-        public readonly bool OFFLINE_MODE = false;
+        public readonly bool OFFLINE_MODE = true;
 
         /// <summary>
         /// Fake it
         /// </summary>
-        public readonly bool DEMO_HACK = true;
+        public readonly bool DEMO_HACK = false;
 
         private Task<User> loadUserTask;
 
