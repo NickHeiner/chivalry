@@ -525,5 +525,18 @@ namespace chivalry_tests
             Assert.AreEqual(Player.None, GameValidator.GameWinner(game));
         }
 
+        [TestMethod]
+        public void Winner_DisablesMoving()
+        {
+            Game game = new Game();
+            game.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_1), BoardSpaceState.OpponentPieceShort);
+            game.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_2), BoardSpaceState.OpponentPieceTall);
+            game.SetPieceLocation(Coord.Create(4, 5), BoardSpaceState.OpponentPieceTall);
+
+            game.AddActiveMove(Coord.Create(4, 5));
+
+            Assert.IsFalse(GameValidator.IsValidMove(game, Coord.Create(4, 6)));
+        }
+
     }
 }

@@ -13,6 +13,11 @@ namespace chivalry.Controllers
         // TODO check that move is within bounds
         public static bool IsValidMove(Game game, Coord move)
         {
+            if (GameWinner(game) != Player.None)
+            {
+                return false;
+            }
+
             var pieceAtMove = game.GetPieceAt(move);
             if (! game.NoActiveMovesExist && pieceAtMove != BoardSpaceState.None)
             {
