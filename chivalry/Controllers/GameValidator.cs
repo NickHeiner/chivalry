@@ -13,6 +13,11 @@ namespace chivalry.Controllers
         // TODO check that move is within bounds
         public static bool IsValidMove(Game game, Coord move)
         {
+            if (GameWinner(game) != Player.None)
+            {
+                return false;
+            }
+
             var pieceAtMove = game.GetPieceAt(move);
             if (! game.NoActiveMovesExist && pieceAtMove != BoardSpaceState.None)
             {
@@ -62,13 +67,16 @@ namespace chivalry.Controllers
 
         public static Player GameWinner(Game game)
         {
-            return
-                GameUtils.IsOpponent(game.GetPieceAt(new Coord() { Row = 0, Col = Game.ENDZONE_COL_1 })) &&
-                GameUtils.IsOpponent(game.GetPieceAt(new Coord() { Row = 0, Col = Game.ENDZONE_COL_2 }))
-                    ? Player.Opponent :
-                GameUtils.IsFriendly(game.GetPieceAt(new Coord() { Row = game.RowMax, Col = Game.ENDZONE_COL_1 })) &&
-                GameUtils.IsFriendly(game.GetPieceAt(new Coord() { Row = game.RowMax, Col = Game.ENDZONE_COL_2 }))
-                    ? Player.Friendly : Player.None;
+            var opponentInFriendlyEndzone =
+                GameUtils.IsOpponent(game.GetPieceAt(new Coord() { Row = Game.BOARD_ROW_MAX, Col = Game.ENDZONE_COL_1 })) &&
+                GameUtils.IsOpponent(game.GetPieceAt(new Coord() { Row = Game.BOARD_ROW_MAX, Col = Game.ENDZONE_COL_2 }));
+
+            var friendlyInOpponentEndzone =
+                GameUtils.IsFriendly(game.GetPieceAt(new Coord() { Row = 0, Col = Game.ENDZONE_COL_1 })) &&
+                GameUtils.IsFriendly(game.GetPieceAt(new Coord() { Row = 0, Col = Game.ENDZONE_COL_2 }));
+
+            return opponentInFriendlyEndzone ? Player.Opponent :
+                   friendlyInOpponentEndzone ? Player.Friendly : Player.None;
         }
     }
 }

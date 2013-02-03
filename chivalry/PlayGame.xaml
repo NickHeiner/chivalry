@@ -16,36 +16,78 @@
     -->
     <Grid Style="{StaticResource LayoutRootStyle}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
+            <RowDefinition Height="10" />
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
         </Grid.ColumnDefinitions>
 
         <!-- Back button and page title -->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
             <Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
-            <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{Binding AgainstUserName}" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
 
-        <StackPanel Grid.Row="0" Grid.Column="2" x:Name="capturedOpponentPieces" />
-        <Grid x:Name="boardGrid" Grid.Row="1" Grid.Column="1" />
-        
-        <StackPanel Grid.Row="1" Grid.Column="2" Visibility="{Binding ActiveMovesExist, Converter={StaticResource boolToVisibility}}">
-            <Button Click="Button_Click_1">Reset Move</Button>
-            <Button Click="Button_Click_2">Make Move</Button>
-        </StackPanel>
-        <StackPanel Grid.Row="2" Grid.Column="2" x:Name="capturedFriendlyPieces" />
-        <!--<TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource PageHeaderTextStyle}">You won!</TextBlock>
-        <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource PageHeaderTextStyle}">You lose!</TextBlock>-->
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel x:Name="capturedOpponentPieces" Grid.Column="1" />
+        </Grid>
+
+        <Grid x:Name="boardGrid" Grid.Column="2" Grid.Row="1"/>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="1">
+                <Button Click="Button_Click_1" Background="Red" Width="200" Height="100" IsEnabled="{Binding ActiveMovesExist}">Reset Move</Button>
+                <Button Click="Button_Click_2" Background="Green" Width="200" Height="100" IsEnabled="{Binding ActiveMovesExist}">Make Move</Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="3" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel x:Name="capturedFriendlyPieces" />
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <!-- will this sort of hardcoding completely break on different screen sizes? -->
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Image Source="{Binding RecepientPlayerPicSource}" Width="100" Height="100" />
+
+            <TextBlock Grid.Row="2" Style="{StaticResource PageHeaderTextStyle}" Margin="125,0,0,150" x:Name="gameStatusMessage" />
+
+            <Image Grid.Row="4" Source="{Binding InitiaitingPlayerPicSource}" Width="100" Height="100" />
+        </Grid>
 
         <VisualStateManager.VisualStateGroups>
 

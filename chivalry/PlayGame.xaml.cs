@@ -26,7 +26,7 @@ namespace chivalry
     /// </summary>
     public sealed partial class PlayGame : LayoutAwarePage
     {
-        private const int BOARD_GRID_SIDE_LENGTH = 45;
+        private const int BOARD_GRID_SIDE_LENGTH = 55;
         // TODO this needs to be BoardCoord, not just Coord
         private IDictionary<Coord, BoardSpace> boardSpaces = new Dictionary<Coord, BoardSpace>();
         private Game game
@@ -77,6 +77,25 @@ namespace chivalry
             }
 
             updateBoardFromGame();
+            updateCapturedPiecesFromGame();
+            updateGameStatusFromGame();
+        }
+
+        private void updateGameStatusFromGame()
+        {
+            switch (GameValidator.GameWinner(game))
+            {
+                case Player.Friendly:
+                    gameStatusMessage.Text = "You win!";
+                    break;
+                case Player.Opponent:
+                    gameStatusMessage.Text = "You lose!";
+                    break;
+                case Player.None:
+                    gameStatusMessage.Text = "";
+                    break;
+            }
+
         }
 
         /// <summary>
@@ -113,15 +132,31 @@ namespace chivalry
             }
             if (e.PropertyName.Equals("CapturedPieces"))
             {
-                capturedFriendlyPieces.Children.Clear();
-                capturedOpponentPieces.Children.Clear();
+                updateCapturedPiecesFromGame();
+            }
+        }
 
-                foreach (var _ in Enumerable.Range(0, game.GetCapturedCount(BoardSpaceState.OpponentPieceShort)))
+        private void updateCapturedPiecesFromGame()
+        {
+            capturedFriendlyPieces.Children.Clear();
+            capturedOpponentPieces.Children.Clear();
+
+            updateCapturedPieces(capturedFriendlyPieces, BoardSpaceState.FriendlyPieceShort);
+            updateCapturedPieces(capturedFriendlyPieces, BoardSpaceState.FriendlyPieceTall);
+            updateCapturedPieces(capturedOpponentPieces, BoardSpaceState.OpponentPieceShort);
+            updateCapturedPieces(capturedOpponentPieces, BoardSpaceState.OpponentPieceTall);
+        }
+
+        private void updateCapturedPieces(StackPanel container, BoardSpaceState piece)
+        {
+            foreach (var _ in Enumerable.Range(0, game.GetCapturedCount(piece)))
+            {
+                container.Children.Add(new BoardSpace()
                 {
-                    var boardSpace = new BoardSpace();
-                    boardSpace.Background.Opacity = 0; // can this suffice instead of the style?
-                    capturedOpponentPieces.Children.Add(boardSpace);
-                }
+                    SpaceState = piece,
+                    Width = BOARD_GRID_SIDE_LENGTH,
+                    Height = BOARD_GRID_SIDE_LENGTH
+                });
             }
         }
 

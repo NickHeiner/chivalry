@@ -413,8 +413,8 @@ namespace chivalry_tests
         {
             Game game = new Game();
             game.SetPieceLocation(Coord.Create(10, 0), BoardSpaceState.FriendlyPieceShort); // for game.RowMax
-            game.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_1), BoardSpaceState.OpponentPieceShort);
-            game.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_2), BoardSpaceState.OpponentPieceShort);
+            game.SetPieceLocation(Coord.Create(Game.BOARD_ROW_MAX, Game.ENDZONE_COL_1), BoardSpaceState.OpponentPieceShort);
+            game.SetPieceLocation(Coord.Create(Game.BOARD_ROW_MAX, Game.ENDZONE_COL_2), BoardSpaceState.OpponentPieceShort);
 
             Assert.AreEqual(Player.Opponent, GameValidator.GameWinner(game));
         }
@@ -434,9 +434,8 @@ namespace chivalry_tests
         public void Victory_Friendly()
         {
             Game game = new Game();
-            // is this the right row?
-            game.SetPieceLocation(Coord.Create(16, Game.ENDZONE_COL_1), BoardSpaceState.FriendlyPieceShort);
-            game.SetPieceLocation(Coord.Create(16, Game.ENDZONE_COL_2), BoardSpaceState.FriendlyPieceShort);
+            game.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_1), BoardSpaceState.FriendlyPieceShort);
+            game.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_2), BoardSpaceState.FriendlyPieceShort);
 
             Assert.AreEqual(Player.Friendly, GameValidator.GameWinner(game));
         }
@@ -446,10 +445,11 @@ namespace chivalry_tests
         {
             Game game = new Game();
             // is this the right row?
-            game.SetPieceLocation(Coord.Create(16, Game.ENDZONE_COL_1), BoardSpaceState.FriendlyPieceShort);
-            game.SetPieceLocation(Coord.Create(15, Game.ENDZONE_COL_2), BoardSpaceState.FriendlyPieceShort);
-            game.AddActiveMove(Coord.Create(15, Game.ENDZONE_COL_2));
-            game.AddActiveMove(Coord.Create(16, Game.ENDZONE_COL_2));
+            game.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_1), BoardSpaceState.FriendlyPieceShort);
+            game.SetPieceLocation(Coord.Create(1, Game.ENDZONE_COL_2), BoardSpaceState.FriendlyPieceShort);
+
+            game.AddActiveMove(Coord.Create(1, Game.ENDZONE_COL_2));
+            game.AddActiveMove(Coord.Create(0, Game.ENDZONE_COL_2));
 
             GameController.ExecuteMoves(game);
 
@@ -511,6 +511,31 @@ namespace chivalry_tests
             new DataManager().updateWithUserData(game, user);
 
             Assert.AreEqual(BoardCoord.Transformation.NO_FLIP, game.Transformation);
+        }
+
+        [TestMethod]
+        public void GameValidator_GameWinner_RowMax()
+        {
+            Game game = new Game();
+            game.SetPieceLocation(Coord.Create(4, Game.ENDZONE_COL_1), BoardSpaceState.FriendlyPieceShort);
+            game.SetPieceLocation(Coord.Create(4, Game.ENDZONE_COL_2), BoardSpaceState.FriendlyPieceShort);
+            game.SetPieceLocation(Coord.Create(6, 5), BoardSpaceState.OpponentPieceShort);
+            game.SetPieceLocation(Coord.Create(7, 5), BoardSpaceState.OpponentPieceShort);
+
+            Assert.AreEqual(Player.None, GameValidator.GameWinner(game));
+        }
+
+        [TestMethod]
+        public void Winner_DisablesMoving()
+        {
+            Game game = new Game();
+            game.SetPieceLocation(Coord.Create(Game.BOARD_ROW_MAX, Game.ENDZONE_COL_1), BoardSpaceState.OpponentPieceShort);
+            game.SetPieceLocation(Coord.Create(Game.BOARD_ROW_MAX, Game.ENDZONE_COL_2), BoardSpaceState.OpponentPieceTall);
+            game.SetPieceLocation(Coord.Create(4, 5), BoardSpaceState.OpponentPieceTall);
+
+            game.AddActiveMove(Coord.Create(4, 5));
+
+            Assert.IsFalse(GameValidator.IsValidMove(game, Coord.Create(4, 6)));
         }
 
     }

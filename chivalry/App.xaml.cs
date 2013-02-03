@@ -41,7 +41,7 @@ namespace chivalry
         /// <summary>
         /// Fake it
         /// </summary>
-        public readonly bool DEMO_HACK = true;
+        public readonly bool DEMO_HACK = false;
 
         private Task<User> loadUserTask;
 
