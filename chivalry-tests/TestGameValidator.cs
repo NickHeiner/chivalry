@@ -538,5 +538,11 @@ namespace chivalry_tests
             Assert.IsFalse(GameValidator.IsValidMove(game, Coord.Create(4, 6)));
         }
 
+        [TestMethod]
+        public void TupleOfString()
+        {
+            Assert.AreEqual(Tuple.Create(2, 3), Game.DictionaryJsonConverter.tupleOfString("(2, 3)"));
+        }
+
     }
 }

@@ -106,14 +106,18 @@ namespace chivalry
             game.Transformation = game.RecepientPlayerEmail == user.Email ? BoardCoord.Transformation.FLIP : BoardCoord.Transformation.NO_FLIP;
         }
 
-        internal async void AddNewGame(string initiatingPlayerName, string initiatingPlayerEmail, string againstUserName, string againstUserEmail)
+        internal async void AddNewGame(User user, string recepientUserName, string recepientUserEmail)
         {
             await gameTable.InsertAsync(withStartingPieces(new Game() 
             { 
-                InitiatingPlayerName = initiatingPlayerName,
-                InitiatingPlayerEmail = initiatingPlayerEmail,
-                RecepientPlayerName = againstUserName, 
-                RecepientPlayerEmail = againstUserEmail,
+                InitiatingPlayerName = user.Name,
+                InitiatingPlayerEmail = user.Email,
+                InitiaitingPlayerPicSource = user.ProfilePicSource,
+                RecepientPlayerName = recepientUserName, 
+                RecepientPlayerEmail = recepientUserEmail,
+
+                // TODO http://stackoverflow.com/questions/14677744/get-contact-thumbnail
+                RecepientPlayerPicSource = ""
             }));
         }
 

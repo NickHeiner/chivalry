@@ -76,20 +76,21 @@ namespace chivalry
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var contact = await (new ContactPicker().PickSingleContactAsync());
+            ContactPicker picker = new ContactPicker() 
+            {
+                SelectionMode = ContactSelectionMode.Fields
+            };
+
+            picker.DesiredFields.Add(KnownContactField.Email);
+
+            var contact = await (picker.PickSingleContactAsync());
 
             if (contact == null)
             {
                 return;
             }
 
-            if (contact.Emails.Count() == 0)
-            {
-                new MessageDialog("Please select a player who has an email address listed in your contacts", "Email Address Required");
-                return;
-            }
-
-            ((App)Application.Current).DataManager.AddNewGame(user.Name, user.Email, contact.Name, contact.Emails.First().Value);
+            ((App)Application.Current).DataManager.AddNewGame(user, contact.Name, contact.Emails.First().Value);
 
             await ((App)Application.Current).DataManager.withServerData(user);
         }
