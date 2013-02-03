@@ -71,23 +71,22 @@
 
             <StackPanel x:Name="capturedFriendlyPieces" />
         </Grid>
-        
-        <!--<TextBlock Grid.Row="2" Style="{StaticResource PageHeaderTextStyle}">You won!</TextBlock>
-        <TextBlock Grid.Row="2" Style="{StaticResource PageHeaderTextStyle}">You lose!</TextBlock>-->
-
 
         <Grid Grid.Row="1" Grid.Column="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                
+                <RowDefinition Height="Auto" />
                 <!-- will this sort of hardcoding completely break on different screen sizes? -->
-                <RowDefinition Height="550" />
-                
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Image Source="{Binding RecepientPlayerPicSource}" Width="100" Height="100" />
-            <Image Source="{Binding InitiaitingPlayerPicSource}" Grid.Row="2" Width="100" Height="100" />
+
+            <TextBlock Grid.Row="2" Style="{StaticResource PageHeaderTextStyle}" Margin="125,0,0,150" x:Name="gameStatusMessage" />
+
+            <Image Grid.Row="4" Source="{Binding InitiaitingPlayerPicSource}" Width="100" Height="100" />
         </Grid>
 
         <VisualStateManager.VisualStateGroups>

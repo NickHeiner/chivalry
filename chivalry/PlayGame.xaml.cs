@@ -78,6 +78,12 @@ namespace chivalry
 
             updateBoardFromGame();
             updateCapturedPiecesFromGame();
+            updateGameStatusFromGame();
+        }
+
+        private void updateGameStatusFromGame()
+        {
+            gameStatusMessage.Text = GameValidator.GameWinner(game) == Player.Friendly ? "You win!" : "You lose!";
         }
 
         /// <summary>

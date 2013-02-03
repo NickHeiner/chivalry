@@ -27,9 +27,9 @@ namespace chivalry.Models
         public static readonly int BOARD_COL_MAX = 15;
 
         [IgnoreDataMember]
-        public static readonly int ENDZONE_COL_1 = 6;
+        public static readonly int ENDZONE_COL_1 = 5;
         [IgnoreDataMember]
-        public static readonly int ENDZONE_COL_2 = 7;
+        public static readonly int ENDZONE_COL_2 = 6;
 
         [IgnoreDataMember]
         public BoardCoord.Transformation Transformation { get; set; }
