@@ -416,7 +416,7 @@ namespace chivalry_tests
             game.SetPieceLocation(Coord.Create(Game.BOARD_ROW_MAX, Game.ENDZONE_COL_1), BoardSpaceState.OpponentPieceShort);
             game.SetPieceLocation(Coord.Create(Game.BOARD_ROW_MAX, Game.ENDZONE_COL_2), BoardSpaceState.OpponentPieceShort);
 
-            Assert.AreEqual(Player.Opponent, GameValidator.GameWinner(game));
+            Assert.AreEqual(RelativePlayer.Opponent, GameValidator.GameWinner(game));
         }
 
         [TestMethod]
@@ -426,7 +426,7 @@ namespace chivalry_tests
             Game game = new Game();
             game.SetPieceLocation(Coord.Create(16, Game.ENDZONE_COL_1), BoardSpaceState.None);
 
-            Assert.AreEqual(Player.None, GameValidator.GameWinner(game));
+            Assert.AreEqual(RelativePlayer.None, GameValidator.GameWinner(game));
         }
 
         [TestMethod]
@@ -437,7 +437,7 @@ namespace chivalry_tests
             game.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_1), BoardSpaceState.FriendlyPieceShort);
             game.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_2), BoardSpaceState.FriendlyPieceShort);
 
-            Assert.AreEqual(Player.Friendly, GameValidator.GameWinner(game));
+            Assert.AreEqual(RelativePlayer.Friendly, GameValidator.GameWinner(game));
         }
 
         [TestMethod]
@@ -453,7 +453,7 @@ namespace chivalry_tests
 
             GameController.ExecuteMoves(game);
 
-            Assert.AreEqual(Player.Friendly, game.Winner);
+            Assert.AreEqual(RelativePlayer.Friendly, game.Winner);
         }
 
         [TestMethod]
@@ -467,7 +467,7 @@ namespace chivalry_tests
 
             GameController.ExecuteMoves(game);
 
-            Assert.AreEqual(Player.None, game.Winner);
+            Assert.AreEqual(RelativePlayer.None, game.Winner);
         }
 
         [TestMethod]
@@ -522,7 +522,7 @@ namespace chivalry_tests
             game.SetPieceLocation(Coord.Create(6, 5), BoardSpaceState.OpponentPieceShort);
             game.SetPieceLocation(Coord.Create(7, 5), BoardSpaceState.OpponentPieceShort);
 
-            Assert.AreEqual(Player.None, GameValidator.GameWinner(game));
+            Assert.AreEqual(RelativePlayer.None, GameValidator.GameWinner(game));
         }
 
         [TestMethod]

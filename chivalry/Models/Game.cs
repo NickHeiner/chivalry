@@ -57,7 +57,7 @@ namespace chivalry.Models
         {
             public object ConvertFromJson(IJsonValue value)
             {
-                return Enum.Parse(typeof(Player), value.GetString());
+                return Enum.Parse(typeof(RelativePlayer), value.GetString());
             }
 
             public IJsonValue ConvertToJson(object instance)
@@ -122,10 +122,10 @@ namespace chivalry.Models
         public string InitiaitingPlayerPicSource { get; set; }
         public string RecepientPlayerPicSource { get; set; }
 
-        private Player winner;
+        private RelativePlayer winner;
 
         [DataMemberJsonConverter(ConverterType = typeof(PlayerJsonConverter))]
-        public Player Winner 
+        public RelativePlayer Winner 
         {
             get
             {

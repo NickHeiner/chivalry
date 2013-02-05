@@ -85,13 +85,13 @@ namespace chivalry
         {
             switch (GameValidator.GameWinner(game))
             {
-                case Player.Friendly:
+                case RelativePlayer.Friendly:
                     gameStatusMessage.Text = "You win!";
                     break;
-                case Player.Opponent:
+                case RelativePlayer.Opponent:
                     gameStatusMessage.Text = "You lose!";
                     break;
-                case Player.None:
+                case RelativePlayer.None:
                     gameStatusMessage.Text = "";
                     break;
             }

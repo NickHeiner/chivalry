@@ -92,6 +92,7 @@ namespace chivalry
 
             ((App)Application.Current).DataManager.AddNewGame(user, contact.Name, contact.Emails.First().Value);
 
+            // TODO sometimes the most recent game doesn't show up when this refreshes the data
             await ((App)Application.Current).DataManager.withServerData(user);
         }
     }
