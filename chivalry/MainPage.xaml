@@ -29,7 +29,7 @@
 
             <StackPanel x:Name="gamesView">
                 <TextBlock x:Name="noGamesText" Text="{StaticResource NoGamesMessage}" Visibility="Collapsed" Style="{StaticResource ItemTextStyle}" />
-                <Button x:Name="newGameButton" Click="Button_Click_1" Visibility="Collapsed">+ New Game</Button>
+                <Button x:Name="newGameButton" Click="NewGame_Click" Visibility="Collapsed">+ New Game</Button>
             </StackPanel>
 
             <!-- Horizontal scrolling grid used in most view states -->
@@ -41,7 +41,8 @@
             ItemsSource="{Binding Source={StaticResource groupedGames}}"
             SelectionMode="None"
             IsSwipeEnabled="false"
-            IsItemClickEnabled="True">
+            IsItemClickEnabled="True"
+            ItemClick="itemGridView_ItemClick_1">
                 
                 <GridView.ItemTemplate>
                     <DataTemplate>

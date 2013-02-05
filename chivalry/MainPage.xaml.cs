@@ -68,15 +68,7 @@ namespace chivalry
         {
         }
 
-        private void GridView_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count > 0)
-            {
-                Frame.Navigate(typeof(PlayGame), e.AddedItems[0]);
-            }
-        }
-
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void NewGame_Click(object sender, RoutedEventArgs e)
         {
             ContactPicker picker = new ContactPicker() 
             {
@@ -96,6 +88,11 @@ namespace chivalry
 
             // TODO sometimes the most recent game doesn't show up when this refreshes the data
             await ((App)Application.Current).DataManager.withServerData(user);
+        }
+
+        private void itemGridView_ItemClick_1(object sender, ItemClickEventArgs e)
+        {
+            Frame.Navigate(typeof(PlayGame), e.ClickedItem);
         }
     }
 }
