@@ -7,6 +7,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    
+    <Page.Resources>
+        <CollectionViewSource x:Name="groupedGames" IsSourceGrouped="True"/>
+    </Page.Resources>
 
     <StackPanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Style="{StaticResource LayoutRootStyle}">
         <Grid Margin="36,36,36,0">
@@ -22,12 +26,69 @@
         <StackPanel Margin="36,36,0,36">
 
             <TextBlock x:Name="loginFailedMessage" Text="{StaticResource LoginFailedMessage}" Style="{StaticResource SubheaderTextStyle}" Visibility="Collapsed" />
+            <TextBlock Text="{StaticResource GameListLabel}" Style="{StaticResource PageSubheaderTextStyle}" />
+
+
+            <!-- Horizontal scrolling grid used in most view states -->
+            <GridView
+            x:Name="itemGridView"
+            AutomationProperties.AutomationId="ItemGridView"
+            AutomationProperties.Name="Grouped Items"
+            Grid.RowSpan="2"
+            Padding="116,137,40,46"
+            ItemsSource="{Binding Source={StaticResource groupedGames}}"
+            SelectionMode="None"
+            IsSwipeEnabled="false"
+            IsItemClickEnabled="True">
+                
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Left" Width="250" Height="250">
+                            <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                                <Image Source="{Binding Image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                                <TextBlock Text="{Binding RecepientPlayerName}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
+                                <TextBlock Text="{Binding RecepientPlayerEmail}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+                <GridView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid Margin="1,0,0,6">
+                                    <Button
+                                    AutomationProperties.Name="Group Title"
+                                    Style="{StaticResource TextPrimaryButtonStyle}" >
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Key}" Margin="3,-7,10,10" Style="{StaticResource GroupHeaderTextStyle}" />
+                                            <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-7,0,10" Style="{StaticResource GroupHeaderTextStyle}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                        <GroupStyle.Panel>
+                            <ItemsPanelTemplate>
+                                <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"/>
+                            </ItemsPanelTemplate>
+                        </GroupStyle.Panel>
+                    </GroupStyle>
+                </GridView.GroupStyle>
+            </GridView>
 
             <StackPanel x:Name="gamesView">
                 <TextBlock Text="{StaticResource GameListLabel}" Style="{StaticResource SubheaderTextStyle}" />
                 <!-- It seems like we want the ItemClick event here, but it never fired -->
                 <GridView ItemsSource="{Binding Games}"
-                          
                           SelectionChanged="GridView_SelectionChanged_1">
 
                     <GridView.ItemTemplate>

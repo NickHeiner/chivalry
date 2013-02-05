@@ -14,6 +14,49 @@ namespace chivalry_tests
     public class TestGameValidator
     {
         [TestMethod]
+        public void LabelYourTurn()
+        {
+            string email = "a@b.c";
+
+            Assert.AreEqual(
+                GameController.LABEL_WAITING_ON_USER,
+                GameController.LabelOf(new User() { Email = email }, GameController.WithStartingPieces(new Game() 
+                {
+                    WaitingOn = AbsolutePlayer.Initiator,
+                    InitiatingPlayerEmail = email
+                })));
+        }
+
+        [TestMethod]
+        public void LabelOtherTurn()
+        {
+            string email = "a@b.c";
+
+            Assert.AreEqual(
+                GameController.LABEL_WAITING_ON_OTHER,
+                GameController.LabelOf(new User() { Email = email }, GameController.WithStartingPieces(new Game() 
+                { 
+                    WaitingOn = AbsolutePlayer.Recepient,
+                    InitiatingPlayerEmail = email
+                })));
+        }
+
+        [TestMethod]
+        public void LabelGameOver()
+        {
+            string email = "a@b.c";
+
+            Game game = new Game() { WaitingOn = AbsolutePlayer.Recepient };
+
+            game.SetPieceLocation(Coord.Create(4, 5), BoardSpaceState.OpponentPieceTall);
+            game.SetPieceLocation(Coord.Create(9, 2), BoardSpaceState.OpponentPieceShort);
+
+            Assert.AreEqual(
+                GameController.LABEL_DONE,
+                GameController.LabelOf(new User() { Email = email }, game));
+        }
+
+        [TestMethod]
         public void AddPiece()
         {
             Coord coord = new Coord() { Row = 1, Col = 0 };
@@ -36,7 +79,7 @@ namespace chivalry_tests
         {
             Coord validMove = new Coord() { Row = 0, Col = 0};
 
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
             game.SetPieceLocation(validMove, BoardSpaceState.FriendlyPieceShort);
             Assert.IsTrue(GameValidator.IsValidMove(game, validMove));
         }
@@ -45,7 +88,7 @@ namespace chivalry_tests
         public void NoActiveMoves_SelectNone()
         {
             Coord coord = new Coord() { Row = 0, Col = -1 };
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
             game.SetPieceLocation(coord, BoardSpaceState.None);
             Assert.IsFalse(GameValidator.IsValidMove(game, coord));
         }
@@ -54,7 +97,7 @@ namespace chivalry_tests
         public void NoActiveMoves_SelectOpponent()
         {
             Coord coord = new Coord() { Row = 0, Col = 1 };
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
             game.SetPieceLocation(coord, BoardSpaceState.OpponentPieceShort);
             Assert.IsFalse(GameValidator.IsValidMove(game, coord));
         }
@@ -63,7 +106,7 @@ namespace chivalry_tests
         public void MoveOneSpace()
         {
             Coord coord = new Coord() { Row = 1, Col = -1 };
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
             game.AddActiveMove(coord);
             Assert.IsTrue(GameValidator.IsValidMove(game, coord + new Coord() { Row = 0, Col = 1 }));
         }
@@ -71,7 +114,7 @@ namespace chivalry_tests
         [TestMethod]
         public void MoveOneSpace_Occupied()
         {
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
             
             Coord start = new Coord() { Row = 1, Col = 1 };
             game.AddActiveMove(start);
@@ -87,7 +130,7 @@ namespace chivalry_tests
         {
             Coord nothingToJump = new Coord() { Row = 2, Col = 2 };
 
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
             game.AddActiveMove(new Coord() { Row = 0, Col = 0 });
 
             Assert.IsFalse(GameValidator.IsValidMove(game, nothingToJump));
@@ -98,7 +141,7 @@ namespace chivalry_tests
         {
             Coord tooFar = new Coord() { Row = 5, Col = 7 };
 
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
             game.AddActiveMove(new Coord() { Row = 0, Col = 0 });
             game.SetPieceLocation(new Coord() { Row = 0, Col = 0 }, BoardSpaceState.FriendlyPieceTall);
 
@@ -108,7 +151,7 @@ namespace chivalry_tests
         [TestMethod]
         public void MoveOneSpace_HopFriendly()
         {
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
 
             Coord origin = new Coord() { Row = 0, Col = 0 };
             Coord plusOne = new Coord() { Row = 1, Col = 1 };
@@ -122,7 +165,7 @@ namespace chivalry_tests
         [TestMethod]
         public void MoveOneSpace_HopOpponent()
         {
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
 
             Coord origin = new Coord() { Row = 0, Col = 0 };
             Coord plusOne = new Coord() { Row = 1, Col = 1 };
@@ -136,7 +179,7 @@ namespace chivalry_tests
         [TestMethod]
         public void MoveOneSpace_OnlyHopStraight()
         {
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
 
             game.AddActiveMove(new Coord() { Row = 0, Col = 0 });
             game.SetPieceLocation(new Coord() { Row = 1, Col = 1 }, BoardSpaceState.OpponentPieceShort);
@@ -147,7 +190,7 @@ namespace chivalry_tests
         [TestMethod]
         public void HopMultipleFriendly()
         {
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
 
             game.AddActiveMove(new Coord() { Row = 0, Col = 0 });
             game.SetPieceLocation(new Coord() { Row = 1, Col = 1 }, BoardSpaceState.FriendlyPieceTall);
@@ -160,7 +203,7 @@ namespace chivalry_tests
         [TestMethod]
         public void HopMultipleOpponents()
         {
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
 
             game.AddActiveMove(Coord.Create(0, 0));
             game.SetPieceLocation(Coord.Create(1, 1), BoardSpaceState.OpponentPieceShort);
@@ -173,7 +216,7 @@ namespace chivalry_tests
         [TestMethod]
         public void HopMixed_WithShort()
         {
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
 
             game.SetPieceLocation(Coord.Create(0, 0), BoardSpaceState.FriendlyPieceShort);
             game.AddActiveMove(Coord.Create(0, 0));
@@ -187,7 +230,7 @@ namespace chivalry_tests
         [TestMethod]
         public void HopMixed_WithTall()
         {
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
 
             game.SetPieceLocation(Coord.Create(0, 0), BoardSpaceState.FriendlyPieceTall);
             game.AddActiveMove(Coord.Create(0, 0));
@@ -201,7 +244,7 @@ namespace chivalry_tests
         [TestMethod]
         public void MoveIntoFriendlyOccupiedSpace()
         {
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
             game.SetPieceLocation(Coord.Create(1, 1), BoardSpaceState.FriendlyPieceTall);
             game.AddActiveMove(Coord.Create(0, 0));
 
@@ -211,7 +254,7 @@ namespace chivalry_tests
         [TestMethod]
         public void OnlyMoveOneSpaceWithoutJumping()
         {
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
             game.AddActiveMove(Coord.Create(0, 0));
             game.AddActiveMove(Coord.Create(1, 0));
 
@@ -221,7 +264,7 @@ namespace chivalry_tests
         [TestMethod]
         public void JumpingAfterMovingNormally()
         {
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
             game.AddActiveMove(Coord.Create(0, 0));
             game.AddActiveMove(Coord.Create(1, 0));
             game.SetPieceLocation(Coord.Create(2, 0), BoardSpaceState.FriendlyPieceTall);
@@ -408,6 +451,17 @@ namespace chivalry_tests
         }
 
         [TestMethod]
+        public void Victory_OutOfPieces()
+        {
+            Game game = new Game() { WaitingOn = AbsolutePlayer.Recepient };
+
+            game.SetPieceLocation(Coord.Create(4, 5), BoardSpaceState.OpponentPieceTall);
+            game.SetPieceLocation(Coord.Create(9, 2), BoardSpaceState.OpponentPieceShort);
+
+            Assert.AreEqual(RelativePlayer.Opponent, GameValidator.GameWinner(game));
+        }
+
+        [TestMethod]
         // TODO add FLAWLESS VICTORY easter egg
         public void Victory_Opponent()
         {
@@ -423,8 +477,7 @@ namespace chivalry_tests
         // TODO add FLAWLESS VICTORY easter egg
         public void Victory_NotTautological()
         {
-            Game game = new Game();
-            game.SetPieceLocation(Coord.Create(16, Game.ENDZONE_COL_1), BoardSpaceState.None);
+            Game game = GameController.WithStartingPieces(new Game());
 
             Assert.AreEqual(RelativePlayer.None, GameValidator.GameWinner(game));
         }
@@ -459,7 +512,7 @@ namespace chivalry_tests
         [TestMethod]
         public void ExecuteMoves_SetWinner_None()
         {
-            Game game = new Game();
+            Game game = GameController.WithStartingPieces(new Game());
 
             game.SetPieceLocation(Coord.Create(2, 2), BoardSpaceState.FriendlyPieceShort);
             game.AddActiveMove(Coord.Create(2, 2));

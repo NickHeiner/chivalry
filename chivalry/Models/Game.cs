@@ -124,6 +124,8 @@ namespace chivalry.Models
 
         private RelativePlayer winner;
 
+        public AbsolutePlayer WaitingOn { get; set; }
+
         [DataMemberJsonConverter(ConverterType = typeof(PlayerJsonConverter))]
         public RelativePlayer Winner 
         {
@@ -142,8 +144,6 @@ namespace chivalry.Models
         }
 
         // public with get; set; for Azure
-        // [IgnoreDataMember]
-        //[DataMember(Name = "BoardPieceLocations")]
         [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]
         public Dictionary<Coord, BoardSpaceState> pieceLocations { get; set; }
 
@@ -215,11 +215,6 @@ namespace chivalry.Models
             NotifyPropertyChanged("ActiveMovesExist");
             NotifyPropertyChanged("NoActiveMovesExist");
         }
-
-        //public void AddActiveMove(int row, int col)
-        //{
-        //    AddActiveMove(new Tuple<int, int>(row, col));
-        //}
 
         public void AddActiveMove(Coord coord)
         {

@@ -17,6 +17,7 @@ using Windows.UI.Popups;
 using Windows.ApplicationModel.Contacts;
 using chivalry.Models;
 using chivalry.Common;
+using chivalry.Controllers;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -54,6 +55,8 @@ namespace chivalry
             {
                 newGameButton.Visibility = Visibility.Visible;
                 noGamesText.Visibility = user.Games.Count() == 0 ? Visibility.Visible : Visibility.Collapsed;
+                groupedGames.Source = user.Games.GroupBy(
+                    game => GameValidator.GameWinner(game) == RelativePlayer.None ? game.WaitingOn.ToString() : GameValidator.GameWinner(game).ToString());
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using chivalry.Models;
+﻿using chivalry.Controllers;
+using chivalry.Models;
 using Microsoft.WindowsAzure.MobileServices;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace chivalry
                 user.Email = "nick_heiner@hotmail.com";
                 user.ProfilePicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic";
 
-                Game againstScott = new Game() { RecepientPlayerName = "Scott", InitiatingPlayerEmail = user.Email };
+                Game againstScott = new Game() { RecepientPlayerName = "Scott", InitiatingPlayerEmail = user.Email, WaitingOn = AbsolutePlayer.Recepient };
                 againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 5 }, BoardSpaceState.FriendlyPieceShort);
                 againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 6 }, BoardSpaceState.FriendlyPieceTall);
                 againstScott.SetPieceLocation(new Coord() { Row = 4, Col = 4 }, BoardSpaceState.OpponentPieceShort);
@@ -30,8 +31,9 @@ namespace chivalry
 
                 user.Games.Add(againstScott);
 
-                var dadGame = withStartingPieces(new Game()
+                var dadGame = GameController.WithStartingPieces(new Game()
                 {
+                    WaitingOn = AbsolutePlayer.Initiator,
                     RecepientPlayerName = "Dad",
                     InitiatingPlayerEmail = user.Email,
                     InitiaitingPlayerPicSource = user.ProfilePicSource,
@@ -42,8 +44,9 @@ namespace chivalry
 
                 user.Games.Add(dadGame);
 
-                var wonGame = withStartingPieces(new Game()
+                var wonGame = GameController.WithStartingPieces(new Game()
                 {
+                    WaitingOn = AbsolutePlayer.Initiator,
                     RecepientPlayerName = "Losing Guy",
                     InitiatingPlayerEmail = user.Email,
                     InitiaitingPlayerPicSource = user.ProfilePicSource,
@@ -57,8 +60,9 @@ namespace chivalry
 
                 user.Games.Add(wonGame);
 
-                var lostGame = withStartingPieces(new Game()
+                var lostGame = GameController.WithStartingPieces(new Game()
                 {
+                    WaitingOn = AbsolutePlayer.Recepient,
                     RecepientPlayerName = "Winning Guy",
                     InitiatingPlayerEmail = user.Email,
                     InitiaitingPlayerPicSource = user.ProfilePicSource,
@@ -81,7 +85,7 @@ namespace chivalry
             {
                 if (((App)Application.Current).DEMO_HACK)
                 {
-                    withStartingPieces(game);
+                    GameController.WithStartingPieces(game);
                     foreach (var _ in Enumerable.Range(0, 10))
                     {
                         game.CapturePiece(BoardSpaceState.OpponentPieceShort);
@@ -108,7 +112,7 @@ namespace chivalry
 
         internal async void AddNewGame(User user, string recepientUserName, string recepientUserEmail)
         {
-            await gameTable.InsertAsync(withStartingPieces(new Game() 
+            await gameTable.InsertAsync(GameController.WithStartingPieces(new Game() 
             { 
                 InitiatingPlayerName = user.Name,
                 InitiatingPlayerEmail = user.Email,
@@ -121,40 +125,5 @@ namespace chivalry
             }));
         }
 
-        private Game withStartingPieces(Game game)
-        {
-            /**
-             * This isn't as declarative as I'd like, but it's tough in a language
-             * without object literals
-             * 
-             * I'd love to be able to say "the enemy's gate is down" here, but unfortunately
-             * that's not the spec
-             */
-            fillTeam(game, 5, 1, BoardSpaceState.OpponentPieceShort, BoardSpaceState.OpponentPieceTall);
-            fillTeam(game, 10, -1, BoardSpaceState.FriendlyPieceShort, BoardSpaceState.FriendlyPieceTall);
-
-            return game;
-        }
-
-        private void fillTeam(Game game, int startRow, int nextRowOffset, BoardSpaceState shortPiece, BoardSpaceState tallPiece)
-        {
-            int nextRow = startRow + nextRowOffset;
-
-            game.SetPieceLocation(new Coord() { Row = startRow, Col = 2 }, tallPiece);
-            game.SetPieceLocation(new Coord() { Row = nextRow, Col = 3 }, tallPiece);
-            game.SetPieceLocation(new Coord() { Row = startRow, Col = 9 }, tallPiece);
-            game.SetPieceLocation(new Coord() { Row = nextRow, Col = 8 }, tallPiece);
-
-            fillRow(game, shortPiece, startRow, 3, 8);
-            fillRow(game, shortPiece, nextRow, 4, 7);
-        }
-
-        private void fillRow(Game game, BoardSpaceState toFill, int row, int lowerColBoundInclusive, int upperColBoundInclusive)
-        {
-            foreach (int col in Enumerable.Range(lowerColBoundInclusive, upperColBoundInclusive - lowerColBoundInclusive + 1))
-            {
-                game.SetPieceLocation(new Coord() { Row = row, Col = col }, toFill);
-            }
-        }
     }
 }
