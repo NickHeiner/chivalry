@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Data.Json;
+using Windows.Globalization.DateTimeFormatting;
 
 namespace chivalry.Models
 {
@@ -57,7 +58,7 @@ namespace chivalry.Models
         {
             public object ConvertFromJson(IJsonValue value)
             {
-                return Enum.Parse(typeof(Player), value.GetString());
+                return Enum.Parse(typeof(RelativePlayer), value.GetString());
             }
 
             public IJsonValue ConvertToJson(object instance)
@@ -122,10 +123,12 @@ namespace chivalry.Models
         public string InitiaitingPlayerPicSource { get; set; }
         public string RecepientPlayerPicSource { get; set; }
 
-        private Player winner;
+        private RelativePlayer winner;
+
+        public AbsolutePlayer WaitingOn { get; set; }
 
         [DataMemberJsonConverter(ConverterType = typeof(PlayerJsonConverter))]
-        public Player Winner 
+        public RelativePlayer Winner 
         {
             get
             {
@@ -141,9 +144,17 @@ namespace chivalry.Models
             }
         }
 
+        public DateTime LastMoveSubmittedAt { get; set; }
+
+        public string LastMoveSubmittedAtLabel
+        {
+            get
+            {
+                return "Last move at " + new DateTimeFormatter("month day dayofweek year").Format(LastMoveSubmittedAt);
+            }
+        }
+
         // public with get; set; for Azure
-        // [IgnoreDataMember]
-        //[DataMember(Name = "BoardPieceLocations")]
         [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]
         public Dictionary<Coord, BoardSpaceState> pieceLocations { get; set; }
 
@@ -215,11 +226,6 @@ namespace chivalry.Models
             NotifyPropertyChanged("ActiveMovesExist");
             NotifyPropertyChanged("NoActiveMovesExist");
         }
-
-        //public void AddActiveMove(int row, int col)
-        //{
-        //    AddActiveMove(new Tuple<int, int>(row, col));
-        //}
 
         public void AddActiveMove(Coord coord)
         {

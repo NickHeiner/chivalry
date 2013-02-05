@@ -10,10 +10,15 @@ namespace chivalry.Controllers
 {
     public class GameValidator
     {
+        /// <summary>
+        /// If you have fewer pieces than this, you lose.
+        /// </summary>
+        public static readonly int MIN_PIECES = 2;
+
         // TODO check that move is within bounds
         public static bool IsValidMove(Game game, Coord move)
         {
-            if (GameWinner(game) != Player.None)
+            if (GameWinner(game) != RelativePlayer.None)
             {
                 return false;
             }
@@ -65,8 +70,20 @@ namespace chivalry.Controllers
                          .Count() == 0;
         }
 
-        public static Player GameWinner(Game game)
+        public static RelativePlayer GameWinner(Game game)
         {
+            var opponentOutOfPieces = game
+                                        .QueryPieceLocations
+                                        .Select(pieceLoc => pieceLoc.Value)
+                                        .Where(GameUtils.IsOpponent)
+                                        .Count() < MIN_PIECES;
+
+            var friendlyOutOfPieces = game
+                            .QueryPieceLocations
+                            .Select(pieceLoc => pieceLoc.Value)
+                            .Where(GameUtils.IsFriendly)
+                            .Count() < MIN_PIECES;
+
             var opponentInFriendlyEndzone =
                 GameUtils.IsOpponent(game.GetPieceAt(new Coord() { Row = Game.BOARD_ROW_MAX, Col = Game.ENDZONE_COL_1 })) &&
                 GameUtils.IsOpponent(game.GetPieceAt(new Coord() { Row = Game.BOARD_ROW_MAX, Col = Game.ENDZONE_COL_2 }));
@@ -75,8 +92,12 @@ namespace chivalry.Controllers
                 GameUtils.IsFriendly(game.GetPieceAt(new Coord() { Row = 0, Col = Game.ENDZONE_COL_1 })) &&
                 GameUtils.IsFriendly(game.GetPieceAt(new Coord() { Row = 0, Col = Game.ENDZONE_COL_2 }));
 
-            return opponentInFriendlyEndzone ? Player.Opponent :
-                   friendlyInOpponentEndzone ? Player.Friendly : Player.None;
+            return 
+                opponentOutOfPieces ? RelativePlayer.Friendly :
+                friendlyOutOfPieces ? RelativePlayer.Opponent :
+                opponentInFriendlyEndzone ? RelativePlayer.Opponent :
+                friendlyInOpponentEndzone ? RelativePlayer.Friendly : 
+                    RelativePlayer.None;
         }
     }
 }

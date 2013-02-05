@@ -126,11 +126,12 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\AbsolutePlayer.cs" />
     <Compile Include="Models\BoardCoord.cs" />
     <Compile Include="Models\BoardSpaceState.cs" />
     <Compile Include="Models\Coord.cs" />
     <Compile Include="Models\Game.cs" />
-    <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\RelativePlayer.cs" />
     <Compile Include="PlayGame.xaml.cs">
       <DependentUpon>PlayGame.xaml</DependentUpon>
     </Compile>
@@ -190,6 +191,7 @@
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\winrt45\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>

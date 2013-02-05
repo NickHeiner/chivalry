@@ -10,6 +10,45 @@ namespace chivalry.Controllers
 {
     public static class GameController
     {
+        /// <summary>
+        /// These should probably be static resources,
+        /// but I don't want to couple GameController to App
+        /// </summary>
+        public static readonly string LABEL_WAITING_ON_USER = "Your turn";
+        public static readonly string LABEL_WAITING_ON_OTHER = "Awaiting other player";
+        public static readonly string LABEL_DONE = "Finished";
+
+        public static readonly string STATUS_WIN = "You win!";
+        public static readonly string STATUS_LOSE = "You lose!";
+
+        public static string LabelOf(User user, Game game)
+        {
+            var waitingOnInitiator = game.WaitingOn == AbsolutePlayer.Initiator;
+            var currentUserIsInitiator = user.Email == game.InitiatingPlayerEmail;
+
+            return 
+                GameValidator.GameWinner(game) != RelativePlayer.None ? LABEL_DONE :
+                waitingOnInitiator && currentUserIsInitiator ? LABEL_WAITING_ON_USER :
+                waitingOnInitiator && !currentUserIsInitiator ? LABEL_WAITING_ON_OTHER :
+                !waitingOnInitiator && currentUserIsInitiator ? LABEL_WAITING_ON_OTHER :
+                LABEL_WAITING_ON_USER;
+        }
+
+        public static string StatusMessageOf(User user, Game game)
+        {
+           switch (GameValidator.GameWinner(game))
+           {
+                case RelativePlayer.Friendly:
+                    return STATUS_WIN;
+                case RelativePlayer.Opponent:
+                    return STATUS_LOSE;
+                case RelativePlayer.None:
+                    return LabelOf(user, game);
+           }
+
+           throw new InvalidOperationException();
+        }
+
         public static void OnBoardSpaceClick(Game game, Coord coordClicked)
         {
             if (GameValidator.IsValidMove(game, coordClicked))
@@ -45,6 +84,42 @@ namespace chivalry.Controllers
             game.ClearActiveMoves();
 
             game.Winner = GameValidator.GameWinner(game);
+        }
+
+        public static Game WithStartingPieces(Game game)
+        {
+            /**
+             * This isn't as declarative as I'd like, but it's tough in a language
+             * without object literals
+             * 
+             * I'd love to be able to say "the enemy's gate is down" here, but unfortunately
+             * that's not the spec
+             */
+            fillTeam(game, 5, 1, BoardSpaceState.OpponentPieceShort, BoardSpaceState.OpponentPieceTall);
+            fillTeam(game, 10, -1, BoardSpaceState.FriendlyPieceShort, BoardSpaceState.FriendlyPieceTall);
+
+            return game;
+        }
+
+        private static void fillTeam(Game game, int startRow, int nextRowOffset, BoardSpaceState shortPiece, BoardSpaceState tallPiece)
+        {
+            int nextRow = startRow + nextRowOffset;
+
+            game.SetPieceLocation(new Coord() { Row = startRow, Col = 2 }, tallPiece);
+            game.SetPieceLocation(new Coord() { Row = nextRow, Col = 3 }, tallPiece);
+            game.SetPieceLocation(new Coord() { Row = startRow, Col = 9 }, tallPiece);
+            game.SetPieceLocation(new Coord() { Row = nextRow, Col = 8 }, tallPiece);
+
+            fillRow(game, shortPiece, startRow, 3, 8);
+            fillRow(game, shortPiece, nextRow, 4, 7);
+        }
+
+        private static void fillRow(Game game, BoardSpaceState toFill, int row, int lowerColBoundInclusive, int upperColBoundInclusive)
+        {
+            foreach (int col in Enumerable.Range(lowerColBoundInclusive, upperColBoundInclusive - lowerColBoundInclusive + 1))
+            {
+                game.SetPieceLocation(new Coord() { Row = row, Col = col }, toFill);
+            }
         }
     }
 }

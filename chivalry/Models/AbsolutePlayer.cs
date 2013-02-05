@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace chivalry.Models
 {
-    public enum Player
+    public enum AbsolutePlayer
     {
-        Friendly,
-        Opponent,
-        None
+        Initiator,
+        Recepient
     }
 }

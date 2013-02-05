@@ -17,6 +17,7 @@ using Windows.UI.Popups;
 using Windows.ApplicationModel.Contacts;
 using chivalry.Models;
 using chivalry.Common;
+using chivalry.Controllers;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -54,6 +55,7 @@ namespace chivalry
             {
                 newGameButton.Visibility = Visibility.Visible;
                 noGamesText.Visibility = user.Games.Count() == 0 ? Visibility.Visible : Visibility.Collapsed;
+                groupedGames.Source = user.Games.GroupBy(game => GameController.LabelOf(user, game));
             }
         }
 
@@ -66,15 +68,7 @@ namespace chivalry
         {
         }
 
-        private void GridView_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count > 0)
-            {
-                Frame.Navigate(typeof(PlayGame), e.AddedItems[0]);
-            }
-        }
-
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void NewGame_Click(object sender, RoutedEventArgs e)
         {
             ContactPicker picker = new ContactPicker() 
             {
@@ -92,7 +86,13 @@ namespace chivalry
 
             ((App)Application.Current).DataManager.AddNewGame(user, contact.Name, contact.Emails.First().Value);
 
+            // TODO sometimes the most recent game doesn't show up when this refreshes the data
             await ((App)Application.Current).DataManager.withServerData(user);
+        }
+
+        private void itemGridView_ItemClick_1(object sender, ItemClickEventArgs e)
+        {
+            Frame.Navigate(typeof(PlayGame), e.ClickedItem);
         }
     }
 }
