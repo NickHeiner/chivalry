@@ -26,8 +26,11 @@
         <StackPanel Margin="36,36,0,36">
 
             <TextBlock x:Name="loginFailedMessage" Text="{StaticResource LoginFailedMessage}" Style="{StaticResource SubheaderTextStyle}" Visibility="Collapsed" />
-            <TextBlock Text="{StaticResource GameListLabel}" Style="{StaticResource PageSubheaderTextStyle}" />
 
+            <StackPanel x:Name="gamesView">
+                <TextBlock x:Name="noGamesText" Text="{StaticResource NoGamesMessage}" Visibility="Collapsed" Style="{StaticResource ItemTextStyle}" />
+                <Button x:Name="newGameButton" Click="Button_Click_1" Visibility="Collapsed">+ New Game</Button>
+            </StackPanel>
 
             <!-- Horizontal scrolling grid used in most view states -->
             <GridView
@@ -35,7 +38,6 @@
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
             Grid.RowSpan="2"
-            Padding="116,137,40,46"
             ItemsSource="{Binding Source={StaticResource groupedGames}}"
             SelectionMode="None"
             IsSwipeEnabled="false"
@@ -84,24 +86,6 @@
                     </GroupStyle>
                 </GridView.GroupStyle>
             </GridView>
-
-            <StackPanel x:Name="gamesView">
-                <TextBlock Text="{StaticResource GameListLabel}" Style="{StaticResource SubheaderTextStyle}" />
-                <!-- It seems like we want the ItemClick event here, but it never fired -->
-                <GridView ItemsSource="{Binding Games}"
-                          SelectionChanged="GridView_SelectionChanged_1">
-
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <TextBlock Text="{Binding RecepientPlayerName}" Style="{StaticResource TitleTextStyle}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-                </GridView>
-                <TextBlock x:Name="noGamesText" Text="{StaticResource NoGamesMessage}" Visibility="Collapsed" Style="{StaticResource ItemTextStyle}" />
-                <Button x:Name="newGameButton" Click="Button_Click_1" Visibility="Collapsed">+ New Game</Button>
-            </StackPanel>
         </StackPanel>
     </StackPanel>
 </Page>

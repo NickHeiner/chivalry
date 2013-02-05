@@ -55,8 +55,7 @@ namespace chivalry
             {
                 newGameButton.Visibility = Visibility.Visible;
                 noGamesText.Visibility = user.Games.Count() == 0 ? Visibility.Visible : Visibility.Collapsed;
-                groupedGames.Source = user.Games.GroupBy(
-                    game => GameValidator.GameWinner(game) == RelativePlayer.None ? game.WaitingOn.ToString() : GameValidator.GameWinner(game).ToString());
+                groupedGames.Source = user.Games.GroupBy(game => GameController.LabelOf(user, game));
             }
         }
 
