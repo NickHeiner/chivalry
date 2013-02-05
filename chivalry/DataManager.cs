@@ -23,7 +23,13 @@ namespace chivalry
                 user.Email = "nick_heiner@hotmail.com";
                 user.ProfilePicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic";
 
-                Game againstScott = new Game() { RecepientPlayerName = "Scott", InitiatingPlayerEmail = user.Email, WaitingOn = AbsolutePlayer.Recepient };
+                Game againstScott = new Game() 
+                { 
+                    RecepientPlayerName = "Scott", 
+                    InitiatingPlayerEmail = user.Email, 
+                    WaitingOn = AbsolutePlayer.Recepient,
+                    LastMoveSubmittedAt = DateTime.Now - TimeSpan.FromDays(1)
+                };
                 againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 5 }, BoardSpaceState.FriendlyPieceShort);
                 againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 6 }, BoardSpaceState.FriendlyPieceTall);
                 againstScott.SetPieceLocation(new Coord() { Row = 4, Col = 4 }, BoardSpaceState.OpponentPieceShort);
@@ -37,7 +43,8 @@ namespace chivalry
                     RecepientPlayerName = "Dad",
                     InitiatingPlayerEmail = user.Email,
                     InitiaitingPlayerPicSource = user.ProfilePicSource,
-                    RecepientPlayerPicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic"
+                    RecepientPlayerPicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic",
+                    LastMoveSubmittedAt = DateTime.Now - TimeSpan.FromHours(2.3)
                 });
 
                 updateWithUserData(dadGame, user);
@@ -50,7 +57,8 @@ namespace chivalry
                     RecepientPlayerName = "Losing Guy",
                     InitiatingPlayerEmail = user.Email,
                     InitiaitingPlayerPicSource = user.ProfilePicSource,
-                    RecepientPlayerPicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic"
+                    RecepientPlayerPicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic",
+                    LastMoveSubmittedAt = DateTime.Now - TimeSpan.FromDays(15.4)
                 });
 
                 wonGame.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_1), BoardSpaceState.FriendlyPieceShort);
@@ -66,7 +74,8 @@ namespace chivalry
                     RecepientPlayerName = "Winning Guy",
                     InitiatingPlayerEmail = user.Email,
                     InitiaitingPlayerPicSource = user.ProfilePicSource,
-                    RecepientPlayerPicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic"
+                    RecepientPlayerPicSource = "https://cid-0c175b9b686f66fd.users.storage.live.com/users/0x0c175b9b686f66fd/myprofile/expressionprofile/profilephoto:UserTileStatic",
+                    LastMoveSubmittedAt = DateTime.Now - TimeSpan.FromDays(23.9)
                 });
 
                 lostGame.SetPieceLocation(Coord.Create(Game.BOARD_ROW_MAX, Game.ENDZONE_COL_1), BoardSpaceState.OpponentPieceShort);

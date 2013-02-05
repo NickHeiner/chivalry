@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Data.Json;
+using Windows.Globalization.DateTimeFormatting;
 
 namespace chivalry.Models
 {
@@ -140,6 +141,16 @@ namespace chivalry.Models
                     winner = value;
                     NotifyPropertyChanged();
                 }
+            }
+        }
+
+        public DateTime LastMoveSubmittedAt { get; set; }
+
+        public string LastMoveSubmittedAtLabel
+        {
+            get
+            {
+                return "Last move at " + new DateTimeFormatter("month day dayofweek year").Format(LastMoveSubmittedAt);
             }
         }
 
