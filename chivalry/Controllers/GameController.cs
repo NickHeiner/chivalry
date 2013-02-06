@@ -121,5 +121,10 @@ namespace chivalry.Controllers
                 game.SetPieceLocation(new Coord() { Row = row, Col = col }, toFill);
             }
         }
+
+        public static void SetOtherPlayerLabel(User user, Game game)
+        {
+            game.OtherPlayerName = user.Name == game.InitiatingPlayerName ? game.RecepientPlayerName : game.InitiatingPlayerName;
+        }
     }
 }

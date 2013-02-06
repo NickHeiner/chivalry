@@ -148,6 +148,7 @@ namespace chivalry.Models
 
         public DateTime LastMoveSubmittedAt { get; set; }
 
+        // TODO refactor this into a ViewModel
         public string LastMoveSubmittedAtLabel
         {
             get
@@ -155,6 +156,10 @@ namespace chivalry.Models
                 return "Last move at " + new DateTimeFormatter("month day dayofweek year").Format(LastMoveSubmittedAt);
             }
         }
+
+        // TODO shameful
+        [IgnoreDataMember]
+        public string OtherPlayerName { get; set; }
 
         // public with get; set; for Azure
         [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]

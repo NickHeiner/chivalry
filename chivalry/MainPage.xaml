@@ -50,7 +50,7 @@
                                 <Image Source="{Binding RecepientPlayerPicSource}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
                             </Border>
                             <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
-                                <TextBlock Text="{Binding RecepientPlayerName}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
+                                <TextBlock Text="{Binding OtherPlayerName}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
                                 <TextBlock Text="{Binding LastMoveSubmittedAtLabel}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
                             </StackPanel>
                         </Grid>

@@ -14,6 +14,30 @@ namespace chivalry_tests
     public class TestGameValidator
     {
         [TestMethod]
+        public void OtherPlayerName_Friendly()
+        {
+            string friendlyName = "john locke";
+            string opponentName = "jack shepard";
+
+            Game game = new Game() { InitiatingPlayerName = friendlyName, RecepientPlayerName = opponentName };
+            GameController.SetOtherPlayerLabel(new User() { Name = friendlyName }, game);
+
+            Assert.AreEqual(opponentName, game.OtherPlayerName);
+        }
+
+        [TestMethod]
+        public void OtherPlayerName_Opponent()
+        {
+            string friendlyName = "john locke";
+            string opponentName = "john locke";
+
+            Game game = new Game() { InitiatingPlayerName = opponentName, RecepientPlayerName = friendlyName };
+            GameController.SetOtherPlayerLabel(new User() { Name = opponentName }, game);
+
+            Assert.AreEqual(friendlyName, game.OtherPlayerName);
+        }
+
+        [TestMethod]
         public void LabelYourTurn()
         {
             string email = "a@b.c";
