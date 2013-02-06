@@ -33,12 +33,10 @@
             </StackPanel>
 
             <!-- Horizontal scrolling grid used in most view states -->
-            <!-- TODO this looks bad when there are too many items -->
             <GridView
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
-            Grid.RowSpan="2"
             ItemsSource="{Binding Source={StaticResource groupedGames}}"
             SelectionMode="None"
             IsSwipeEnabled="false"
@@ -82,7 +80,7 @@
                         </GroupStyle.HeaderTemplate>
                         <GroupStyle.Panel>
                             <ItemsPanelTemplate>
-                                <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0" />
+                                <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0" MaximumRowsOrColumns="2" />
                             </ItemsPanelTemplate>
                         </GroupStyle.Panel>
                     </GroupStyle>
