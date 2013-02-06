@@ -131,6 +131,7 @@ namespace chivalry
                 InitiaitingPlayerPicSource = user.ProfilePicSource,
                 RecepientPlayerName = recepientUserName, 
                 RecepientPlayerEmail = recepientUserEmail,
+                LastMoveSubmittedAt = DateTime.Now,
 
                 // TODO http://stackoverflow.com/questions/14677744/get-contact-thumbnail
                 RecepientPlayerPicSource = ""
