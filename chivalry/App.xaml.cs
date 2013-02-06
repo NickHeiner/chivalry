@@ -36,7 +36,7 @@ namespace chivalry
         /// <summary>
         /// For working on the train
         /// </summary>
-        public readonly bool OFFLINE_MODE = true;
+        public readonly bool OFFLINE_MODE = false;
 
         /// <summary>
         /// Fake it

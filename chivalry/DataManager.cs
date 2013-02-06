@@ -89,7 +89,10 @@ namespace chivalry
             }
 
             user.Games.Clear();
-            var games = await gameTable.ToListAsync();
+            var games = await 
+                gameTable
+                .Where(game => game.InitiatingPlayerEmail == user.Email || game.RecepientPlayerEmail == user.Email)
+                .ToListAsync();
             foreach (var game in games)
             {
                 if (((App)Application.Current).DEMO_HACK)
