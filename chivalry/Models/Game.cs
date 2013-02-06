@@ -54,19 +54,6 @@ namespace chivalry.Models
             return capturedPieces.ContainsKey(piece) ? capturedPieces[piece] : 0;
         }
 
-        public class PlayerJsonConverter : IDataMemberJsonConverter
-        {
-            public object ConvertFromJson(IJsonValue value)
-            {
-                return Enum.Parse(typeof(RelativePlayer), value.GetString());
-            }
-
-            public IJsonValue ConvertToJson(object instance)
-            {
-                return JsonValue.CreateStringValue(instance.ToString());
-            }
-        }
-
         /**
          * All of this serialization could probably be done better,
          * but fuck it I've spent enough time trying to make it work already.
@@ -123,11 +110,26 @@ namespace chivalry.Models
         public string InitiaitingPlayerPicSource { get; set; }
         public string RecepientPlayerPicSource { get; set; }
 
+        public class EnumStringConverter<T> : IDataMemberJsonConverter
+        {
+            public object ConvertFromJson(IJsonValue value)
+            {
+ 	            return (T) Enum.Parse(typeof(T), value.GetString());
+            }
+
+            public IJsonValue ConvertToJson(object instance)
+            {
+ 	            return JsonValue.CreateStringValue(instance.ToString());
+            }
+        }
+
+        [DataMemberJsonConverter(ConverterType = typeof(EnumStringConverter<RelativePlayer>))]
         private RelativePlayer winner;
 
+        [DataMemberJsonConverter(ConverterType = typeof(EnumStringConverter<AbsolutePlayer>))]
         public AbsolutePlayer WaitingOn { get; set; }
 
-        [DataMemberJsonConverter(ConverterType = typeof(PlayerJsonConverter))]
+        [DataMemberJsonConverter(ConverterType = typeof(EnumStringConverter<RelativePlayer>))]
         public RelativePlayer Winner 
         {
             get

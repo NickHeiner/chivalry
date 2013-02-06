@@ -2,8 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <UseSimulator>False</UseSimulator>
+    <RemoteDebugMachine>NTH-SURFACE:4016</RemoteDebugMachine>
+    <UseAuthentication>True</UseAuthentication>
+    <RemoteDebugEnabled>false</RemoteDebugEnabled>
   </PropertyGroup>
   <PropertyGroup>
     <AppxShowAllApps>False</AppxShowAllApps>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <RemoteDebugMachine>nth-surface:4017</RemoteDebugMachine>
+    <UseAuthentication>True</UseAuthentication>
+    <RemoteDebugEnabled>false</RemoteDebugEnabled>
   </PropertyGroup>
 </Project>
