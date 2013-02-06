@@ -55,8 +55,13 @@ namespace chivalry
             {
                 newGameButton.Visibility = Visibility.Visible;
                 noGamesText.Visibility = user.Games.Count() == 0 ? Visibility.Visible : Visibility.Collapsed;
-                groupedGames.Source = user.Games.GroupBy(game => GameController.LabelOf(user, game));
+                updateGroupedGamesFromUser();
             }
+        }
+
+        private void updateGroupedGamesFromUser()
+        {
+            groupedGames.Source = user.Games.GroupBy(game => GameController.LabelOf(user, game));
         }
 
         /// <summary>
@@ -86,8 +91,8 @@ namespace chivalry
 
             ((App)Application.Current).DataManager.AddNewGame(user, contact.Name, contact.Emails.First().Value);
 
-            // TODO sometimes the most recent game doesn't show up when this refreshes the data
             await ((App)Application.Current).DataManager.withServerData(user);
+            updateGroupedGamesFromUser();
         }
 
         private void itemGridView_ItemClick_1(object sender, ItemClickEventArgs e)
