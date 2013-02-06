@@ -81,21 +81,10 @@ namespace chivalry
             updateGameStatusFromGame();
         }
 
-        private void updateGameStatusFromGame()
+        private async void updateGameStatusFromGame()
         {
-            switch (GameValidator.GameWinner(game))
-            {
-                case RelativePlayer.Friendly:
-                    gameStatusMessage.Text = "You win!";
-                    break;
-                case RelativePlayer.Opponent:
-                    gameStatusMessage.Text = "You lose!";
-                    break;
-                case RelativePlayer.None:
-                    gameStatusMessage.Text = "";
-                    break;
-            }
-
+            var user = await ((App)Application.Current).getUser();
+            gameStatusMessage.Text = GameController.StatusMessageOf(user, game);
         }
 
         /// <summary>
@@ -187,12 +176,12 @@ namespace chivalry
         {
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void ResetMoves_Click(object sender, RoutedEventArgs e)
         {
             game.ClearActiveMoves();
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void MakeMoves_Click(object sender, RoutedEventArgs e)
         {
             GameController.ExecuteMoves(game);
         }   

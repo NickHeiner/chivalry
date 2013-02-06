@@ -15,8 +15,11 @@ namespace chivalry.Controllers
         /// but I don't want to couple GameController to App
         /// </summary>
         public static readonly string LABEL_WAITING_ON_USER = "Your turn";
-        public static readonly string LABEL_WAITING_ON_OTHER = "Awaiting turn";
+        public static readonly string LABEL_WAITING_ON_OTHER = "Awaiting other player";
         public static readonly string LABEL_DONE = "Finished";
+
+        public static readonly string STATUS_WIN = "You win!";
+        public static readonly string STATUS_LOSE = "You lose!";
 
         public static string LabelOf(User user, Game game)
         {
@@ -29,6 +32,21 @@ namespace chivalry.Controllers
                 waitingOnInitiator && !currentUserIsInitiator ? LABEL_WAITING_ON_OTHER :
                 !waitingOnInitiator && currentUserIsInitiator ? LABEL_WAITING_ON_OTHER :
                 LABEL_WAITING_ON_USER;
+        }
+
+        public static string StatusMessageOf(User user, Game game)
+        {
+           switch (GameValidator.GameWinner(game))
+           {
+                case RelativePlayer.Friendly:
+                    return STATUS_WIN;
+                case RelativePlayer.Opponent:
+                    return STATUS_LOSE;
+                case RelativePlayer.None:
+                    return LabelOf(user, game);
+           }
+
+           throw new InvalidOperationException();
         }
 
         public static void OnBoardSpaceClick(Game game, Coord coordClicked)
