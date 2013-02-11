@@ -49,9 +49,9 @@ namespace chivalry.Controllers
            throw new InvalidOperationException();
         }
 
-        public static void OnBoardSpaceClick(Game game, Coord coordClicked)
+        public static void OnBoardSpaceClick(User user, Game game, Coord coordClicked)
         {
-            if (GameValidator.IsValidMove(game, coordClicked))
+            if (GameValidator.IsValidMoveFor(user, game, coordClicked))
             {
                 game.AddActiveMove(coordClicked);
             }
@@ -122,6 +122,7 @@ namespace chivalry.Controllers
             }
         }
 
+        // TODO this should be going off of email instead of name since name isn't unique
         public static void SetOtherPlayerLabel(User user, Game game)
         {
             game.OtherPlayerName = user.Name == game.InitiatingPlayerName ? game.RecepientPlayerName : game.InitiatingPlayerName;

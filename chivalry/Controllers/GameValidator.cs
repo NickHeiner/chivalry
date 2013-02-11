@@ -15,6 +15,11 @@ namespace chivalry.Controllers
         /// </summary>
         public static readonly int MIN_PIECES = 2;
 
+        public static bool IsValidMoveFor(User user, Game game, Coord move)
+        {
+            return game.WaitingOn.ToRelativePlayer(user, game) == RelativePlayer.Friendly && IsValidMove(game, move);
+        }
+
         // TODO check that move is within bounds
         public static bool IsValidMove(Game game, Coord move)
         {

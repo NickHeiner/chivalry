@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using chivalry.Models;
 using chivalry.Controllers;
 using chivalry;
+using chivalry.Utils;
 
 namespace chivalry_tests
 {
@@ -13,6 +14,80 @@ namespace chivalry_tests
     [TestClass]
     public class TestGameValidator
     {
+        [TestMethod]
+        public void ToRelativePlayer_Friendly_OpponentInitiator()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = opponentEmail, RecepientPlayerEmail = friendlyEmail, WaitingOn = AbsolutePlayer.Initiator });
+            User user = new User() { Email = friendlyEmail };
+
+            Assert.AreEqual(RelativePlayer.Opponent, AbsolutePlayer.Initiator.ToRelativePlayer(user, game));
+        }
+
+        [TestMethod]
+        public void ToRelativePlayer_Opponent_OpponentInitiator()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = opponentEmail, RecepientPlayerEmail = friendlyEmail, WaitingOn = AbsolutePlayer.Initiator });
+            User user = new User() { Email = friendlyEmail };
+
+            Assert.AreEqual(RelativePlayer.Friendly, AbsolutePlayer.Recepient.ToRelativePlayer(user, game));
+        }
+
+        [TestMethod]
+        public void ToRelativePlayer_Friendly_FriendlyInitiator()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = friendlyEmail, RecepientPlayerEmail = opponentEmail, WaitingOn = AbsolutePlayer.Initiator });
+            User user = new User() { Email = friendlyEmail };
+
+            Assert.AreEqual(RelativePlayer.Friendly, AbsolutePlayer.Initiator.ToRelativePlayer(user, game));
+        }
+
+        [TestMethod]
+        public void ToRelativePlayer_Opponent_FriendlyInitiator()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = friendlyEmail, RecepientPlayerEmail = opponentEmail, WaitingOn = AbsolutePlayer.Initiator });
+            User user = new User() { Email = friendlyEmail };
+
+            Assert.AreEqual(RelativePlayer.Opponent, AbsolutePlayer.Recepient.ToRelativePlayer(user, game));
+        }
+
+        [TestMethod]
+        public void IsValidMoveForUser_True()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = friendlyEmail, RecepientPlayerEmail = opponentEmail, WaitingOn = AbsolutePlayer.Initiator });
+            User user = new User() { Email = friendlyEmail };
+
+            Coord space = Coord.Create(0, 0);
+
+            game.SetPieceLocation(space, BoardSpaceState.FriendlyPieceShort);
+
+            Assert.IsTrue(GameValidator.IsValidMoveFor(user, game, space));
+        }
+
+        [TestMethod]
+        public void IsValidMoveForUser_False()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = friendlyEmail, RecepientPlayerEmail = opponentEmail, WaitingOn = AbsolutePlayer.Initiator });
+            User user = new User() { Email = opponentEmail };
+
+            Coord space = Coord.Create(0, 0);
+
+            game.SetPieceLocation(space, BoardSpaceState.FriendlyPieceShort);
+
+            Assert.IsFalse(GameValidator.IsValidMoveFor(user, game, space));
+        }
+
         [TestMethod]
         public void OtherPlayerName_Friendly()
         {

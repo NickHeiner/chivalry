@@ -45,7 +45,7 @@ namespace chivalry
 
         // adapted from http://code.msdn.microsoft.com/windowsapps/Reversi-XAMLC-sample-board-816140fa/sourcecode?fileId=69011&pathId=706708707
         // This is shit code.
-        void PlayGame_Loaded(object sender, RoutedEventArgs e)
+        async void PlayGame_Loaded(object sender, RoutedEventArgs e)
         {
             foreach (var row in Game.ALL_ROWS)
             {
@@ -72,7 +72,8 @@ namespace chivalry
                     boardSpaces[Coord.Create(rowInfo.Index, colIndex)] = boardSpace;
 
                     // TODO this needs to translate from screen space to board space
-                    boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(game, Coord.Create(rowInfo.Index, colIndex)) ;
+                    var user = await ((App)Application.Current).getUser();
+                    boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(user, game, Coord.Create(rowInfo.Index, colIndex)) ;
                 }
             }
 
