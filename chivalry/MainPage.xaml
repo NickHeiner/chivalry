@@ -20,6 +20,8 @@
             </Grid.ColumnDefinitions>
             
             <TextBlock Text="{StaticResource AppName}" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
+            
+            <!-- TODO this is the perfect place for the auth box to get blocked by toast notifications -->
             <local:AuthBox Grid.Column="1" />
             
         </Grid>
@@ -29,7 +31,8 @@
 
             <StackPanel x:Name="gamesView">
                 <TextBlock x:Name="noGamesText" Text="{StaticResource NoGamesMessage}" Visibility="Collapsed" Style="{StaticResource ItemTextStyle}" />
-                <Button x:Name="newGameButton" Click="NewGame_Click" Visibility="Collapsed">+ New Game</Button>
+                <!-- TODO this is not well placed -->
+                <Button x:Name="newGameButton" Click="NewGame_Click" Visibility="Collapsed" Content="{StaticResource NewGameLabel}" />
             </StackPanel>
 
             <!-- Horizontal scrolling grid used in most view states -->
