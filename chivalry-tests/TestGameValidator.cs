@@ -15,6 +15,12 @@ namespace chivalry_tests
     public class TestGameValidator
     {
         [TestMethod]
+        public void Game_StartsWithNoWinner()
+        {
+            Assert.AreEqual(RelativePlayer.None, new Game().Winner);
+        }
+
+        [TestMethod]
         public void GameController_MakingMoveSwitchesWaitingOn()
         {
             var game = new Game() { WaitingOn = AbsolutePlayer.Recepient };

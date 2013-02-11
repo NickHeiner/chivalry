@@ -172,6 +172,7 @@ namespace chivalry.Models
         public Game()
         {
             pieceLocations = new Dictionary<Coord, BoardSpaceState>();
+            winner = RelativePlayer.None;
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
