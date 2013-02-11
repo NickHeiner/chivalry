@@ -139,5 +139,9 @@ namespace chivalry
             }));
         }
 
+        internal void SaveGame(Game game)
+        {
+            gameTable.UpdateAsync(game);
+        }
     }
 }

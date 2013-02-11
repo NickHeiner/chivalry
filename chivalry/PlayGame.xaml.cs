@@ -185,6 +185,8 @@ namespace chivalry
         private void MakeMoves_Click(object sender, RoutedEventArgs e)
         {
             GameController.ExecuteMoves(game);
+
+            ((App)Application.Current).DataManager.SaveGame(game);
         }   
     }
 }
