@@ -84,6 +84,8 @@ namespace chivalry.Controllers
             game.ClearActiveMoves();
 
             game.Winner = GameValidator.GameWinner(game);
+
+            game.WaitingOn = game.WaitingOn.Toggle();
         }
 
         public static Game WithStartingPieces(Game game)

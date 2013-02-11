@@ -15,6 +15,18 @@ namespace chivalry_tests
     public class TestGameValidator
     {
         [TestMethod]
+        public void GameController_MakingMoveSwitchesWaitingOn()
+        {
+            var game = new Game() { WaitingOn = AbsolutePlayer.Recepient };
+            game.AddActiveMove(Coord.Create(0, 0));
+            game.AddActiveMove(Coord.Create(0, 1));
+
+            GameController.ExecuteMoves(game);
+
+            Assert.AreEqual(AbsolutePlayer.Initiator, game.WaitingOn);
+        }
+
+        [TestMethod]
         public void ToRelativePlayer_Friendly_OpponentInitiator()
         {
             string friendlyEmail = "a@b.c";

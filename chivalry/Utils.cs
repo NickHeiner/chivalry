@@ -16,6 +16,11 @@ namespace chivalry.Utils
                 absolutePlayer == AbsolutePlayer.Initiator ? RelativePlayer.Opponent : RelativePlayer.Friendly;
         }
 
+        public static AbsolutePlayer Toggle(this AbsolutePlayer absolutePlayer)
+        {
+            return absolutePlayer == AbsolutePlayer.Initiator ? AbsolutePlayer.Recepient : AbsolutePlayer.Initiator;
+        }
+
         // copied from https://gist.github.com/2463179
         public static IEnumerable<Tuple<T, T>> Pairwise<T>(this IEnumerable<T> source)
         {
