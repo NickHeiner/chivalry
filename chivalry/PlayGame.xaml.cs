@@ -72,7 +72,7 @@ namespace chivalry
                     boardSpaces[Coord.Create(rowInfo.Index, colIndex)] = boardSpace;
 
                     // TODO this needs to translate from screen space to board space
-                    var user = await ((App)Application.Current).getUser();
+                    var user = await getUser();
                     boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(user, game, Coord.Create(rowInfo.Index, colIndex)) ;
                 }
             }
@@ -82,10 +82,14 @@ namespace chivalry
             updateGameStatusFromGame();
         }
 
+        private static async System.Threading.Tasks.Task<User> getUser()
+        {
+            return await ((App)Application.Current).getUser();
+        }
+
         private async void updateGameStatusFromGame()
         {
-            var user = await ((App)Application.Current).getUser();
-            gameStatusMessage.Text = GameController.StatusMessageOf(user, game);
+            gameStatusMessage.Text = GameController.StatusMessageOf(await getUser(), game);
         }
 
         /// <summary>
@@ -150,7 +154,7 @@ namespace chivalry
             }
         }
 
-        void updateBoardFromGame()
+        private async void updateBoardFromGame()
         {
             foreach (var boardSpace in boardSpaces)
             {
@@ -158,7 +162,7 @@ namespace chivalry
             }
             foreach (var pieceLoc in game.QueryPieceLocations)
             {
-                boardSpaces[new BoardCoord(pieceLoc.Key, game.Transformation).Coord].SpaceState = pieceLoc.Value;
+                boardSpaces[new BoardCoord(pieceLoc.Key, game.Transformation).Coord].SpaceState = GameController.BoardSpaceStateFor(await getUser(), game, pieceLoc.Value);
             }
         }
 

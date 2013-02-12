@@ -129,5 +129,10 @@ namespace chivalry.Controllers
         {
             game.OtherPlayerName = user.Name == game.InitiatingPlayerName ? game.RecepientPlayerName : game.InitiatingPlayerName;
         }
+
+        public static BoardSpaceState BoardSpaceStateFor(User user, Game game, BoardSpaceState boardSpaceState)
+        {
+            return user.Email == game.InitiatingPlayerEmail ? boardSpaceState : boardSpaceState.Toggle();
+        }
     }
 }

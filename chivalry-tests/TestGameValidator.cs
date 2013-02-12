@@ -15,6 +15,34 @@ namespace chivalry_tests
     public class TestGameValidator
     {
         [TestMethod]
+        public void GameController_GetBoardSpaceStateFor_FriendlyInitiates()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+
+            Assert.AreEqual(
+                    BoardSpaceState.FriendlyPieceShort,
+                    GameController.BoardSpaceStateFor(
+                            new User() { Email = friendlyEmail },
+                            new Game() { InitiatingPlayerEmail = friendlyEmail, RecepientPlayerEmail = opponentEmail },
+                            BoardSpaceState.FriendlyPieceShort));
+        }
+
+        [TestMethod]
+        public void GameController_GetBoardSpaceStateFor_OpponentInitiates()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+
+            Assert.AreEqual(
+                    BoardSpaceState.OpponentPieceShort,
+                    GameController.BoardSpaceStateFor(
+                            new User() { Email = friendlyEmail },
+                            new Game() { InitiatingPlayerEmail = opponentEmail, RecepientPlayerEmail = friendlyEmail },
+                            BoardSpaceState.FriendlyPieceShort));
+        }
+
+        [TestMethod]
         public void Game_StartsWithNoWinner()
         {
             Assert.AreEqual(RelativePlayer.None, new Game().Winner);

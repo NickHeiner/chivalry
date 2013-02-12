@@ -21,6 +21,25 @@ namespace chivalry.Utils
             return absolutePlayer == AbsolutePlayer.Initiator ? AbsolutePlayer.Recepient : AbsolutePlayer.Initiator;
         }
 
+        public static BoardSpaceState Toggle(this BoardSpaceState boardSpaceState)
+        {
+            switch (boardSpaceState)
+            {
+                case BoardSpaceState.None:
+                    return BoardSpaceState.None;
+                case BoardSpaceState.OpponentPieceShort:
+                    return BoardSpaceState.FriendlyPieceShort;
+                case BoardSpaceState.OpponentPieceTall:
+                    return BoardSpaceState.FriendlyPieceTall;
+                case BoardSpaceState.FriendlyPieceShort:
+                    return BoardSpaceState.OpponentPieceShort;
+                case BoardSpaceState.FriendlyPieceTall:
+                    return BoardSpaceState.OpponentPieceTall;
+            }
+
+            throw new InvalidOperationException();
+        }
+
         // copied from https://gist.github.com/2463179
         public static IEnumerable<Tuple<T, T>> Pairwise<T>(this IEnumerable<T> source)
         {
