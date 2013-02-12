@@ -80,10 +80,10 @@ namespace chivalry
                 return;
             }
 
-            var isFriendlyPiece = SpaceState == BoardSpaceState.FriendlyPieceShort || SpaceState == BoardSpaceState.FriendlyPieceTall;
+            var isFriendlyPiece = SpaceState == BoardSpaceState.InitiatorPieceShort || SpaceState == BoardSpaceState.InitiatorPieceTall;
             VisualStateManager.GoToState(this, isFriendlyPiece ? "Friendly" : "Opponent", true);
 
-            if (SpaceState == BoardSpaceState.OpponentPieceTall || SpaceState == BoardSpaceState.FriendlyPieceTall)
+            if (SpaceState == BoardSpaceState.RecepientPieceTall || SpaceState == BoardSpaceState.InitiatorPieceTall)
             {
                 VisualStateManager.GoToState(this, "Tall", true);
             }

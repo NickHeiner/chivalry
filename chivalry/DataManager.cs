@@ -30,10 +30,10 @@ namespace chivalry
                     WaitingOn = AbsolutePlayer.Recepient,
                     LastMoveSubmittedAt = DateTime.Now - TimeSpan.FromDays(1)
                 };
-                againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 5 }, BoardSpaceState.FriendlyPieceShort);
-                againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 6 }, BoardSpaceState.FriendlyPieceTall);
-                againstScott.SetPieceLocation(new Coord() { Row = 4, Col = 4 }, BoardSpaceState.OpponentPieceShort);
-                againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 8 }, BoardSpaceState.OpponentPieceTall);
+                againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 5 }, BoardSpaceState.InitiatorPieceShort);
+                againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 6 }, BoardSpaceState.InitiatorPieceTall);
+                againstScott.SetPieceLocation(new Coord() { Row = 4, Col = 4 }, BoardSpaceState.RecepientPieceShort);
+                againstScott.SetPieceLocation(new Coord() { Row = 5, Col = 8 }, BoardSpaceState.RecepientPieceTall);
 
                 user.Games.Add(againstScott);
 
@@ -47,8 +47,6 @@ namespace chivalry
                     LastMoveSubmittedAt = DateTime.Now - TimeSpan.FromHours(2.3)
                 });
 
-                updateWithUserData(dadGame, user);
-
                 user.Games.Add(dadGame);
 
                 var wonGame = GameController.WithStartingPieces(new Game()
@@ -61,10 +59,8 @@ namespace chivalry
                     LastMoveSubmittedAt = DateTime.Now - TimeSpan.FromDays(15.4)
                 });
 
-                wonGame.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_1), BoardSpaceState.FriendlyPieceShort);
-                wonGame.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_2), BoardSpaceState.FriendlyPieceShort);
-
-                updateWithUserData(wonGame, user);
+                wonGame.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_1), BoardSpaceState.InitiatorPieceShort);
+                wonGame.SetPieceLocation(Coord.Create(0, Game.ENDZONE_COL_2), BoardSpaceState.InitiatorPieceShort);
 
                 user.Games.Add(wonGame);
 
@@ -78,10 +74,8 @@ namespace chivalry
                     LastMoveSubmittedAt = DateTime.Now - TimeSpan.FromDays(23.9)
                 });
 
-                lostGame.SetPieceLocation(Coord.Create(Game.BOARD_ROW_MAX, Game.ENDZONE_COL_1), BoardSpaceState.OpponentPieceShort);
-                lostGame.SetPieceLocation(Coord.Create(Game.BOARD_ROW_MAX, Game.ENDZONE_COL_2), BoardSpaceState.OpponentPieceShort);
-
-                updateWithUserData(lostGame, user);
+                lostGame.SetPieceLocation(Coord.Create(Game.BOARD_ROW_MAX, Game.ENDZONE_COL_1), BoardSpaceState.RecepientPieceShort);
+                lostGame.SetPieceLocation(Coord.Create(Game.BOARD_ROW_MAX, Game.ENDZONE_COL_2), BoardSpaceState.RecepientPieceShort);
 
                 user.Games.Add(lostGame);
 
@@ -100,27 +94,20 @@ namespace chivalry
                     GameController.WithStartingPieces(game);
                     foreach (var _ in Enumerable.Range(0, 10))
                     {
-                        game.CapturePiece(BoardSpaceState.OpponentPieceShort);
-                        game.CapturePiece(BoardSpaceState.FriendlyPieceShort);
+                        game.CapturePiece(BoardSpaceState.RecepientPieceShort);
+                        game.CapturePiece(BoardSpaceState.InitiatorPieceShort);
                     }
                     foreach (var _ in Enumerable.Range(0, 4))
                     {
-                        game.CapturePiece(BoardSpaceState.OpponentPieceTall);
-                        game.CapturePiece(BoardSpaceState.FriendlyPieceTall);
+                        game.CapturePiece(BoardSpaceState.RecepientPieceTall);
+                        game.CapturePiece(BoardSpaceState.InitiatorPieceTall);
                     }
                 }
-                updateWithUserData(game, user);
                 GameController.SetOtherPlayerLabel(user, game);
                 user.Games.Add(game);
             }
 
             return user;
-        }
-
-        // visible for testing
-        public void updateWithUserData(Game game, User user)
-        {
-            game.Transformation = game.RecepientPlayerEmail == user.Email ? BoardCoord.Transformation.FLIP : BoardCoord.Transformation.NO_FLIP;
         }
 
         internal async void AddNewGame(User user, string recepientUserName, string recepientUserEmail)

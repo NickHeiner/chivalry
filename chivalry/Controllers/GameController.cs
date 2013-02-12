@@ -10,45 +10,6 @@ namespace chivalry.Controllers
 {
     public static class GameController
     {
-        /// <summary>
-        /// These should probably be static resources,
-        /// but I don't want to couple GameController to App
-        /// </summary>
-        public static readonly string LABEL_WAITING_ON_USER = "Your turn";
-        public static readonly string LABEL_WAITING_ON_OTHER = "Awaiting other player";
-        public static readonly string LABEL_DONE = "Finished";
-
-        public static readonly string STATUS_WIN = "You win!";
-        public static readonly string STATUS_LOSE = "You lose!";
-
-        public static string LabelOf(User user, Game game)
-        {
-            var waitingOnInitiator = game.WaitingOn == AbsolutePlayer.Initiator;
-            var currentUserIsInitiator = user.Email == game.InitiatingPlayerEmail;
-
-            return 
-                GameValidator.GameWinner(game) != RelativePlayer.None ? LABEL_DONE :
-                waitingOnInitiator && currentUserIsInitiator ? LABEL_WAITING_ON_USER :
-                waitingOnInitiator && !currentUserIsInitiator ? LABEL_WAITING_ON_OTHER :
-                !waitingOnInitiator && currentUserIsInitiator ? LABEL_WAITING_ON_OTHER :
-                LABEL_WAITING_ON_USER;
-        }
-
-        public static string StatusMessageOf(User user, Game game)
-        {
-           switch (GameValidator.GameWinner(game))
-           {
-                case RelativePlayer.Friendly:
-                    return STATUS_WIN;
-                case RelativePlayer.Opponent:
-                    return STATUS_LOSE;
-                case RelativePlayer.None:
-                    return LabelOf(user, game);
-           }
-
-           throw new InvalidOperationException();
-        }
-
         public static void OnBoardSpaceClick(User user, Game game, Coord coordClicked)
         {
             if (GameValidator.IsValidMoveFor(user, game, coordClicked))
@@ -97,8 +58,8 @@ namespace chivalry.Controllers
              * I'd love to be able to say "the enemy's gate is down" here, but unfortunately
              * that's not the spec
              */
-            fillTeam(game, 5, 1, BoardSpaceState.OpponentPieceShort, BoardSpaceState.OpponentPieceTall);
-            fillTeam(game, 10, -1, BoardSpaceState.FriendlyPieceShort, BoardSpaceState.FriendlyPieceTall);
+            fillTeam(game, 5, 1, BoardSpaceState.RecepientPieceShort, BoardSpaceState.RecepientPieceTall);
+            fillTeam(game, 10, -1, BoardSpaceState.InitiatorPieceShort, BoardSpaceState.InitiatorPieceTall);
 
             return game;
         }
@@ -129,5 +90,6 @@ namespace chivalry.Controllers
         {
             game.OtherPlayerName = user.Name == game.InitiatingPlayerName ? game.RecepientPlayerName : game.InitiatingPlayerName;
         }
+
     }
 }

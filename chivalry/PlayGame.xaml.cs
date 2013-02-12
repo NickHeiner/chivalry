@@ -85,7 +85,7 @@ namespace chivalry
         private async void updateGameStatusFromGame()
         {
             var user = await ((App)Application.Current).getUser();
-            gameStatusMessage.Text = GameController.StatusMessageOf(user, game);
+            gameStatusMessage.Text = GameUtils.StatusMessageOf(user, game);
         }
 
         /// <summary>
@@ -131,10 +131,10 @@ namespace chivalry
             capturedFriendlyPieces.Children.Clear();
             capturedOpponentPieces.Children.Clear();
 
-            updateCapturedPieces(capturedFriendlyPieces, BoardSpaceState.FriendlyPieceShort);
-            updateCapturedPieces(capturedFriendlyPieces, BoardSpaceState.FriendlyPieceTall);
-            updateCapturedPieces(capturedOpponentPieces, BoardSpaceState.OpponentPieceShort);
-            updateCapturedPieces(capturedOpponentPieces, BoardSpaceState.OpponentPieceTall);
+            updateCapturedPieces(capturedFriendlyPieces, BoardSpaceState.InitiatorPieceShort);
+            updateCapturedPieces(capturedFriendlyPieces, BoardSpaceState.InitiatorPieceTall);
+            updateCapturedPieces(capturedOpponentPieces, BoardSpaceState.RecepientPieceShort);
+            updateCapturedPieces(capturedOpponentPieces, BoardSpaceState.RecepientPieceTall);
         }
 
         private void updateCapturedPieces(StackPanel container, BoardSpaceState piece)
@@ -158,7 +158,8 @@ namespace chivalry
             }
             foreach (var pieceLoc in game.QueryPieceLocations)
             {
-                boardSpaces[new BoardCoord(pieceLoc.Key, game.Transformation).Coord].SpaceState = pieceLoc.Value;
+                // FIXME if you flip the Coord, you also must flip Friendly* to Opponent*, as well as updating click handlers appropriately.
+                //boardSpaces[new BoardCoord(pieceLoc.Key, game.Transformation).Coord].SpaceState = pieceLoc.Value;
             }
         }
 

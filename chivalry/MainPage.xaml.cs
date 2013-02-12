@@ -61,7 +61,7 @@ namespace chivalry
 
         private void updateGroupedGamesFromUser()
         {
-            groupedGames.Source = user.Games.GroupBy(game => GameController.LabelOf(user, game));
+            groupedGames.Source = user.Games.GroupBy(game => GameUtils.LabelOf(user, game));
         }
 
         /// <summary>

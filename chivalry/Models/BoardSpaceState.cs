@@ -8,10 +8,10 @@ namespace chivalry.Models
 {
     public enum BoardSpaceState
     {
-        FriendlyPieceShort,
-        FriendlyPieceTall,
-        OpponentPieceShort,
-        OpponentPieceTall,
+        InitiatorPieceShort,
+        InitiatorPieceTall,
+        RecepientPieceShort,
+        RecepientPieceTall,
         None
     }
 }

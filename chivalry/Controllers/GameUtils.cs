@@ -10,6 +10,45 @@ namespace chivalry.Controllers
 {
     public static class GameUtils
     {
+        /// <summary>
+        /// These should probably be static resources,
+        /// but I don't want to couple GameController to App
+        /// </summary>
+        public static readonly string LABEL_WAITING_ON_USER = "Your turn";
+        public static readonly string LABEL_WAITING_ON_OTHER = "Awaiting other player";
+        public static readonly string LABEL_DONE = "Finished";
+
+        public static readonly string STATUS_WIN = "You win!";
+        public static readonly string STATUS_LOSE = "You lose!";
+
+        public static string LabelOf(User user, Game game)
+        {
+            var waitingOnInitiator = game.WaitingOn == AbsolutePlayer.Initiator;
+            var currentUserIsInitiator = user.Email == game.InitiatingPlayerEmail;
+
+            return
+                GameValidator.GameWinner(game) != RelativePlayer.None ? LABEL_DONE :
+                waitingOnInitiator && currentUserIsInitiator ? LABEL_WAITING_ON_USER :
+                waitingOnInitiator && !currentUserIsInitiator ? LABEL_WAITING_ON_OTHER :
+                !waitingOnInitiator && currentUserIsInitiator ? LABEL_WAITING_ON_OTHER :
+                LABEL_WAITING_ON_USER;
+        }
+
+        public static string StatusMessageOf(User user, Game game)
+        {
+            switch (GameValidator.GameWinner(game))
+            {
+                case RelativePlayer.Friendly:
+                    return STATUS_WIN;
+                case RelativePlayer.Opponent:
+                    return STATUS_LOSE;
+                case RelativePlayer.None:
+                    return LabelOf(user, game);
+            }
+
+            throw new InvalidOperationException();
+        }
+
         public static IEnumerable<BoardSpaceState> PiecesJumped(Game game, IEnumerable<Coord> activeMoves)
         {
             return SpacesJumped(game, activeMoves).Select(game.GetPieceAt);
@@ -79,12 +118,12 @@ namespace chivalry.Controllers
         // can these be defined on the enum itself?
         public static bool IsFriendly(BoardSpaceState piece)
         {
-            return piece == BoardSpaceState.FriendlyPieceTall || piece == BoardSpaceState.FriendlyPieceShort;
+            return piece == BoardSpaceState.InitiatorPieceTall || piece == BoardSpaceState.InitiatorPieceShort;
         }
 
         public static bool IsOpponent(BoardSpaceState piece)
         {
-            return piece == BoardSpaceState.OpponentPieceShort || piece == BoardSpaceState.OpponentPieceTall;
+            return piece == BoardSpaceState.RecepientPieceShort || piece == BoardSpaceState.RecepientPieceTall;
         }
 
         public static bool AreNeighbors(Coord src, Coord dest)

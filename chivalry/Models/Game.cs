@@ -32,9 +32,6 @@ namespace chivalry.Models
         [IgnoreDataMember]
         public static readonly int ENDZONE_COL_2 = 6;
 
-        [IgnoreDataMember]
-        public BoardCoord.Transformation Transformation { get; set; }
-
         [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]
         private Dictionary<BoardSpaceState, int> capturedPieces = new Dictionary<BoardSpaceState, int>();
 

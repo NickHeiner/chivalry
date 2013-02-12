@@ -35,7 +35,7 @@ namespace chivalry.Controllers
             }
             if (game.NoActiveMovesExist)
             {
-                return pieceAtMove == BoardSpaceState.FriendlyPieceShort || pieceAtMove == BoardSpaceState.FriendlyPieceTall;
+                return pieceAtMove == BoardSpaceState.InitiatorPieceShort || pieceAtMove == BoardSpaceState.InitiatorPieceTall;
             }
             if (GameUtils.AreNeighbors(game.GetMostRecentMove(), move))
             {
@@ -57,7 +57,7 @@ namespace chivalry.Controllers
 
                 return piecesJumped.All(GameUtils.IsFriendly)
                     || piecesJumped.All(GameUtils.IsOpponent) 
-                    || (game.GetPieceAt(game.ActiveMoves.First()) == BoardSpaceState.FriendlyPieceTall
+                    || (game.GetPieceAt(game.ActiveMoves.First()) == BoardSpaceState.InitiatorPieceTall
                         && game.GetPieceAt(locationToJump) != BoardSpaceState.None);
             }
             return false;
