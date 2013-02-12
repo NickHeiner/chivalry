@@ -73,7 +73,7 @@ namespace chivalry
 
                     // TODO this needs to translate from screen space to board space
                     var user = await getUser();
-                    boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(user, game, Coord.Create(rowInfo.Index, colIndex)) ;
+                    boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(user, game, new BoardCoord(Coord.Create(rowInfo.Index, colIndex), game.Transformation).Coord) ;
                 }
             }
 
