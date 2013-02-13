@@ -114,7 +114,7 @@ namespace chivalry
             {
                 foreach (var boardSpaceLocation in boardSpaces)
                 {
-                    if (game.ActiveMoves.Contains(boardSpaceLocation.Key))
+                    if (game.ActiveMoves.Select(coord => new BoardCoord(coord, game.Transformation).Coord).Contains(boardSpaceLocation.Key))
                     {
                         boardSpaceLocation.Value.Select();
                     }
