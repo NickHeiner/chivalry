@@ -153,6 +153,7 @@ namespace chivalry
                 game.InitiatorChannelId = App.CurrentChannel.Uri;
             } else 
             {
+                game.RecepientPlayerPicSource = user.ProfilePicSource;
                 game.RecepientChannelId = App.CurrentChannel.Uri;
             }
             gameTable.UpdateAsync(game);
