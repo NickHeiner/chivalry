@@ -139,14 +139,22 @@ namespace chivalry
                 RecepientPlayerPicSource = ""
             };
 
-            game.InitiatorChannelId = user.ToAbsolutePlayer(game) == AbsolutePlayer.Initiator ? App.CurrentChannel.Uri : App.CurrentChannel.Uri;
+            // Since the initiator is the only one who will call this method, 
+            // we only want to set the InitiatorChannelId
+            game.InitiatorChannelId = App.CurrentChannel.Uri;
 
             await gameTable.InsertAsync(GameController.WithStartingPieces(game));
         }
 
         internal void SaveGame(Game game, User user)
         {
-            game.InitiatorChannelId = user.ToAbsolutePlayer(game) == AbsolutePlayer.Initiator ? App.CurrentChannel.Uri : App.CurrentChannel.Uri;
+            if (user.ToAbsolutePlayer(game) == AbsolutePlayer.Initiator)
+            {
+                game.InitiatorChannelId = App.CurrentChannel.Uri;
+            } else 
+            {
+                game.RecepientChannelId = App.CurrentChannel.Uri;
+            }
             gameTable.UpdateAsync(game);
         }
     }
