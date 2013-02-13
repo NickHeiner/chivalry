@@ -22,7 +22,7 @@
             <x:String x:Key="NoGamesMessage">You have no games.</x:String>
             <x:String x:Key="NewGameLabel">+ New Game</x:String>
             
-            <SolidColorBrush x:Key="PrimaryTileColor" Color="Wheat"/>
+            <SolidColorBrush x:Key="PrimaryTileColor" Color="Wheat" />
             <SolidColorBrush x:Key="SecondaryTileColor" Color="Plum" /> 
             
             <common:BooleanToVisibilityConverter x:Key="boolToVisibility" />

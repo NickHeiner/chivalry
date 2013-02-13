@@ -26,7 +26,7 @@ namespace chivalry.Utils
             return user.Email == game.InitiatingPlayerEmail ? AbsolutePlayer.Initiator : AbsolutePlayer.Recepient;
         }
 
-        public static BoardSpaceState Toggle(this BoardSpaceState boardSpaceState)
+        public static BoardSpaceState TogglePlayer(this BoardSpaceState boardSpaceState)
         {
             switch (boardSpaceState)
             {

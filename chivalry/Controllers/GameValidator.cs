@@ -17,11 +17,11 @@ namespace chivalry.Controllers
 
         public static bool IsValidMoveFor(User user, Game game, Coord move)
         {
-            return game.WaitingOn.ToRelativePlayer(user, game) == RelativePlayer.Friendly && IsValidMove(game, move);
+            return game.WaitingOn.ToRelativePlayer(user, game) == RelativePlayer.Friendly && IsValidMove(game, move, user.ToAbsolutePlayer(game) == AbsolutePlayer.Recepient);
         }
 
         // TODO check that move is within bounds
-        public static bool IsValidMove(Game game, Coord move)
+        public static bool IsValidMove(Game game, Coord move, bool flipPieceState = false)
         {
             if (GameWinner(game) != RelativePlayer.None)
             {
@@ -29,6 +29,11 @@ namespace chivalry.Controllers
             }
 
             var pieceAtMove = game.GetPieceAt(move);
+            // TODO hacky shit
+            if (flipPieceState)
+            {
+                pieceAtMove = pieceAtMove.TogglePlayer();
+            }
             if (! game.NoActiveMovesExist && pieceAtMove != BoardSpaceState.None)
             {
                 return false;

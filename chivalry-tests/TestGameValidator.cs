@@ -15,6 +15,22 @@ namespace chivalry_tests
     public class TestGameValidator
     {
         [TestMethod]
+        public void GameValidator_IsValidMove_Flip()
+        {
+            string initEmail = "f@b.c";
+            string recepEmail = "a@gasdf.asdf";
+
+            User user = new User() { Email = recepEmail };
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = initEmail, RecepientPlayerEmail = recepEmail, WaitingOn = AbsolutePlayer.Recepient });
+
+            Coord coord = Coord.Create(0, 0);
+
+            game.SetPieceLocation(coord, BoardSpaceState.OpponentPieceShort);
+
+            Assert.IsTrue(GameValidator.IsValidMoveFor(user, game, coord));
+        }
+
+        [TestMethod]
         public void GameController_GetBoardSpaceStateFor_FriendlyInitiates()
         {
             string friendlyEmail = "a@b.c";

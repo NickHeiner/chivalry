@@ -143,7 +143,7 @@ namespace chivalry.Controllers
 
         public static BoardSpaceState BoardSpaceStateFor(User user, Game game, BoardSpaceState boardSpaceState)
         {
-            return user.Email == game.InitiatingPlayerEmail ? boardSpaceState : boardSpaceState.Toggle();
+            return user.Email == game.InitiatingPlayerEmail ? boardSpaceState : boardSpaceState.TogglePlayer();
         }
     }
 }
