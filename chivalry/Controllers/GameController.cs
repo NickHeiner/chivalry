@@ -125,9 +125,20 @@ namespace chivalry.Controllers
         }
 
         // TODO this should be going off of email instead of name since name isn't unique
-        public static void SetOtherPlayerLabel(User user, Game game)
+        public static void SetOtherPlayerInfo(User user, Game game)
         {
-            game.OtherPlayerName = user.Name == game.InitiatingPlayerName ? game.RecepientPlayerName : game.InitiatingPlayerName;
+            if (user.ToAbsolutePlayer(game) == AbsolutePlayer.Initiator)
+            {
+                game.OtherPlayerName = game.RecepientPlayerName;
+                game.OtherPlayerPicSource = game.RecepientPlayerPicSource;
+                game.ThisPlayerPicSource = game.InitiaitingPlayerPicSource;
+            }
+            else 
+            {
+                game.OtherPlayerName = game.InitiatingPlayerName;
+                game.OtherPlayerPicSource = game.InitiaitingPlayerPicSource;
+                game.ThisPlayerPicSource = game.RecepientPlayerPicSource;
+            }
         }
 
         public static BoardSpaceState BoardSpaceStateFor(User user, Game game, BoardSpaceState boardSpaceState)

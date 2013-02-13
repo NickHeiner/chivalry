@@ -141,7 +141,7 @@ namespace chivalry_tests
             string opponentName = "jack shepard";
 
             Game game = new Game() { InitiatingPlayerName = friendlyName, RecepientPlayerName = opponentName };
-            GameController.SetOtherPlayerLabel(new User() { Name = friendlyName }, game);
+            GameController.SetOtherPlayerInfo(new User() { Name = friendlyName }, game);
 
             Assert.AreEqual(opponentName, game.OtherPlayerName);
         }
@@ -150,12 +150,42 @@ namespace chivalry_tests
         public void OtherPlayerName_Opponent()
         {
             string friendlyName = "john locke";
-            string opponentName = "john locke";
+            string opponentName = "jack shepard";
 
             Game game = new Game() { InitiatingPlayerName = opponentName, RecepientPlayerName = friendlyName };
-            GameController.SetOtherPlayerLabel(new User() { Name = opponentName }, game);
+            GameController.SetOtherPlayerInfo(new User() { Name = opponentName }, game);
 
             Assert.AreEqual(friendlyName, game.OtherPlayerName);
+        }
+
+        [TestMethod]
+        public void OtherPlayerPic_Friendly()
+        {
+            string friendlyName = "john locke";
+            string friendlyPic = "http://i.imgur.com/foo";
+            string opponentName = "jack shepard";
+            string opponentPic = "http://i.imgur.com/bar";
+
+            Game game = new Game() { InitiatingPlayerName = friendlyName, RecepientPlayerName = opponentName, InitiaitingPlayerPicSource = friendlyPic, RecepientPlayerPicSource = opponentPic };
+            GameController.SetOtherPlayerInfo(new User() { Name = friendlyName }, game);
+
+            Assert.AreEqual(opponentPic, game.OtherPlayerPicSource);
+            Assert.AreEqual(friendlyPic, game.ThisPlayerPicSource);
+        }
+
+        [TestMethod]
+        public void OtherPlayerPic_Opponent()
+        {
+            string friendlyName = "john locke";
+            string friendlyPic = "http://i.imgur.com/foo";
+            string opponentName = "jack shepard";
+            string opponentPic = "http://i.imgur.com/bar";
+
+            Game game = new Game() { InitiatingPlayerName = opponentName, RecepientPlayerName = friendlyName, InitiaitingPlayerPicSource = opponentPic, RecepientPlayerPicSource = friendlyPic };
+            GameController.SetOtherPlayerInfo(new User() { Name = opponentName }, game);
+
+            Assert.AreEqual(friendlyPic, game.OtherPlayerPicSource);
+            Assert.AreEqual(opponentPic, game.ThisPlayerPicSource);
         }
 
         [TestMethod]

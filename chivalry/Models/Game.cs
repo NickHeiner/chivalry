@@ -164,6 +164,10 @@ namespace chivalry.Models
         // TODO shameful
         [IgnoreDataMember]
         public string OtherPlayerName { get; set; }
+        [IgnoreDataMember]
+        public string OtherPlayerPicSource { get; set; }
+        [IgnoreDataMember]
+        public string ThisPlayerPicSource { get; set; }
 
         // public with get; set; for Azure
         [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]

@@ -111,7 +111,7 @@ namespace chivalry
                     }
                 }
                 updateWithUserData(game, user);
-                GameController.SetOtherPlayerLabel(user, game);
+                GameController.SetOtherPlayerInfo(user, game);
                 user.Games.Add(game);
             }
 
