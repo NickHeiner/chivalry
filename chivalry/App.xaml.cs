@@ -8,6 +8,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.PushNotifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -27,6 +28,8 @@ namespace chivalry
     {
         public static MobileServiceClient MobileService = 
             new MobileServiceClient("https://chivalry.azure-mobile.net/", "QpzUUCwKqDGWvCSSggLommMKMzkaca83");
+
+        public static PushNotificationChannel CurrentChannel { get; private set; }
 
         // Dependency injection cries softly to me
         public DataManager DataManager = new DataManager();
@@ -63,6 +66,8 @@ namespace chivalry
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            AcquirePushChannel();
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -118,5 +123,12 @@ namespace chivalry
             
             return loadUserTask;
         }
+
+        private async void AcquirePushChannel()
+        {
+            CurrentChannel =
+                await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+        }
+
     }
 }

@@ -35,6 +35,10 @@ namespace chivalry.Models
         [IgnoreDataMember]
         public BoardCoord.Transformation Transformation { get; set; }
 
+        // TODO there are a couple of the Initiator* and Recepient* fields. Perhaps there should be a GamePlayer object to factor those out.
+        public string InitiatorChannelId { get; set; }
+        public string RecepientChannelId { get; set; }
+
         [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]
         private Dictionary<BoardSpaceState, int> capturedPieces = new Dictionary<BoardSpaceState, int>();
 
@@ -173,6 +177,7 @@ namespace chivalry.Models
         {
             pieceLocations = new Dictionary<Coord, BoardSpaceState>();
             winner = RelativePlayer.None;
+            InitiatorChannelId = RecepientChannelId = "";
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")

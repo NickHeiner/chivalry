@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using chivalry.Utils;
 
 namespace chivalry
 {
@@ -125,22 +126,27 @@ namespace chivalry
 
         internal async void AddNewGame(User user, string recepientUserName, string recepientUserEmail)
         {
-            await gameTable.InsertAsync(GameController.WithStartingPieces(new Game() 
-            { 
+            Game game = new Game()
+            {
                 InitiatingPlayerName = user.Name,
                 InitiatingPlayerEmail = user.Email,
                 InitiaitingPlayerPicSource = user.ProfilePicSource,
-                RecepientPlayerName = recepientUserName, 
+                RecepientPlayerName = recepientUserName,
                 RecepientPlayerEmail = recepientUserEmail,
                 LastMoveSubmittedAt = DateTime.Now,
 
                 // TODO http://stackoverflow.com/questions/14677744/get-contact-thumbnail
                 RecepientPlayerPicSource = ""
-            }));
+            };
+
+            game.InitiatorChannelId = user.ToAbsolutePlayer(game) == AbsolutePlayer.Initiator ? App.CurrentChannel.Uri : App.CurrentChannel.Uri;
+
+            await gameTable.InsertAsync(GameController.WithStartingPieces(game));
         }
 
-        internal void SaveGame(Game game)
+        internal void SaveGame(Game game, User user)
         {
+            game.InitiatorChannelId = user.ToAbsolutePlayer(game) == AbsolutePlayer.Initiator ? App.CurrentChannel.Uri : App.CurrentChannel.Uri;
             gameTable.UpdateAsync(game);
         }
     }

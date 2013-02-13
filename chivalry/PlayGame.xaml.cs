@@ -186,11 +186,11 @@ namespace chivalry
             game.ClearActiveMoves();
         }
 
-        private void MakeMoves_Click(object sender, RoutedEventArgs e)
+        private async void MakeMoves_Click(object sender, RoutedEventArgs e)
         {
             GameController.ExecuteMoves(game);
 
-            ((App)Application.Current).DataManager.SaveGame(game);
+            ((App)Application.Current).DataManager.SaveGame(game, await getUser());
         }   
     }
 }
