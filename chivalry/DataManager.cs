@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using chivalry.Utils;
+using Windows.Networking.PushNotifications;
 
 namespace chivalry
 {
@@ -157,6 +158,11 @@ namespace chivalry
                 game.RecepientChannelId = App.CurrentChannel.Uri;
             }
             gameTable.UpdateAsync(game);
+        }
+
+        internal void OnChannelCreate(PushNotificationChannel currentChannel)
+        {
+            currentChannel.PushNotificationReceived += async (s, a) => await withServerData(await ((App)Application.Current).getUser());
         }
     }
 }

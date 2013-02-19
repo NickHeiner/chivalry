@@ -128,6 +128,7 @@ namespace chivalry
         {
             CurrentChannel =
                 await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+            DataManager.OnChannelCreate(CurrentChannel);
         }
 
     }
