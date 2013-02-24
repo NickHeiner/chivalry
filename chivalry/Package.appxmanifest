@@ -15,13 +15,14 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="chivalry.App">
-      <VisualElements DisplayName="Chivalry" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="chivalry" ForegroundText="light" BackgroundColor="#464646">
-        <DefaultTile ShowName="allLogos" />
+      <VisualElements DisplayName="Chivalry" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="chivalry" ForegroundText="light" BackgroundColor="#ff6f00" ToastCapable="true">
+        <DefaultTile ShowName="allLogos" ShortName="Chivalry" />
         <SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#ffe800" />
       </VisualElements>
     </Application>
   </Applications>
   <Capabilities>
+    <Capability Name="privateNetworkClientServer" />
     <Capability Name="internetClient" />
   </Capabilities>
 </Package>
