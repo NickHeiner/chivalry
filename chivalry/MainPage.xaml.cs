@@ -18,6 +18,8 @@ using Windows.ApplicationModel.Contacts;
 using chivalry.Models;
 using chivalry.Common;
 using chivalry.Controllers;
+using Windows.UI.Core;
+using Windows.ApplicationModel.Core;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -40,6 +42,8 @@ namespace chivalry
         {
             this.InitializeComponent();
             loadDataContext();
+
+            ((App)App.Current).DataManager.UserUpdate += async (s, e) => await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, loadDataContext);
         }
 
         void Auth_LoginFailed(object sender, EventArgs e)

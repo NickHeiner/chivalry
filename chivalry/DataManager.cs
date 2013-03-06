@@ -16,6 +16,8 @@ namespace chivalry
     {
         private IMobileServiceTable<Game> gameTable = App.MobileService.GetTable<Game>();
 
+        public event EventHandler UserUpdate;
+
         public async Task<User> withServerData(User user)
         {
             user = user ?? new User();
@@ -162,7 +164,13 @@ namespace chivalry
 
         internal void OnChannelCreate(PushNotificationChannel currentChannel)
         {
-            currentChannel.PushNotificationReceived += async (s, a) => await withServerData(await ((App)Application.Current).getUser());
+            currentChannel.PushNotificationReceived += async (s, a) => {
+                await withServerData(await ((App)Application.Current).getUser());
+                if (UserUpdate != null)
+                {
+                    UserUpdate(null, null);
+                }
+            };
         }
     }
 }
