@@ -76,7 +76,7 @@
                                     <Storyboard>
                                         <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="backgroundSquare"/>
                                     </Storyboard>
-                                </VisualState>
+                                </VisualState>  
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Grid Height="40" Width="40">
