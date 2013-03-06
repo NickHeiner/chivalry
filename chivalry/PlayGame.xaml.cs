@@ -7,8 +7,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -41,6 +43,13 @@ namespace chivalry
         {
             this.InitializeComponent();
             Loaded += PlayGame_Loaded;
+
+            ((App)App.Current).DataManager.UserUpdate += async (s, e) => await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
+                var user = await getUser();
+                LoadState(user.Games.Single(g => g.Id == game.Id), null);
+                updateFromGame();
+            });
         }
 
         // adapted from http://code.msdn.microsoft.com/windowsapps/Reversi-XAMLC-sample-board-816140fa/sourcecode?fileId=69011&pathId=706708707
@@ -77,6 +86,13 @@ namespace chivalry
                 }
             }
 
+            updateFromGame();
+        }
+
+        // TODO Shouldn't it be possible to do this declaratively,
+        // and not have to manually call these update methods?
+        private void updateFromGame()
+        {
             updateBoardFromGame();
             updateCapturedPiecesFromGame();
             updateGameStatusFromGame();

@@ -93,10 +93,7 @@ namespace chivalry
             }
 
             user.Games.Clear();
-            var games = await 
-                gameTable
-                .Where(game => game.InitiatingPlayerEmail == user.Email || game.RecepientPlayerEmail == user.Email)
-                .ToListAsync();
+            var games = await getGamesForUser(user);
             foreach (var game in games)
             {
                 if (((App)Application.Current).DEMO_HACK)
@@ -119,6 +116,15 @@ namespace chivalry
             }
 
             return user;
+        }
+
+        private async Task<List<Game>> getGamesForUser(User user)
+        {
+            var games = await
+                gameTable
+                .Where(game => game.InitiatingPlayerEmail == user.Email || game.RecepientPlayerEmail == user.Email)
+                .ToListAsync();
+            return games;
         }
 
         // visible for testing
