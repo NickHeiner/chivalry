@@ -35,8 +35,14 @@ namespace chivalry.Models
         [IgnoreDataMember]
         public BoardCoord.Transformation Transformation { get; set; }
 
-        [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]
-        private Dictionary<BoardSpaceState, int> capturedPieces = new Dictionary<BoardSpaceState, int>();
+        // TODO there are a couple of the Initiator* and Recepient* fields. Perhaps there should be a GamePlayer object to factor those out.
+        public string InitiatorChannelId { get; set; }
+        public string RecepientChannelId { get; set; }
+
+        // public for Azure
+        // TODO this is broken because the DictionaryJsonConverter expects a different type for the dict
+        [DataMemberJsonConverter(ConverterType = typeof(BoardSpaceStateIntDictConverter))]
+        public Dictionary<BoardSpaceState, int> capturedPieces = new Dictionary<BoardSpaceState, int>();
 
         public void CapturePiece(BoardSpaceState piece)
         {
@@ -48,30 +54,45 @@ namespace chivalry.Models
             NotifyPropertyChanged("CapturedPieces");
         }
 
+        public class BoardSpaceStateIntDictConverter : IDataMemberJsonConverter
+        {
+            public object ConvertFromJson(IJsonValue val)
+            {
+                var dict = JsonConvert.DeserializeObject<Dictionary<string, int>>(val.GetString());
+                var deserialized = new Dictionary<BoardSpaceState, int>();
+                foreach (var captureCount in dict)
+                {
+                    deserialized[(BoardSpaceState)Enum.Parse(typeof(BoardSpaceState), captureCount.Key)] = captureCount.Value;
+                }
+                return deserialized;
+            }
+
+            public IJsonValue ConvertToJson(object instance)
+            {
+                var dict = (IDictionary<BoardSpaceState, int>)instance;
+                var toSerialize = new Dictionary<string, int>();
+                foreach (var captureCount in dict)
+                {
+                    toSerialize[captureCount.Key.ToString()] = captureCount.Value;
+                }
+
+                var serialized = JsonConvert.SerializeObject(toSerialize);
+                return JsonValue.CreateStringValue(serialized);
+            }
+        }
+
+
         public int GetCapturedCount(BoardSpaceState piece)
         {
             // ugh I wish I had a DefaultDict
             return capturedPieces.ContainsKey(piece) ? capturedPieces[piece] : 0;
         }
 
-        public class PlayerJsonConverter : IDataMemberJsonConverter
-        {
-            public object ConvertFromJson(IJsonValue value)
-            {
-                return Enum.Parse(typeof(RelativePlayer), value.GetString());
-            }
-
-            public IJsonValue ConvertToJson(object instance)
-            {
-                return JsonValue.CreateStringValue(instance.ToString());
-            }
-        }
-
         /**
          * All of this serialization could probably be done better,
          * but fuck it I've spent enough time trying to make it work already.
          */
-        public class DictionaryJsonConverter : IDataMemberJsonConverter 
+        public class CoordBoardSpaceStateDictConverter : IDataMemberJsonConverter 
         {
             public static Tuple<int, int> tupleOfString(string str)
             {
@@ -123,11 +144,26 @@ namespace chivalry.Models
         public string InitiaitingPlayerPicSource { get; set; }
         public string RecepientPlayerPicSource { get; set; }
 
+        public class EnumStringConverter<T> : IDataMemberJsonConverter
+        {
+            public object ConvertFromJson(IJsonValue value)
+            {
+ 	            return (T) Enum.Parse(typeof(T), value.GetString());
+            }
+
+            public IJsonValue ConvertToJson(object instance)
+            {
+ 	            return JsonValue.CreateStringValue(instance.ToString());
+            }
+        }
+
+        [DataMemberJsonConverter(ConverterType = typeof(EnumStringConverter<RelativePlayer>))]
         private RelativePlayer winner;
 
+        [DataMemberJsonConverter(ConverterType = typeof(EnumStringConverter<AbsolutePlayer>))]
         public AbsolutePlayer WaitingOn { get; set; }
 
-        [DataMemberJsonConverter(ConverterType = typeof(PlayerJsonConverter))]
+        [DataMemberJsonConverter(ConverterType = typeof(EnumStringConverter<RelativePlayer>))]
         public RelativePlayer Winner 
         {
             get
@@ -146,6 +182,7 @@ namespace chivalry.Models
 
         public DateTime LastMoveSubmittedAt { get; set; }
 
+        // TODO refactor this into a ViewModel
         public string LastMoveSubmittedAtLabel
         {
             get
@@ -154,8 +191,16 @@ namespace chivalry.Models
             }
         }
 
+        // TODO shameful
+        [IgnoreDataMember]
+        public string OtherPlayerName { get; set; }
+        [IgnoreDataMember]
+        public string OtherPlayerPicSource { get; set; }
+        [IgnoreDataMember]
+        public string ThisPlayerPicSource { get; set; }
+
         // public with get; set; for Azure
-        [DataMemberJsonConverter(ConverterType = typeof(DictionaryJsonConverter))]
+        [DataMemberJsonConverter(ConverterType = typeof(CoordBoardSpaceStateDictConverter))]
         public Dictionary<Coord, BoardSpaceState> pieceLocations { get; set; }
 
         private List<Coord> activeMoveChain = new List<Coord>();
@@ -165,6 +210,8 @@ namespace chivalry.Models
         public Game()
         {
             pieceLocations = new Dictionary<Coord, BoardSpaceState>();
+            winner = RelativePlayer.None;
+            InitiatorChannelId = RecepientChannelId = "";
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")

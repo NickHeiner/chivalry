@@ -7,12 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using chivalry.Utils;
+using Windows.Networking.PushNotifications;
 
 namespace chivalry
 {
     public class DataManager
     {
         private IMobileServiceTable<Game> gameTable = App.MobileService.GetTable<Game>();
+
+        public event EventHandler UserUpdate;
 
         public async Task<User> withServerData(User user)
         {
@@ -89,7 +93,7 @@ namespace chivalry
             }
 
             user.Games.Clear();
-            var games = await gameTable.ToListAsync();
+            var games = await getGamesForUser(user);
             foreach (var game in games)
             {
                 if (((App)Application.Current).DEMO_HACK)
@@ -107,10 +111,20 @@ namespace chivalry
                     }
                 }
                 updateWithUserData(game, user);
+                GameController.SetOtherPlayerInfo(user, game);
                 user.Games.Add(game);
             }
 
             return user;
+        }
+
+        private async Task<List<Game>> getGamesForUser(User user)
+        {
+            var games = await
+                gameTable
+                .Where(game => game.InitiatingPlayerEmail == user.Email || game.RecepientPlayerEmail == user.Email)
+                .ToListAsync();
+            return games;
         }
 
         // visible for testing
@@ -121,18 +135,48 @@ namespace chivalry
 
         internal async void AddNewGame(User user, string recepientUserName, string recepientUserEmail)
         {
-            await gameTable.InsertAsync(GameController.WithStartingPieces(new Game() 
-            { 
+            Game game = new Game()
+            {
                 InitiatingPlayerName = user.Name,
                 InitiatingPlayerEmail = user.Email,
                 InitiaitingPlayerPicSource = user.ProfilePicSource,
-                RecepientPlayerName = recepientUserName, 
+                RecepientPlayerName = recepientUserName,
                 RecepientPlayerEmail = recepientUserEmail,
+                LastMoveSubmittedAt = DateTime.Now,
 
                 // TODO http://stackoverflow.com/questions/14677744/get-contact-thumbnail
                 RecepientPlayerPicSource = ""
-            }));
+            };
+
+            // Since the initiator is the only one who will call this method, 
+            // we only want to set the InitiatorChannelId
+            game.InitiatorChannelId = App.CurrentChannel.Uri;
+
+            await gameTable.InsertAsync(GameController.WithStartingPieces(game));
         }
 
+        internal void SaveGame(Game game, User user)
+        {
+            if (user.ToAbsolutePlayer(game) == AbsolutePlayer.Initiator)
+            {
+                game.InitiatorChannelId = App.CurrentChannel.Uri;
+            } else 
+            {
+                game.RecepientPlayerPicSource = user.ProfilePicSource;
+                game.RecepientChannelId = App.CurrentChannel.Uri;
+            }
+            gameTable.UpdateAsync(game);
+        }
+
+        internal void OnChannelCreate(PushNotificationChannel currentChannel)
+        {
+            currentChannel.PushNotificationReceived += async (s, a) => {
+                await withServerData(await ((App)Application.Current).getUser());
+                if (UserUpdate != null)
+                {
+                    UserUpdate(null, null);
+                }
+            };
+        }
     }
 }

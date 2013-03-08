@@ -11,41 +11,18 @@ using Windows.UI.Xaml;
 
 namespace chivalry
 {
-    // check this out for auth pain: http://www.windowsazure.com/en-us/develop/mobile/tutorials/single-sign-on-windows-8-dotnet/#register
     public class Auth
     {
         private MobileServiceUser mobileServiceUser;
-        internal async Task Authenticate()
-        {
-            while (mobileServiceUser == null)
-            {
-                try
-                {
-                    mobileServiceUser = await App.MobileService
-                        .LoginAsync(MobileServiceAuthenticationProvider.MicrosoftAccount);
-                }
-                catch (InvalidOperationException) {
-                }
-                if (mobileServiceUser == null)
-                {
-                    await (new MessageDialog("Logging in is required to use the app", "Sorry").ShowAsync());
-                }
-            }
-        }
-
         public event EventHandler LoginFailed;
-
         private LiveConnectClient connection;
 
-        // Is there a way to make props async?
         public async Task<User> CreateUser()
         {
             if (((App)Application.Current).OFFLINE_MODE)
             {
                 return new User() { Email = "nth23@cornell.edu", Name = "Nick Heiner" };
             }
-
-            await Authenticate();
 
             LiveConnectClient connection = await ensureConnection();
 
@@ -54,6 +31,7 @@ namespace chivalry
                 return null;
             }
             LiveOperationResult meResult = await connection.GetAsync("me");
+            
             dynamic userData = meResult.Result;
             User user = new User();
             if (userData != null)
@@ -69,8 +47,6 @@ namespace chivalry
                 user.ProfilePicSource = picData.location;
             }
 
-            //await Authenticate();
-
             return user;
         }
 
@@ -81,7 +57,7 @@ namespace chivalry
                 return connection;
             }
             // Initialize access to the Live Connect SDK.
-            LiveAuthClient LCAuth = new LiveAuthClient();
+            LiveAuthClient LCAuth = new LiveAuthClient("https://chivalry.azure-mobile.net/");
             LiveLoginResult LCLoginResult = await LCAuth.InitializeAsync();
             // Sign in to the user's Microsoft account with the required scope.
             //    
@@ -97,6 +73,7 @@ namespace chivalry
             {
                 // Create a client session to get the profile data.
                 connection = new LiveConnectClient(LCAuth.Session);
+                mobileServiceUser = await App.MobileService.LoginAsync(loginResult.Session.AuthenticationToken);
                 return connection;
             }
             if (LoginFailed != null)

@@ -4,3 +4,5 @@ sample-app
 sample-app-grid
 packages
 Thumbs.db
+*.pdb
+pingme.txt

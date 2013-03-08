@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using chivalry.Utils;
+using System.Diagnostics;
 
 namespace chivalry.Controllers
 {
@@ -49,33 +50,44 @@ namespace chivalry.Controllers
            throw new InvalidOperationException();
         }
 
-        public static void OnBoardSpaceClick(Game game, Coord coordClicked)
+        public static void OnBoardSpaceClick(User user, Game game, Coord coordClicked)
         {
-            if (GameValidator.IsValidMove(game, coordClicked))
+            if (GameValidator.IsValidMoveFor(user, game, coordClicked))
             {
                 game.AddActiveMove(coordClicked);
             }
         }
 
-        public static void ExecuteMoves(Game game)
+        public static void ExecuteMovesFor(Game game, User user)
+        {
+            ExecuteMoves(game, user.ToAbsolutePlayer(game) == AbsolutePlayer.Recepient);
+        }
+
+        public static void ExecuteMoves(Game game, bool flipPieceState = false)
         {
             if (game.ActiveMoves.Count() == 0)
             {
                 return;
             }
 
+            Func<BoardSpaceState, BoardSpaceState> getPieceForPlayer = boardSpaceState => flipPieceState ? boardSpaceState.TogglePlayer() : boardSpaceState;
+
             if (!(game.ActiveMoves.Count() == 2 && GameUtils.AreNeighbors(game.ActiveMoves.First(), game.ActiveMoves.Last())))
             {
+                // TODO the recepient can't capture anything - perhaps a board flipping issue?
                 var opponentsLoc =
                     game.ActiveMoves
                         .Pairwise()
                         .Select((moves) => GameUtils.SpaceBetween(moves.Item1, moves.Item2))
-                        .Where(loc => GameUtils.IsOpponent(game.GetPieceAt(loc)));
+                        .Where(loc => GameUtils.IsOpponent(getPieceForPlayer(game.GetPieceAt(loc))));
+
+                // TODO this doesn't actually fire
+                Debug.Assert(opponentsLoc.Count() > 0, "If we're doing a jump, we should find some pieces to capture.");
 
                 foreach (var opponentLoc in opponentsLoc)
                 {
                     game.CapturePiece(game.GetPieceAt(opponentLoc));
-                    game.SetPieceLocation(opponentLoc, BoardSpaceState.None);
+                    game.SetPieceLocation(opponentLoc, BoardSpaceState.None);   
                 }
             }
 
@@ -84,6 +96,8 @@ namespace chivalry.Controllers
             game.ClearActiveMoves();
 
             game.Winner = GameValidator.GameWinner(game);
+
+            game.WaitingOn = game.WaitingOn.Toggle();
         }
 
         public static Game WithStartingPieces(Game game)
@@ -120,6 +134,28 @@ namespace chivalry.Controllers
             {
                 game.SetPieceLocation(new Coord() { Row = row, Col = col }, toFill);
             }
+        }
+
+        // TODO this should be going off of email instead of name since name isn't unique
+        public static void SetOtherPlayerInfo(User user, Game game)
+        {
+            if (user.ToAbsolutePlayer(game) == AbsolutePlayer.Initiator)
+            {
+                game.OtherPlayerName = game.RecepientPlayerName;
+                game.OtherPlayerPicSource = game.RecepientPlayerPicSource;
+                game.ThisPlayerPicSource = game.InitiaitingPlayerPicSource;
+            }
+            else 
+            {
+                game.OtherPlayerName = game.InitiatingPlayerName;
+                game.OtherPlayerPicSource = game.InitiaitingPlayerPicSource;
+                game.ThisPlayerPicSource = game.RecepientPlayerPicSource;
+            }
+        }
+
+        public static BoardSpaceState BoardSpaceStateFor(User user, Game game, BoardSpaceState boardSpaceState)
+        {
+            return user.Email == game.InitiatingPlayerEmail ? boardSpaceState : boardSpaceState.TogglePlayer();
         }
     }
 }

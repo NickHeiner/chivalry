@@ -82,11 +82,11 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Image Source="{Binding RecepientPlayerPicSource}" Width="100" Height="100" />
+            <Image Source="{Binding OtherPlayerPicSource}" Width="100" Height="100" />
 
             <TextBlock Grid.Row="2" Style="{StaticResource PageHeaderTextStyle}" Margin="125,0,0,150" x:Name="gameStatusMessage" />
 
-            <Image Grid.Row="4" Source="{Binding InitiaitingPlayerPicSource}" Width="100" Height="100" />
+            <Image Grid.Row="4" Source="{Binding ThisPlayerPicSource}" Width="100" Height="100" />
         </Grid>
 
         <VisualStateManager.VisualStateGroups>

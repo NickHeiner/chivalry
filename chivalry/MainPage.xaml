@@ -20,6 +20,8 @@
             </Grid.ColumnDefinitions>
             
             <TextBlock Text="{StaticResource AppName}" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
+            
+            <!-- TODO this is the perfect place for the auth box to get blocked by toast notifications -->
             <local:AuthBox Grid.Column="1" />
             
         </Grid>
@@ -29,7 +31,8 @@
 
             <StackPanel x:Name="gamesView">
                 <TextBlock x:Name="noGamesText" Text="{StaticResource NoGamesMessage}" Visibility="Collapsed" Style="{StaticResource ItemTextStyle}" />
-                <Button x:Name="newGameButton" Click="NewGame_Click" Visibility="Collapsed">+ New Game</Button>
+                <!-- TODO this is not well placed -->
+                <Button x:Name="newGameButton" Click="NewGame_Click" Visibility="Collapsed" Content="{StaticResource NewGameLabel}" />
             </StackPanel>
 
             <!-- Horizontal scrolling grid used in most view states -->
@@ -37,7 +40,6 @@
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
-            Grid.RowSpan="2"
             ItemsSource="{Binding Source={StaticResource groupedGames}}"
             SelectionMode="None"
             IsSwipeEnabled="false"
@@ -48,10 +50,10 @@
                     <DataTemplate>
                         <Grid HorizontalAlignment="Left" Width="250" Height="250">
                             <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                                <Image Source="{Binding RecepientPlayerPicSource}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                                <Image Source="{Binding OtherPlayerPicSource}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
                             </Border>
                             <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
-                                <TextBlock Text="{Binding RecepientPlayerName}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
+                                <TextBlock Text="{Binding OtherPlayerName}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
                                 <TextBlock Text="{Binding LastMoveSubmittedAtLabel}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
                             </StackPanel>
                         </Grid>
@@ -81,7 +83,7 @@
                         </GroupStyle.HeaderTemplate>
                         <GroupStyle.Panel>
                             <ItemsPanelTemplate>
-                                <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"/>
+                                <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0" MaximumRowsOrColumns="2" />
                             </ItemsPanelTemplate>
                         </GroupStyle.Panel>
                     </GroupStyle>

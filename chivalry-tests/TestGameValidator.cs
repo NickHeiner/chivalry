@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using chivalry.Models;
 using chivalry.Controllers;
 using chivalry;
+using chivalry.Utils;
 
 namespace chivalry_tests
 {
@@ -13,6 +14,196 @@ namespace chivalry_tests
     [TestClass]
     public class TestGameValidator
     {
+        [TestMethod]
+        public void GameValidator_IsValidMove_Flip()
+        {
+            string initEmail = "f@b.c";
+            string recepEmail = "a@gasdf.asdf";
+
+            User user = new User() { Email = recepEmail };
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = initEmail, RecepientPlayerEmail = recepEmail, WaitingOn = AbsolutePlayer.Recepient });
+
+            Coord coord = Coord.Create(0, 0);
+
+            game.SetPieceLocation(coord, BoardSpaceState.OpponentPieceShort);
+
+            Assert.IsTrue(GameValidator.IsValidMoveFor(user, game, coord));
+        }
+
+        [TestMethod]
+        public void GameController_GetBoardSpaceStateFor_FriendlyInitiates()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+
+            Assert.AreEqual(
+                    BoardSpaceState.FriendlyPieceShort,
+                    GameController.BoardSpaceStateFor(
+                            new User() { Email = friendlyEmail },
+                            new Game() { InitiatingPlayerEmail = friendlyEmail, RecepientPlayerEmail = opponentEmail },
+                            BoardSpaceState.FriendlyPieceShort));
+        }
+
+        [TestMethod]
+        public void GameController_GetBoardSpaceStateFor_OpponentInitiates()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+
+            Assert.AreEqual(
+                    BoardSpaceState.OpponentPieceShort,
+                    GameController.BoardSpaceStateFor(
+                            new User() { Email = friendlyEmail },
+                            new Game() { InitiatingPlayerEmail = opponentEmail, RecepientPlayerEmail = friendlyEmail },
+                            BoardSpaceState.FriendlyPieceShort));
+        }
+
+        [TestMethod]
+        public void Game_StartsWithNoWinner()
+        {
+            Assert.AreEqual(RelativePlayer.None, new Game().Winner);
+        }
+
+        [TestMethod]
+        public void GameController_MakingMoveSwitchesWaitingOn()
+        {
+            var game = new Game() { WaitingOn = AbsolutePlayer.Recepient };
+            game.AddActiveMove(Coord.Create(0, 0));
+            game.AddActiveMove(Coord.Create(0, 1));
+
+            GameController.ExecuteMoves(game);
+
+            Assert.AreEqual(AbsolutePlayer.Initiator, game.WaitingOn);
+        }
+
+        [TestMethod]
+        public void ToRelativePlayer_Friendly_OpponentInitiator()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = opponentEmail, RecepientPlayerEmail = friendlyEmail, WaitingOn = AbsolutePlayer.Initiator });
+            User user = new User() { Email = friendlyEmail };
+
+            Assert.AreEqual(RelativePlayer.Opponent, AbsolutePlayer.Initiator.ToRelativePlayer(user, game));
+        }
+
+        [TestMethod]
+        public void ToRelativePlayer_Opponent_OpponentInitiator()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = opponentEmail, RecepientPlayerEmail = friendlyEmail, WaitingOn = AbsolutePlayer.Initiator });
+            User user = new User() { Email = friendlyEmail };
+
+            Assert.AreEqual(RelativePlayer.Friendly, AbsolutePlayer.Recepient.ToRelativePlayer(user, game));
+        }
+
+        [TestMethod]
+        public void ToRelativePlayer_Friendly_FriendlyInitiator()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = friendlyEmail, RecepientPlayerEmail = opponentEmail, WaitingOn = AbsolutePlayer.Initiator });
+            User user = new User() { Email = friendlyEmail };
+
+            Assert.AreEqual(RelativePlayer.Friendly, AbsolutePlayer.Initiator.ToRelativePlayer(user, game));
+        }
+
+        [TestMethod]
+        public void ToRelativePlayer_Opponent_FriendlyInitiator()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = friendlyEmail, RecepientPlayerEmail = opponentEmail, WaitingOn = AbsolutePlayer.Initiator });
+            User user = new User() { Email = friendlyEmail };
+
+            Assert.AreEqual(RelativePlayer.Opponent, AbsolutePlayer.Recepient.ToRelativePlayer(user, game));
+        }
+
+        [TestMethod]
+        public void IsValidMoveForUser_True()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = friendlyEmail, RecepientPlayerEmail = opponentEmail, WaitingOn = AbsolutePlayer.Initiator });
+            User user = new User() { Email = friendlyEmail };
+
+            Coord space = Coord.Create(0, 0);
+
+            game.SetPieceLocation(space, BoardSpaceState.FriendlyPieceShort);
+
+            Assert.IsTrue(GameValidator.IsValidMoveFor(user, game, space));
+        }
+
+        [TestMethod]
+        public void IsValidMoveForUser_False()
+        {
+            string friendlyEmail = "a@b.c";
+            string opponentEmail = "opponent@d.e";
+            Game game = GameController.WithStartingPieces(new Game() { InitiatingPlayerEmail = friendlyEmail, RecepientPlayerEmail = opponentEmail, WaitingOn = AbsolutePlayer.Initiator });
+            User user = new User() { Email = opponentEmail };
+
+            Coord space = Coord.Create(0, 0);
+
+            game.SetPieceLocation(space, BoardSpaceState.FriendlyPieceShort);
+
+            Assert.IsFalse(GameValidator.IsValidMoveFor(user, game, space));
+        }
+
+        [TestMethod]
+        public void OtherPlayerName_Friendly()
+        {
+            string friendlyName = "john locke";
+            string opponentName = "jack shepard";
+
+            Game game = new Game() { InitiatingPlayerName = friendlyName, RecepientPlayerName = opponentName };
+            GameController.SetOtherPlayerInfo(new User() { Name = friendlyName }, game);
+
+            Assert.AreEqual(opponentName, game.OtherPlayerName);
+        }
+
+        [TestMethod]
+        public void OtherPlayerName_Opponent()
+        {
+            string friendlyName = "john locke";
+            string opponentName = "jack shepard";
+
+            Game game = new Game() { InitiatingPlayerName = opponentName, RecepientPlayerName = friendlyName };
+            GameController.SetOtherPlayerInfo(new User() { Name = opponentName }, game);
+
+            Assert.AreEqual(friendlyName, game.OtherPlayerName);
+        }
+
+        [TestMethod]
+        public void OtherPlayerPic_Friendly()
+        {
+            string friendlyName = "john locke";
+            string friendlyPic = "http://i.imgur.com/foo";
+            string opponentName = "jack shepard";
+            string opponentPic = "http://i.imgur.com/bar";
+
+            Game game = new Game() { InitiatingPlayerName = friendlyName, RecepientPlayerName = opponentName, InitiaitingPlayerPicSource = friendlyPic, RecepientPlayerPicSource = opponentPic };
+            GameController.SetOtherPlayerInfo(new User() { Name = friendlyName }, game);
+
+            Assert.AreEqual(opponentPic, game.OtherPlayerPicSource);
+            Assert.AreEqual(friendlyPic, game.ThisPlayerPicSource);
+        }
+
+        [TestMethod]
+        public void OtherPlayerPic_Opponent()
+        {
+            string friendlyName = "john locke";
+            string friendlyPic = "http://i.imgur.com/foo";
+            string opponentName = "jack shepard";
+            string opponentPic = "http://i.imgur.com/bar";
+
+            Game game = new Game() { InitiatingPlayerName = opponentName, RecepientPlayerName = friendlyName, InitiaitingPlayerPicSource = opponentPic, RecepientPlayerPicSource = friendlyPic };
+            GameController.SetOtherPlayerInfo(new User() { Name = opponentName }, game);
+
+            Assert.AreEqual(friendlyPic, game.OtherPlayerPicSource);
+            Assert.AreEqual(opponentPic, game.ThisPlayerPicSource);
+        }
+
         [TestMethod]
         public void LabelYourTurn()
         {
@@ -594,7 +785,7 @@ namespace chivalry_tests
         [TestMethod]
         public void TupleOfString()
         {
-            Assert.AreEqual(Tuple.Create(2, 3), Game.DictionaryJsonConverter.tupleOfString("(2, 3)"));
+            Assert.AreEqual(Tuple.Create(2, 3), Game.CoordBoardSpaceStateDictConverter.tupleOfString("(2, 3)"));
         }
 
     }

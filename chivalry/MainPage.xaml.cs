@@ -18,6 +18,8 @@ using Windows.ApplicationModel.Contacts;
 using chivalry.Models;
 using chivalry.Common;
 using chivalry.Controllers;
+using Windows.UI.Core;
+using Windows.ApplicationModel.Core;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -40,6 +42,8 @@ namespace chivalry
         {
             this.InitializeComponent();
             loadDataContext();
+
+            ((App)App.Current).DataManager.UserUpdate += async (s, e) => await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, loadDataContext);
         }
 
         void Auth_LoginFailed(object sender, EventArgs e)
@@ -55,8 +59,13 @@ namespace chivalry
             {
                 newGameButton.Visibility = Visibility.Visible;
                 noGamesText.Visibility = user.Games.Count() == 0 ? Visibility.Visible : Visibility.Collapsed;
-                groupedGames.Source = user.Games.GroupBy(game => GameController.LabelOf(user, game));
+                updateGroupedGamesFromUser();
             }
+        }
+
+        private void updateGroupedGamesFromUser()
+        {
+            groupedGames.Source = user.Games.GroupBy(game => GameController.LabelOf(user, game));
         }
 
         /// <summary>
@@ -86,8 +95,8 @@ namespace chivalry
 
             ((App)Application.Current).DataManager.AddNewGame(user, contact.Name, contact.Emails.First().Value);
 
-            // TODO sometimes the most recent game doesn't show up when this refreshes the data
             await ((App)Application.Current).DataManager.withServerData(user);
+            updateGroupedGamesFromUser();
         }
 
         private void itemGridView_ItemClick_1(object sender, ItemClickEventArgs e)

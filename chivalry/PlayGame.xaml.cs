@@ -7,8 +7,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -41,11 +43,18 @@ namespace chivalry
         {
             this.InitializeComponent();
             Loaded += PlayGame_Loaded;
+
+            ((App)App.Current).DataManager.UserUpdate += async (s, e) => await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
+                var user = await getUser();
+                LoadState(user.Games.Single(g => g.Id == game.Id), null);
+                updateFromGame();
+            });
         }
 
         // adapted from http://code.msdn.microsoft.com/windowsapps/Reversi-XAMLC-sample-board-816140fa/sourcecode?fileId=69011&pathId=706708707
         // This is shit code.
-        void PlayGame_Loaded(object sender, RoutedEventArgs e)
+        async void PlayGame_Loaded(object sender, RoutedEventArgs e)
         {
             foreach (var row in Game.ALL_ROWS)
             {
@@ -72,19 +81,31 @@ namespace chivalry
                     boardSpaces[Coord.Create(rowInfo.Index, colIndex)] = boardSpace;
 
                     // TODO this needs to translate from screen space to board space
-                    boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(game, Coord.Create(rowInfo.Index, colIndex)) ;
+                    var user = await getUser();
+                    boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(user, game, new BoardCoord(Coord.Create(rowInfo.Index, colIndex), game.Transformation).Coord) ;
                 }
             }
 
+            updateFromGame();
+        }
+
+        // TODO Shouldn't it be possible to do this declaratively,
+        // and not have to manually call these update methods?
+        private void updateFromGame()
+        {
             updateBoardFromGame();
             updateCapturedPiecesFromGame();
             updateGameStatusFromGame();
         }
 
+        private static async System.Threading.Tasks.Task<User> getUser()
+        {
+            return await ((App)Application.Current).getUser();
+        }
+
         private async void updateGameStatusFromGame()
         {
-            var user = await ((App)Application.Current).getUser();
-            gameStatusMessage.Text = GameController.StatusMessageOf(user, game);
+            gameStatusMessage.Text = GameController.StatusMessageOf(await getUser(), game);
         }
 
         /// <summary>
@@ -109,7 +130,7 @@ namespace chivalry
             {
                 foreach (var boardSpaceLocation in boardSpaces)
                 {
-                    if (game.ActiveMoves.Contains(boardSpaceLocation.Key))
+                    if (game.ActiveMoves.Select(coord => new BoardCoord(coord, game.Transformation).Coord).Contains(boardSpaceLocation.Key))
                     {
                         boardSpaceLocation.Value.Select();
                     }
@@ -136,20 +157,20 @@ namespace chivalry
             updateCapturedPieces(capturedOpponentPieces, BoardSpaceState.OpponentPieceTall);
         }
 
-        private void updateCapturedPieces(StackPanel container, BoardSpaceState piece)
+        private async void updateCapturedPieces(StackPanel container, BoardSpaceState piece)
         {
             foreach (var _ in Enumerable.Range(0, game.GetCapturedCount(piece)))
             {
                 container.Children.Add(new BoardSpace()
                 {
-                    SpaceState = piece,
+                    SpaceState = GameController.BoardSpaceStateFor(await getUser(), game, piece),
                     Width = BOARD_GRID_SIDE_LENGTH,
                     Height = BOARD_GRID_SIDE_LENGTH
                 });
             }
         }
 
-        void updateBoardFromGame()
+        private async void updateBoardFromGame()
         {
             foreach (var boardSpace in boardSpaces)
             {
@@ -157,7 +178,7 @@ namespace chivalry
             }
             foreach (var pieceLoc in game.QueryPieceLocations)
             {
-                boardSpaces[new BoardCoord(pieceLoc.Key, game.Transformation).Coord].SpaceState = pieceLoc.Value;
+                boardSpaces[new BoardCoord(pieceLoc.Key, game.Transformation).Coord].SpaceState = GameController.BoardSpaceStateFor(await getUser(), game, pieceLoc.Value);
             }
         }
 
@@ -181,9 +202,11 @@ namespace chivalry
             game.ClearActiveMoves();
         }
 
-        private void MakeMoves_Click(object sender, RoutedEventArgs e)
+        private async void MakeMoves_Click(object sender, RoutedEventArgs e)
         {
-            GameController.ExecuteMoves(game);
+            GameController.ExecuteMovesFor(game, await getUser());
+
+            ((App)Application.Current).DataManager.SaveGame(game, await getUser());
         }   
     }
 }
