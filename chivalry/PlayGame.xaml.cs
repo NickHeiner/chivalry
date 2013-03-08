@@ -204,7 +204,7 @@ namespace chivalry
 
         private async void MakeMoves_Click(object sender, RoutedEventArgs e)
         {
-            GameController.ExecuteMoves(game);
+            GameController.ExecuteMovesFor(game, await getUser());
 
             ((App)Application.Current).DataManager.SaveGame(game, await getUser());
         }   

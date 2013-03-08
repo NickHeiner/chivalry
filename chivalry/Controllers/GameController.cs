@@ -58,12 +58,19 @@ namespace chivalry.Controllers
             }
         }
 
-        public static void ExecuteMoves(Game game)
+        public static void ExecuteMovesFor(Game game, User user)
+        {
+            ExecuteMoves(game, user.ToAbsolutePlayer(game) == AbsolutePlayer.Recepient);
+        }
+
+        public static void ExecuteMoves(Game game, bool flipPieceState = false)
         {
             if (game.ActiveMoves.Count() == 0)
             {
                 return;
             }
+
+            Func<BoardSpaceState, BoardSpaceState> getPieceForPlayer = boardSpaceState => flipPieceState ? boardSpaceState.TogglePlayer() : boardSpaceState;
 
             if (!(game.ActiveMoves.Count() == 2 && GameUtils.AreNeighbors(game.ActiveMoves.First(), game.ActiveMoves.Last())))
             {
@@ -72,7 +79,7 @@ namespace chivalry.Controllers
                     game.ActiveMoves
                         .Pairwise()
                         .Select((moves) => GameUtils.SpaceBetween(moves.Item1, moves.Item2))
-                        .Where(loc => GameUtils.IsOpponent(game.GetPieceAt(loc)));
+                        .Where(loc => GameUtils.IsOpponent(getPieceForPlayer(game.GetPieceAt(loc))));
 
                 // TODO this doesn't actually fire
                 Debug.Assert(opponentsLoc.Count() > 0, "If we're doing a jump, we should find some pieces to capture.");
