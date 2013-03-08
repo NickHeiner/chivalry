@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.MobileServices;
+﻿using chivalry.Controllers;
+using Microsoft.WindowsAzure.MobileServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -187,7 +188,7 @@ namespace chivalry.Models
         {
             get
             {
-                return "Last move at " + new DateTimeFormatter("month day dayofweek year").Format(LastMoveSubmittedAt);
+                return GameController.LastMoveSubmittedAtLabel(LastMoveSubmittedAt);
             }
         }
 

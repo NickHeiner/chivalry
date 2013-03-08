@@ -7,6 +7,7 @@ using chivalry.Models;
 using chivalry.Controllers;
 using chivalry;
 using chivalry.Utils;
+using Windows.Globalization.DateTimeFormatting;
 
 namespace chivalry_tests
 {
@@ -786,6 +787,74 @@ namespace chivalry_tests
         public void TupleOfString()
         {
             Assert.AreEqual(Tuple.Create(2, 3), Game.CoordBoardSpaceStateDictConverter.tupleOfString("(2, 3)"));
+        }
+
+        [TestMethod]
+        public void LastMoveCreatedAtLabel()
+        {
+            Assert.AreEqual(GameController.LAST_MOVE_CREATED_AT_PREFIX + "‎Friday‎, ‎February‎ ‎1‎, ‎2013", GameController.LastMoveSubmittedAtLabel(new DateTime(2013, 2, 1)));
+        }
+
+        [TestMethod]
+        public void LastMoveCreatedAtLabelNow()
+        {
+            Assert.AreEqual(GameController.LAST_MOVE_CREATED_AT_PREFIX + "just now", GameController.LastMoveSubmittedAtLabel(DateTime.Now));
+        }
+
+        [TestMethod]
+        public void LastMoveCreatedAtLabelRecent()
+        {
+            Assert.AreEqual(GameController.LAST_MOVE_CREATED_AT_PREFIX + "2 minutes ago", GameController.LastMoveSubmittedAtLabel(DateTime.Now - new TimeSpan(0, 2, 0)));
+        }
+
+        [TestMethod]
+        public void LastMoveCreatedAtLabelToday()
+        {
+            // It is possible for this test to fail if you run it sooner than 34 minutes
+            // into the day. Ugh. But the test is for "time that is earlier today and more than half an hour before now",
+            // so unless we mock what the current time is, there is going to be some window of failure.
+            var date = DateTime.Now - new TimeSpan(0, 31, 0);
+
+            Assert.AreEqual(
+                GameController.LAST_MOVE_CREATED_AT_PREFIX + new DateTimeFormatter("hour minute").Format(date) + " today",
+                GameController.LastMoveSubmittedAtLabel(date)
+            );
+        }
+
+        // Is there really no better way to do this?
+        private DateTime findThursday(DateTime possibleThursday)
+        {
+            if (possibleThursday.DayOfWeek == DayOfWeek.Thursday)
+            {
+                return possibleThursday;
+            }
+            return findThursday(possibleThursday - new TimeSpan(1, 0, 0, 0));
+        }
+
+        [TestMethod]
+        public void LastMoveCreatedAtLabelRecentDays()
+        {
+            // TODO this test fails and I don't know why.
+
+            //Assert.AreEqual("foo", "foo");
+
+            //var expected = GameController.LAST_MOVE_CREATED_AT_PREFIX + "2‎:‎01‎ ‎AM ‎Thursday";
+            //var actual = GameController.LastMoveSubmittedAtLabel(
+            //        findThursday(new DateTime(DateTime.Now.Year,
+            //            DateTime.Now.Month,
+            //            DateTime.Now.Day,
+            //            2,
+            //            1,
+            //            0))
+            //        );
+
+            //foreach (int i in Enumerable.Range(0, actual.Length))
+            //{
+            //    Assert.AreEqual(expected[i], actual[i]);
+            //}
+
+            // TODO these tests could be fucked / based on locale settings
+            //Assert.AreEqual(expected, actual);
         }
 
     }

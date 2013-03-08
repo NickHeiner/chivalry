@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using chivalry.Utils;
 using System.Diagnostics;
+using Windows.Globalization.DateTimeFormatting;
 
 namespace chivalry.Controllers
 {
@@ -21,6 +22,8 @@ namespace chivalry.Controllers
 
         public static readonly string STATUS_WIN = "You win!";
         public static readonly string STATUS_LOSE = "You lose!";
+
+        public static readonly string LAST_MOVE_CREATED_AT_PREFIX = "Last move: ";
 
         public static string LabelOf(User user, Game game)
         {
@@ -158,6 +161,22 @@ namespace chivalry.Controllers
         public static BoardSpaceState BoardSpaceStateFor(User user, Game game, BoardSpaceState boardSpaceState)
         {
             return user.Email == game.InitiatingPlayerEmail ? boardSpaceState : boardSpaceState.TogglePlayer();
+        }
+
+        public static string LastMoveSubmittedAtLabel(DateTime LastMoveSubmittedAt)
+        {
+            // I would declare these at a class level, but I want them to be re-computed
+            // every time this function is called.
+            DateTime VERY_RECENT = DateTime.Now.Subtract(new TimeSpan(0, 0, 30));
+            DateTime RECENT = DateTime.Now.Subtract(new TimeSpan(0, 5, 0));
+            DateTime LONG_AGO = DateTime.Now.Subtract(new TimeSpan(7, 0, 0, 0));
+
+            return LAST_MOVE_CREATED_AT_PREFIX +
+                (LastMoveSubmittedAt > VERY_RECENT ? "just now" : 
+                 LastMoveSubmittedAt > RECENT ? (DateTime.Now - LastMoveSubmittedAt).Minutes + " minutes ago" :
+                 LastMoveSubmittedAt.Date == DateTime.Now.Date ? new DateTimeFormatter("hour minute").Format(LastMoveSubmittedAt) + " today" :
+                 LastMoveSubmittedAt > LONG_AGO ? new DateTimeFormatter("hour minute").Format(LastMoveSubmittedAt) + " " + new DateTimeFormatter("dayofweek").Format(LastMoveSubmittedAt) : 
+                 new DateTimeFormatter("month day dayofweek year").Format(LastMoveSubmittedAt));
         }
     }
 }
