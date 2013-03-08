@@ -21,9 +21,9 @@
             <x:String x:Key="LoginFailedMessage">Login failed. Do you have internet access? Please try again later.</x:String>
             <x:String x:Key="NoGamesMessage">You have no games.</x:String>
             <x:String x:Key="NewGameLabel">+ New Game</x:String>
-            
-            <SolidColorBrush x:Key="PrimaryTileColor" Color="Wheat" />
-            <SolidColorBrush x:Key="SecondaryTileColor" Color="Plum" /> 
+
+            <SolidColorBrush x:Key="PrimaryTileColor" Color="#FFFF6F00" />
+            <SolidColorBrush x:Key="SecondaryTileColor" Color="#FFFFE800" /> 
             
             <common:BooleanToVisibilityConverter x:Key="boolToVisibility" />
         </ResourceDictionary> 

@@ -15,13 +15,22 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="chivalry.App">
-      <VisualElements DisplayName="Chivalry" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="chivalry" ForegroundText="light" BackgroundColor="#464646">
-        <DefaultTile ShowName="allLogos" />
-        <SplashScreen Image="Assets\SplashScreen.png" />
+      <VisualElements DisplayName="Chivalry" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="chivalry" ForegroundText="light" BackgroundColor="#ff6f00" ToastCapable="true">
+        <LockScreen Notification="badgeAndTileText" BadgeLogo="Assets\BadgeLogo.png" />
+        <DefaultTile ShowName="allLogos" ShortName="Chivalry" WideLogo="Assets\WideLogo.png" />
+        <SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#ffe800" />
       </VisualElements>
+      <Extensions>
+        <Extension Category="windows.backgroundTasks" StartPage="MainPage.xaml">
+          <BackgroundTasks>
+            <Task Type="pushNotification" />
+          </BackgroundTasks>
+        </Extension>
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>
+    <Capability Name="privateNetworkClientServer" />
     <Capability Name="internetClient" />
   </Capabilities>
 </Package>

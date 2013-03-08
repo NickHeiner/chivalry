@@ -41,13 +41,13 @@
                                 <VisualState x:Name="None"/>
                                 <VisualState x:Name="Friendly">
                                     <Storyboard>
-                                        <ColorAnimation Duration="0" To="CadetBlue" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
+                                        <ColorAnimation Duration="0" To="#FF009D91" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
                                         <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Opponent">
                                     <Storyboard>
-                                        <ColorAnimation Duration="0" To="Maroon" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
+                                        <ColorAnimation Duration="0" To="#FF530FAD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="pieceEllipse"/>
                                         <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pieceEllipse"/>
                                     </Storyboard>
                                 </VisualState>
@@ -55,7 +55,7 @@
                             <VisualStateGroup>
                                 <VisualState x:Name="Tall">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="2" Storyboard.TargetProperty="(Shape.StrokeThickness)" Storyboard.TargetName="pieceEllipse" />
+                                        <DoubleAnimation Duration="0" To="3" Storyboard.TargetProperty="(Shape.StrokeThickness)" Storyboard.TargetName="pieceEllipse" />
                                     </Storyboard>
                                 </VisualState>                                
                             </VisualStateGroup>
@@ -76,14 +76,14 @@
                                     <Storyboard>
                                         <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="backgroundSquare"/>
                                     </Storyboard>
-                                </VisualState>
+                                </VisualState>  
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Grid Height="40" Width="40">
                             <!--<Border x:Name="backgroundSquare" Background="{TemplateBinding Background}" Margin="4" Opacity="0.5"/>-->
                             <Rectangle x:Name="backgroundSquare" Fill="{TemplateBinding Background}" Margin="4" Opacity="0.8" />
                             <Rectangle x:Name="selectedHighlight" Fill="Green" Margin="4" Opacity="0" />
-                            <Ellipse x:Name="pieceEllipse" RenderTransformOrigin="0.5,0.5" Margin="10" Opacity="0" Fill="Transparent" Stroke="Gold" StrokeThickness="0">
+                            <Ellipse x:Name="pieceEllipse" RenderTransformOrigin="0.5,0.5" Margin="10" Opacity="0" Fill="Transparent" Stroke="Black" StrokeThickness="0">
                                 <Ellipse.Projection>
                                     <PlaneProjection/>
                                 </Ellipse.Projection>
