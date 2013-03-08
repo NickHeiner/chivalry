@@ -37,17 +37,19 @@ namespace chivalry.Controllers
 
         public static string StatusMessageOf(User user, Game game)
         {
-           switch (GameValidator.GameWinner(game))
-           {
+            var currentUserIsInitiator = user.Email == game.InitiatingPlayerEmail;
+
+            switch (GameValidator.GameWinner(game))
+            {
                 case RelativePlayer.Friendly:
-                    return STATUS_WIN;
+                    return currentUserIsInitiator ? STATUS_WIN : STATUS_LOSE;
                 case RelativePlayer.Opponent:
-                    return STATUS_LOSE;
+                    return currentUserIsInitiator ? STATUS_LOSE : STATUS_WIN;
                 case RelativePlayer.None:
                     return LabelOf(user, game);
-           }
+            }
 
-           throw new InvalidOperationException();
+            throw new InvalidOperationException();
         }
 
         public static void OnBoardSpaceClick(User user, Game game, Coord coordClicked)
