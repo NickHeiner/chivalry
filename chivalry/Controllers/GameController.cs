@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using chivalry.Utils;
+using System.Diagnostics;
 
 namespace chivalry.Controllers
 {
@@ -66,16 +67,20 @@ namespace chivalry.Controllers
 
             if (!(game.ActiveMoves.Count() == 2 && GameUtils.AreNeighbors(game.ActiveMoves.First(), game.ActiveMoves.Last())))
             {
+                // TODO the recepient can't capture anything - perhaps a board flipping issue?
                 var opponentsLoc =
                     game.ActiveMoves
                         .Pairwise()
                         .Select((moves) => GameUtils.SpaceBetween(moves.Item1, moves.Item2))
                         .Where(loc => GameUtils.IsOpponent(game.GetPieceAt(loc)));
 
+                // TODO this doesn't actually fire
+                Debug.Assert(opponentsLoc.Count() > 0, "If we're doing a jump, we should find some pieces to capture.");
+
                 foreach (var opponentLoc in opponentsLoc)
                 {
                     game.CapturePiece(game.GetPieceAt(opponentLoc));
-                    game.SetPieceLocation(opponentLoc, BoardSpaceState.None);
+                    game.SetPieceLocation(opponentLoc, BoardSpaceState.None);   
                 }
             }
 

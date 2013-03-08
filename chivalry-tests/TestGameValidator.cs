@@ -785,7 +785,7 @@ namespace chivalry_tests
         [TestMethod]
         public void TupleOfString()
         {
-            Assert.AreEqual(Tuple.Create(2, 3), Game.DictionaryJsonConverter.tupleOfString("(2, 3)"));
+            Assert.AreEqual(Tuple.Create(2, 3), Game.CoordBoardSpaceStateDictConverter.tupleOfString("(2, 3)"));
         }
 
     }
