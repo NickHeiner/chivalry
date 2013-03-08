@@ -157,13 +157,13 @@ namespace chivalry
             updateCapturedPieces(capturedOpponentPieces, BoardSpaceState.OpponentPieceTall);
         }
 
-        private void updateCapturedPieces(StackPanel container, BoardSpaceState piece)
+        private async void updateCapturedPieces(StackPanel container, BoardSpaceState piece)
         {
             foreach (var _ in Enumerable.Range(0, game.GetCapturedCount(piece)))
             {
                 container.Children.Add(new BoardSpace()
                 {
-                    SpaceState = piece,
+                    SpaceState = GameController.BoardSpaceStateFor(await getUser(), game, piece),
                     Width = BOARD_GRID_SIDE_LENGTH,
                     Height = BOARD_GRID_SIDE_LENGTH
                 });

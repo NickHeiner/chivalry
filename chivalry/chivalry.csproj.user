@@ -4,7 +4,7 @@
     <UseSimulator>False</UseSimulator>
     <RemoteDebugMachine>NTH-SURFACE:4016</RemoteDebugMachine>
     <UseAuthentication>True</UseAuthentication>
-    <RemoteDebugEnabled>true</RemoteDebugEnabled>
+    <RemoteDebugEnabled>false</RemoteDebugEnabled>
   </PropertyGroup>
   <PropertyGroup>
     <AppxShowAllApps>False</AppxShowAllApps>
