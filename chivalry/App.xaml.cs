@@ -39,7 +39,7 @@ namespace chivalry
         /// <summary>
         /// For working on the train
         /// </summary>
-        public readonly bool OFFLINE_MODE = false;
+        public readonly bool OFFLINE_MODE = true;
 
         /// <summary>
         /// Fake it
@@ -126,6 +126,10 @@ namespace chivalry
 
         private async void AcquirePushChannel()
         {
+            if (OFFLINE_MODE)
+            {
+                return;
+            }
             CurrentChannel =
                 await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
             DataManager.OnChannelCreate(CurrentChannel);
