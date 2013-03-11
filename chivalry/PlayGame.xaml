@@ -72,22 +72,13 @@
             <StackPanel x:Name="capturedFriendlyPieces" />
         </Grid>
 
-        <Grid Grid.Row="1" Grid.Column="3">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <!-- will this sort of hardcoding completely break on different screen sizes? -->
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <!--<Image Grid.Row="1" Grid.Column="3" Source="Assets/Logo.png" Width="100" Height="100" VerticalAlignment="Top" />-->
+        <Image Grid.Row="1" Grid.Column="3" Source="{Binding OtherPlayerPicSource}" Width="100" Height="100" VerticalAlignment="Top" />
 
-            <Image Source="{Binding OtherPlayerPicSource}" Width="100" Height="100" />
+        <TextBlock Grid.Row="1" Grid.Column="3" Text="Awaiting other player" Style="{StaticResource PageHeaderTextStyle}" TextWrapping="Wrap" LineHeight="60" Margin="125,0,0,0" x:Name="gameStatusMessage" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-            <TextBlock Grid.Row="2" Style="{StaticResource PageHeaderTextStyle}" Margin="125,0,0,150" x:Name="gameStatusMessage" />
-
-            <Image Grid.Row="4" Source="{Binding ThisPlayerPicSource}" Width="100" Height="100" />
-        </Grid>
+        <!--<Image Grid.Row="1" Grid.Column="3" Source="Assets/Logo.png" Width="100" Height="100"  VerticalAlignment="Bottom"/>-->
+        <Image Grid.Row="1" Grid.Column="3" Source="{Binding ThisPlayerPicSource}" Width="100" Height="100" VerticalAlignment="Bottom" />
 
         <VisualStateManager.VisualStateGroups>
 
