@@ -12,6 +12,18 @@ namespace chivalry
     /// </summary> 
     public class BoardSpace : Button
     {
+        public enum ArrowDirection
+        {
+            NORTH,
+            NORTHWEST,
+            WEST,
+            SOUTHWEST,
+            SOUTH,
+            SOUTHEAST,
+            EAST,
+            NORTHEAST
+        }
+
         /// <summary> 
         /// Initializes a new instance of the BoardSpace class. 
         /// </summary> 
@@ -23,6 +35,7 @@ namespace chivalry
         internal void Unselect()
         {
             VisualStateManager.GoToState(this, "Unselected", true);
+            VisualStateManager.GoToState(this, "HideArrow", true);
         }
 
         internal void Select()
@@ -65,6 +78,11 @@ namespace chivalry
             DependencyPropertyChangedEventArgs e)
         {
             (d as BoardSpace).UpdateSpaceState(true);
+        }
+
+        public void SetArrowDirection(ArrowDirection direction)
+        {
+            VisualStateManager.GoToState(this, direction.ToString().ToLower(), true);
         }
 
         /// <summary> 

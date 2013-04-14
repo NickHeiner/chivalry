@@ -16,6 +16,48 @@ namespace chivalry_tests
     public class TestGameValidator
     {
         [TestMethod]
+        public void GameUtils_ArrowDirectionOfCoords_North()
+        {
+            Assert.AreEqual(GameUtils.ArrowDirectionOfCoords(Coord.Create(0, 0), Coord.Create(-1, 0)), BoardSpace.ArrowDirection.NORTH);
+        }
+
+        [TestMethod]
+        public void GameUtils_ArrowDirectionOfCoords_NorthWest()
+        {
+            Assert.AreEqual(GameUtils.ArrowDirectionOfCoords(Coord.Create(0, 0), Coord.Create(-1, -1)), BoardSpace.ArrowDirection.NORTHWEST);
+        }
+
+        [TestMethod]
+        public void GameUtils_ArrowDirectionOfCoords_West()
+        {
+            Assert.AreEqual(GameUtils.ArrowDirectionOfCoords(Coord.Create(0, 0), Coord.Create(0, -1)), BoardSpace.ArrowDirection.WEST);
+        }
+
+        [TestMethod]
+        public void GameUtils_ArrowDirectionOfCoords_SouthWest()
+        {
+            Assert.AreEqual(GameUtils.ArrowDirectionOfCoords(Coord.Create(0, 0), Coord.Create(1, 0)), BoardSpace.ArrowDirection.SOUTH);
+        }
+
+        [TestMethod]
+        public void GameUtils_ArrowDirectionOfCoords_SouthEast()
+        {
+            Assert.AreEqual(GameUtils.ArrowDirectionOfCoords(Coord.Create(0, 0), Coord.Create(1, 1)), BoardSpace.ArrowDirection.SOUTHEAST);
+        }
+
+        [TestMethod]
+        public void GameUtils_ArrowDirectionOfCoords_East()
+        {
+            Assert.AreEqual(GameUtils.ArrowDirectionOfCoords(Coord.Create(0, 0), Coord.Create(0, 1)), BoardSpace.ArrowDirection.EAST);
+        }
+
+        [TestMethod]
+        public void GameUtils_ArrowDirectionOfCoords_NorthEast()
+        {
+            Assert.AreEqual(GameUtils.ArrowDirectionOfCoords(Coord.Create(0, 0), Coord.Create(-1, 1)), BoardSpace.ArrowDirection.NORTHEAST);
+        }
+
+        [TestMethod]
         public void GameValidator_IsValidMove_Flip()
         {
             string initEmail = "f@b.c";

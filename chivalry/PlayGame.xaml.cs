@@ -1,6 +1,7 @@
 ﻿using chivalry.Common;
 using chivalry.Controllers;
 using chivalry.Models;
+using chivalry.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,6 +11,7 @@ using System.Linq;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,6 +19,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
@@ -82,7 +85,7 @@ namespace chivalry
 
                     // TODO this needs to translate from screen space to board space
                     var user = await getUser();
-                    boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(user, game, new BoardCoord(Coord.Create(rowInfo.Index, colIndex), game.Transformation).Coord) ;
+                    boardSpace.Click += (_, __) => GameController.OnBoardSpaceClick(user, game, new BoardCoord(Coord.Create(rowInfo.Index, colIndex), game.Transformation).Coord);
                 }
             }
 
@@ -131,13 +134,21 @@ namespace chivalry
                 foreach (var boardSpaceLocation in boardSpaces)
                 {
                     if (game.ActiveMoves.Select(coord => new BoardCoord(coord, game.Transformation).Coord).Contains(boardSpaceLocation.Key))
-                    {
+                    {   
                         boardSpaceLocation.Value.Select();
                     }
                     else
                     {
                         boardSpaceLocation.Value.Unselect();
                     }
+                }
+                foreach (var boardSpacePair in game.ActiveMoves.Pairwise().Skip(1))
+                {
+                    Coord from = boardSpacePair.Item1;
+
+                    BoardSpace fromBoardSpace = boardSpaces.Single(spaceCoord => new BoardCoord(spaceCoord.Key, game.Transformation).Coord == from).Value;
+
+                    fromBoardSpace.SetArrowDirection(GameUtils.ArrowDirectionOfCoords(from, boardSpacePair.Item2));
                 }
             }
             if (e.PropertyName.Equals("CapturedPieces"))
@@ -207,6 +218,6 @@ namespace chivalry
             GameController.ExecuteMovesFor(game, await getUser());
 
             ((App)Application.Current).DataManager.SaveGame(game, await getUser());
-        }   
+        }
     }
 }

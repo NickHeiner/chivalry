@@ -121,5 +121,41 @@ namespace chivalry.Controllers
             // TODO add out of bounds checking
             return game.GetPieceAt(toLand) == BoardSpaceState.None && game.GetPieceAt(toJump) != BoardSpaceState.None;
         }
+
+        public static BoardSpace.ArrowDirection ArrowDirectionOfCoords(Coord from, Coord to)
+        {
+            Coord diff = to - from;
+
+            if (diff.Row < 0 && diff.Col == 0)
+            {
+                return BoardSpace.ArrowDirection.NORTH;
+            }
+            if (diff.Row < 0 && diff.Col < 0)
+            {
+                return BoardSpace.ArrowDirection.NORTHWEST;
+            }
+            if (diff.Row == 0 && diff.Col < 0)
+            {
+                return BoardSpace.ArrowDirection.WEST;
+            }
+            if (diff.Row > 0 && diff.Col < 0)
+            {
+                return BoardSpace.ArrowDirection.SOUTHWEST;
+            }
+            if (diff.Row > 0 && diff.Col == 0)
+            {
+                return BoardSpace.ArrowDirection.SOUTH;
+            }
+            if (diff.Row > 0 && diff.Col > 0)
+            {
+                return BoardSpace.ArrowDirection.SOUTHEAST;
+            }
+            if (diff.Row == 0 && diff.Col > 0)
+            {
+                return BoardSpace.ArrowDirection.EAST;
+            }
+
+            return BoardSpace.ArrowDirection.NORTHEAST;
+        }
     }
 }
