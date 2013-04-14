@@ -51,6 +51,11 @@ namespace chivalry
                     LastMoveSubmittedAt = DateTime.Now - TimeSpan.FromHours(2.3)
                 });
 
+                dadGame.SetPieceLocation(Coord.Create(5, 0), BoardSpaceState.FriendlyPieceTall);
+                dadGame.SetPieceLocation(Coord.Create(6, 0), BoardSpaceState.FriendlyPieceShort);
+                dadGame.SetPieceLocation(Coord.Create(8, 0), BoardSpaceState.OpponentPieceShort);
+                dadGame.SetPieceLocation(Coord.Create(10, 0), BoardSpaceState.OpponentPieceTall);
+
                 updateWithUserData(dadGame, user);
 
                 user.Games.Add(dadGame);

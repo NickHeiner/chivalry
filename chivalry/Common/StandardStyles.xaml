@@ -63,12 +63,13 @@
                                 <VisualState x:Name="Selected">
                                     <Storyboard>
                                         <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="selectedHighlight"/>
+                                        <!--<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="arrow"/>-->
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Unselected">
                                     <Storyboard>
                                         <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="selectedHighlight"/>
-                                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="arrow"/>
+                                        <!--<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="arrow"/>-->
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -80,6 +81,11 @@
                                 </VisualState>  
                             </VisualStateGroup>
                             <VisualStateGroup>
+                                <VisualState x:Name="HideArrow">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="arrow"/>
+                                    </Storyboard>
+                                </VisualState>
                                 <VisualState x:Name="north">
                                     <Storyboard>
                                         <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="arrow"/>
@@ -134,7 +140,7 @@
                             <!--<Border x:Name="backgroundSquare" Background="{TemplateBinding Background}" Margin="4" Opacity="0.5"/>-->
                             <Rectangle x:Name="backgroundSquare" Fill="{TemplateBinding Background}" Margin="4" Opacity="0.8" />
                             <Rectangle x:Name="selectedHighlight" Fill="Green" Margin="4" Opacity="0" />
-                            <Image x:Name="arrow" Source="Assets/arrow.png" Opacity="0" >
+                            <Image x:Name="arrow" Source="Assets/arrow.png" Opacity="0" RenderTransformOrigin="0.5,0.5">
                                 <Image.RenderTransform>
                                     <CompositeTransform Rotation="0"/>
                                 </Image.RenderTransform>

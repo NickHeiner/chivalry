@@ -35,6 +35,7 @@ namespace chivalry
         internal void Unselect()
         {
             VisualStateManager.GoToState(this, "Unselected", true);
+            VisualStateManager.GoToState(this, "HideArrow", true);
         }
 
         internal void Select()

@@ -142,7 +142,7 @@ namespace chivalry
                         boardSpaceLocation.Value.Unselect();
                     }
                 }
-                foreach (var boardSpacePair in game.ActiveMoves.Pairwise())
+                foreach (var boardSpacePair in game.ActiveMoves.Pairwise().Skip(1))
                 {
                     Coord from = boardSpacePair.Item1;
 

@@ -59,8 +59,8 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="1">
-                <Button Click="ResetMoves_Click" Background="Red" Width="200" Height="100" IsEnabled="{Binding ActiveMovesExist}">Reset Move</Button>
-                <Button Click="MakeMoves_Click" Background="Green" Width="200" Height="100" IsEnabled="{Binding ActiveMovesExist}">Make Move</Button>
+                <Button Click="ResetMoves_Click" Background="Red" Width="200" Height="100" IsEnabled="{Binding ActiveMovesExist}" Content="Reset Move"/>
+                <Button Click="MakeMoves_Click" Background="Green" Width="200" Height="100" IsEnabled="{Binding ActiveMovesExist}" Content="Make Move"/>
             </StackPanel>
         </Grid>
 
