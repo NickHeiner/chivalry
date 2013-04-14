@@ -157,6 +157,11 @@ namespace chivalry
 
         internal void SaveGame(Game game, User user)
         {
+            if (((App)App.Current).OFFLINE_MODE)
+            {
+                return;
+            }
+
             if (user.ToAbsolutePlayer(game) == AbsolutePlayer.Initiator)
             {
                 game.InitiatorChannelId = App.CurrentChannel.Uri;
