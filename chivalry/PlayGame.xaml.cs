@@ -59,6 +59,7 @@ namespace chivalry
         // This is shit code.
         async void PlayGame_Loaded(object sender, RoutedEventArgs e)
         {
+            boardViewBox.Height = Window.Current.Bounds.Height * (85d / 90d);
             foreach (var row in Game.ALL_ROWS)
             {
                 boardGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(BOARD_GRID_SIDE_LENGTH) });

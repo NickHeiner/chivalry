@@ -4,7 +4,7 @@
     <UseSimulator>False</UseSimulator>
     <RemoteDebugMachine>NTH-SURFACE:4016</RemoteDebugMachine>
     <UseAuthentication>True</UseAuthentication>
-    <RemoteDebugEnabled>false</RemoteDebugEnabled>
+    <RemoteDebugEnabled>true</RemoteDebugEnabled>
   </PropertyGroup>
   <PropertyGroup>
     <AppxShowAllApps>False</AppxShowAllApps>
@@ -12,6 +12,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <RemoteDebugMachine>nth-surface:4017</RemoteDebugMachine>
     <UseAuthentication>True</UseAuthentication>
-    <RemoteDebugEnabled>true</RemoteDebugEnabled>
+    <RemoteDebugEnabled>false</RemoteDebugEnabled>
+    <UseSimulator>True</UseSimulator>
   </PropertyGroup>
 </Project>
