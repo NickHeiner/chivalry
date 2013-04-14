@@ -12,6 +12,18 @@ namespace chivalry
     /// </summary> 
     public class BoardSpace : Button
     {
+        public enum ArrowDirection
+        {
+            NORTH,
+            NORTHWEST,
+            WEST,
+            SOUTHWEST,
+            SOUTH,
+            SOUTHEAST,
+            EAST,
+            NORTHEAST
+        }
+
         /// <summary> 
         /// Initializes a new instance of the BoardSpace class. 
         /// </summary> 
@@ -65,6 +77,11 @@ namespace chivalry
             DependencyPropertyChangedEventArgs e)
         {
             (d as BoardSpace).UpdateSpaceState(true);
+        }
+
+        public void SetArrowDirection(ArrowDirection direction)
+        {
+            VisualStateManager.GoToState(this, direction.ToString().ToLower(), true);
         }
 
         /// <summary> 

@@ -16,6 +16,21 @@ namespace chivalry.Models
             return new Coord() { Row = c1.Row + c2.Row, Col = c1.Col + c2.Col };
         }
 
+        public static Coord operator -(Coord c1, Coord c2)
+        {
+            return new Coord() { Row = c1.Row - c2.Row, Col = c1.Col - c2.Col };
+        }
+
+        public static bool operator ==(Coord c1, Coord c2)
+        {
+            return c1.Col == c2.Col && c1.Row == c2.Row;
+        }
+
+        public static bool operator !=(Coord c1, Coord c2)
+        {
+            return !(c1 == c2);
+        }
+
         // Is this a great shortcut or inviting error?
         public static Coord Create(int row, int col)
         {
