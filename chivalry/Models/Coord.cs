@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Camelot;
 
 namespace chivalry.Models
 {
@@ -10,6 +11,11 @@ namespace chivalry.Models
     {
         public int Row { get; set; }
         public int Col { get; set; }
+
+        public Camelot.GameState.coord asCamelotCoord()
+        {
+            return new GameState.coord(GameState.row.NewRow(Row), GameState.col.NewCol(Col));
+        }
 
         public static Coord operator +(Coord c1, Coord c2) 
         {

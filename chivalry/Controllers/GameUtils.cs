@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using chivalry.Utils;
+using Camelot;
 
 namespace chivalry.Controllers
 {
@@ -119,6 +120,9 @@ namespace chivalry.Controllers
             Coord diff = new Coord() { Row = toJump.Row - src.Row, Col = toJump.Col - src.Col };
             Coord toLand = new Coord() { Row = src.Row + diff.Row * 2, Col = src.Col + diff.Col * 2 };
             // TODO add out of bounds checking
+
+            return GameStateUtils.IsJumpable(game.asCamelotGame(), src.asCamelotCoord(), toJump.asCamelotCoord());
+
             return game.GetPieceAt(toLand) == BoardSpaceState.None && game.GetPieceAt(toJump) != BoardSpaceState.None;
         }
 

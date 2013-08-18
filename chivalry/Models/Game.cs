@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Globalization.DateTimeFormatting;
+using Camelot;
 
 namespace chivalry.Models
 {
@@ -318,6 +319,11 @@ namespace chivalry.Models
             {
                 return pieceLocations.Select(kv => kv.Key.Row).Max();
             }
+        }
+
+        public GameState.game asCamelotGame()
+        {
+            return new GameState.game();
         }
     }
 }

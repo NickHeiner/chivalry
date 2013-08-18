@@ -16,7 +16,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using camelot;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -28,18 +27,19 @@ namespace chivalry
     sealed partial class App : Application
     {
 
-        public static MobileServiceClient MobileService;
+        public static MobileServiceClient MobileService = new MobileServiceClient("https://chivalry.azure-mobile.net/", "QpzUUCwKqDGWvCSSggLommMKMzkaca83");
 
-        async static App()
-        {
-            var file = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///api-key.txt"));
-            var read = await file.OpenReadAsync();
-            var apiKey = read.ToString();
+        // how to read a file synchronously?
+        //async static App()
+        //{
+        //    var file = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///api-key.txt"));
+        //    var read = await file.OpenReadAsync();
+        //    var apiKey = read.ToString();
 
-            MobileService = new MobileServiceClient("https://chivalry.azure-mobile.net/", apiKey);
+        //    MobileService = new MobileServiceClient("https://chivalry.azure-mobile.net/", apiKey);
 
-            camelot.camelot.IsPrime(34);
-        }
+        //    camelot.camelot.IsPrime(34);
+        //}
 
         public static PushNotificationChannel CurrentChannel { get; private set; }
 
